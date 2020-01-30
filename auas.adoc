@@ -33,3 +33,8 @@ MatrNr: 2616023
 Auas Email: marco.steinke@hhu.de
 MatrNr: 2604022
 ----------------------------------
+
+----------------------------------
+Auas Email: Jascha.Wolter@uni-duesseldorf.de
+MatrNr: 2466642
+----------------------------------
