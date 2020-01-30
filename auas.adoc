@@ -38,3 +38,8 @@ MatrNr: 2604022
 Auas Email: Jascha.Wolter@uni-duesseldorf.de
 MatrNr: 2466642
 ----------------------------------
+
+----------------------------------
+Auas Email: valentin.stoehr@hhu.de
+MatrNr: 2726706
+----------------------------------
