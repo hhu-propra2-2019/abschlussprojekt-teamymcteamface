@@ -22,4 +22,4 @@ jobs:
                     java-version: 11
 
             -   name: Run Gradle Checks
-                run: ./gradlew checkck
+                run: ./gradlew check
