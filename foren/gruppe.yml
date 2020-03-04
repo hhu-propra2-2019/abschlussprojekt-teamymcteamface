@@ -1,0 +1,19 @@
+# Bei "schicht" können Sie 'vormittags', 'nachmittags' oder 'egal' eintragen.
+
+gruppe: TeamyMcTeamFace
+url: https://github.com/hhu-propra2/abschlussprojekt-teamymcteamface
+names:
+  - niruc100
+  - smncrm
+  - BrenkeSebastian
+  - mgtgecko
+  - maste150hhu
+  - TuringRs
+  - valiiscoding
+  - arbenber
+notebook: true
+schicht: vormittags
+projektauswahl:
+  - Foren
+  - Nachrichtenzentrale
+  - Punkteübersicht
