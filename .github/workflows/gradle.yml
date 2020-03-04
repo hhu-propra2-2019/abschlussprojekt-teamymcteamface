@@ -23,3 +23,9 @@ jobs:
 
             -   name: Run Gradle Checks
                 run: ./gradlew check
+
+            -   name: Run Gradle spotbugsMain
+                run: ./gradlew spotBugsMain
+
+            -   name: Run Gradle spotbugsTest
+                run: ./gradlew spotBugsTest
