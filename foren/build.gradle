@@ -21,7 +21,7 @@ spotbugsMain {
 
 group = 'mops'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '13'
+sourceCompatibility = '11'
 
 
 configurations {
