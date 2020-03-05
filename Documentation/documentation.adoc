@@ -30,3 +30,9 @@ Das Team implementiert ein Self-Contained-System "Foren", welches die Kommunikat
 - das Team operiert nach eigenen Regeln mit festgelegten Workflows
 - Style der Website, sowie Login/Logout sind vorgegeben
 
+== Kontextabgrenzung
+
+Die Kontextabgrenzung haben wir in einem Diagramm festgehalten.
+Sie ist möglichst abstrakt gestaltet, um grundlegende Interaktionen zu fixieren.
+
+image::Foren_ Kontextdiagramm.jpg[500,600]
