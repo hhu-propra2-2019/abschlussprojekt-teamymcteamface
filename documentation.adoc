@@ -1,0 +1,24 @@
+= Dokumentation des Projekts "Foren" mit ARC42
+
+==	Einführung und Ziele
+
+=== Aufgabenstellung
+
+Das Team implementiert ein Self-Contained-System "Foren", welches die Kommunikation zwischen Studenten, Organisatoren und Admins des Systems MOPS ermöglichen soll.
+
+=== Qualitätsziele
+
+- das Subsystem soll mindestens grundlegende Funktionalität eines Forums bereitstellen
+- übersichtliche und benutzerfreundliche Strukturierung des Subsystems
+- das Subsystem soll die Rollen `Administrator`, `Moderator` und `Student` erkennen und Interaktionsmöglichkeiten klar differenzieren können
+- die Performance sollte der Aufgabe entsprechend verhältnismäßig sein
+
+=== Stakeholder
+
+[cols="1,1,2" options="header"]
+|===
+|Name | Rolle | Funktion/Motivation
+| _Jens Bendisposto_ | _Kunde_ | _Erwartet die Einhaltung aller Qualitätsziele, entscheidet über den Erfolg des Subsystems_
+| _TeamyMcTeamFace_ | _Entwicklerteam_ | _Implementiert das Subsystem, sind auf Erfolg dessen angewiesen_
+|===
+
