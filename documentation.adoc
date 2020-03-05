@@ -22,3 +22,11 @@ Das Team implementiert ein Self-Contained-System "Foren", welches die Kommunikat
 | _TeamyMcTeamFace_ | _Entwicklerteam_ | _Implementiert das Subsystem, sind auf Erfolg dessen angewiesen_
 |===
 
+== Randbedingungen
+
+- das Subsystem wir in SpringBoot entwickelt
+- der Zeitraum der Entwicklung beträgt min.
+80 Stunden
+- das Team operiert nach eigenen Regeln mit festgelegten Workflows
+- Style der Website, sowie Login/Logout sind vorgegeben
+
