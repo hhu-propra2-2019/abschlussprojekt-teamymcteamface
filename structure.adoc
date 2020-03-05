@@ -1,0 +1,34 @@
+= NOT FINAL !!!11!!
+
+Zuerst einmal unsere Klassentabelle in "schön" :
+In der ersten Tabelle stehen die Namen der Klassen und ihre Felder, in der darunter die relevanten Funktione die jede Klasse haben sollte.
+Topic bezeichnet z.B ein Fach wie Aldat, dies kann dann mehrere Threads haben wie z.B. Ankündigungen, Orga, Diskussion etc.
+Subthreads sind die "Starterpostings" mit der Eingangsfrage und Posts dann die Antworten darauf.
+
+Die Services sind dann jeweils eigene Klassen welche den entsprechenden Inhalt bereitstellen, wenn dieser wirklich angefragt wird. Wir wollten vermeiden, dass
+beim aufrufen eines Topics direkt eine Liste mit den Thread Objekten geladen werden muss, sondern zunächst nur deren Thema, entsprechend soll bei der Übericht über
+die Subthreads auch nicht direkt jede Diskussion komplett aus der DB geholt werden, sondern erst über den PostService wenn ein entsprechende Subthread aufgerufen wird
+
+[cols="1,1,1,1,1,1" options="header"]
+|===
+
+|Topic|Thread|Subthread|Post|content|user
+|Title|Title|Title|User(Author)|size|name
+|Description|Description|Preview|Date|link(MinIO)|mail
+|Course| | |Text| |role
+|User Service|User Service|User Service|[content]| |photo
+|Thread Service|Subthread Service|Post Service| | |Foren/Rechte
+|===
+[cols="1,1,1,1,1,1" options="header"]
+|===
+|Functions| | | | |
+|addUser()| | | | |
+|addThreat|addSubThread()|post()| | |
+|edit()|edit()|edit()|edit()| |edit()
+|delete()|delete()|delete()|delete()|delete() |delete()
+
+|===
+
+Die Rechteverwaltung in unsere Forum muss unabhänig von Keycloak sein, da wir von dort ja nur administrative Rechte bekommen, jedoch keine Inhaltlichen
+(Ein Prof ist in Keycloak wahrscheinlich kein Admin, sollte aber in einem Forum einer sein können). Daher würde wir beim erstellen der Instanz eines Users
+prüfen in welchen Foren er mit welchen Rechten ist und darüber seinen Zugriff managen.
