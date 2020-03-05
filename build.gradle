@@ -7,7 +7,6 @@ plugins {
 }
 
 spotbugs {
-    ignoreFailures = true
     effort = "max"
     reportLevel = "high"
 }
@@ -38,7 +37,6 @@ configurations {
 checkstyle {
     toolVersion = "8.28"
     configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
-    ignoreFailures = true
 }
 
 repositories {
@@ -71,5 +69,7 @@ dependencies {
 
 
 test {
+    dependsOn 'spotbugsMain'
+    dependsOn 'spotbugsTest'
     useJUnitPlatform()
 }
