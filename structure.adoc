@@ -11,19 +11,20 @@ Wir wollten vermeiden, dass beim aufrufen eines Topics direkt eine Liste mit den
 [cols="1,1,1,1,1,1" options="header"]
 |===
 
-|Topic|Thread|Subthread|Post|content|user
+|Forum|Topic|Thread|Post|content|user
 |Title|Title|Title|User(Author)|size|name
 |Description|Description|Preview|Date|link(MinIO)|mail
 |Course| | |Text| |role
-|User Service|User Service|User Service|[content]| |photo
-|Thread Service|Subthread Service|Post Service| | |Foren/Rechte
+||||| |photo
+|||| | |Foren/Rechte
 |===
 
 [cols="1,1,1,1,1,1" options="header"]
 |===
 |Functions| | | | |
+|ThreadService|TopicService|ThreadService|PostService|UserService|
 |addUser()| | | | |
-|addThreat|addSubThread()|post()| | |
+|addTopic|addThread()|post()| | getUserForForum|
 |edit()|edit()|edit()|edit()| |edit()
 |delete()|delete()|delete()|delete()|delete() |delete()
 
