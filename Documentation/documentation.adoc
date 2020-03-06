@@ -37,6 +37,38 @@ Sie ist möglichst abstrakt gestaltet, um grundlegende Interaktionen zu fixieren
 
 image::Foren_ Kontextdiagramm.jpg[500,600]
 
+== Lösungsstrategie
+
+Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu erreichen.
+
+=== Technnologieentscheidungen
+
+* Trello (Workflow und Regeln)
+* Checkstyle und Spotbugs Plugin
+* Spring Data JPA
+* Hibernate
+* MySQL
+* Lombok
+
+=== organisatorische Entscheidungen
+
+* XP (ohne TDD)
+* Anleihen aus Kanban
+* Retrospektiven
+* Reglement für Codestil, Formatierungen und Entscheidungsfindung
+
+=== top-level Entscheidungen
+
+* OnionArchitektur
+
+== Bausteinsicht
+
+== Laufzeitsicht
+
+== Verteilungsschicht
+
+== Entwurfsentscheidungen
+
 == Risikobewertung
 
 [cols="1,2" options="header"]
@@ -46,3 +78,8 @@ image::Foren_ Kontextdiagramm.jpg[500,600]
 | _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche sich auch multiple User korrekt behandeln kann. Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_
 | _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen. Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
 |===
+
+== Glossar
+
+* TOPIC - ein übergreifender Beitrag in einem Forum z.B. "Ankündigungen"
+* THREAD - ein einzelner Beitrag einem Topic z.B. eine Frage.
