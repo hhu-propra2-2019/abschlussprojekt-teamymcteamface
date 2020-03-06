@@ -1,0 +1,25 @@
+= Anforderungen
+
+*   Organisatoren legen beliebig viele Diskussionsforen an
+*   Gruppen sollen eigene Foren anlegen könne
+** dürfen nur für diese lesbar sein
+*   es gibt anonyme Posts, sonst Klarnamen
+*   Foren sollen einen Moderationsmodus haben können
+*   Möglichkeiten zur differenzierten Suche
+
+== User Stories
+
+=== 1. Student Standart
+1. Student meldet sich an
+2. Student klickt auf ein berechtigtes Forum
+3. Student erstellt einen Beitrag in einem der Topics
+4. Student meldet sich später wieder an um zu schauen ob es Antworten gibt
+
+=== 2. Student Suche/anonym
+1. Student lockt sich ein
+2. Sucht einen älteren Beitrag in einem Forum in welchem er Mitglied ist
+3. Er findet den gesuchten Beitrag
+4. Dazu stellt er eine sehr dumme Frage, da ihm dies sehr peinlich ist tut er dies anonym
+
+== 3.
+
