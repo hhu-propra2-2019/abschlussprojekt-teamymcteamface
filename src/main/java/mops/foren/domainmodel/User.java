@@ -6,6 +6,6 @@ import java.util.Set;
 public class User {
     String name;
     String email;
-    Set<String> roles = new HashSet<>();
-    String image;
+    Set<Role> roles = new HashSet<>();
+    Image image;
 }

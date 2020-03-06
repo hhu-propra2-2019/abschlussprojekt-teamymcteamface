@@ -1,6 +1,9 @@
 package mops.foren.domainmodel;
 
+import java.net.URL;
+
 public class Content {
     Integer size;
-    String link;
+    String text;
+    URL link;
 }
