@@ -1,11 +1,10 @@
 package mops.foren.domainmodel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 
 public class User {
     String name;
     String email;
-    Set<Role> roles = new HashSet<>();
+    HashMap<Long, Permission> permisson;
     Image image;
 }
