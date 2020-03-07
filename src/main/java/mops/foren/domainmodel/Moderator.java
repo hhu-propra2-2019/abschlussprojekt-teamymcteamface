@@ -1,5 +1,6 @@
 package mops.foren.domainmodel;
 
+import java.util.Collection;
 import java.util.EnumSet;
 
 public class Moderator implements Role {
@@ -11,6 +12,14 @@ public class Moderator implements Role {
         resultEnumSet.add(Permission.DELETE_THREAD);
 
         return resultEnumSet;
+    }
+
+    public boolean hasPermission(Permission permission) {
+        return permissions.contains(permission);
+    }
+
+    public boolean hasPermissions(Collection<Permission> permissions) {
+        return this.permissions.containsAll(permissions);
     }
 
 }
