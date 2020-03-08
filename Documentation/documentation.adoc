@@ -75,7 +75,7 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 |===
 |Name |Beschreibung
 | _Konfiguration und Verwaltung des Projekts_ | _das Team besitzt keine fundierte Erfahrung im Konfigurieren und Entwickeln einer Webanwendung dieser Größe. Des Weiteren ist mit einem hohen Koordinationsaufwand zu rechnen, der zu unerwarteten Problemen führen kann. Das Team versucht dem mit festgelegten Workflows entgegenzuwirken._
-| _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche sich auch multiple User korrekt behandeln kann. Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_
+| _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche auch multiple User korrekt behandeln kann. Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_
 | _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen. Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
 |===
 
