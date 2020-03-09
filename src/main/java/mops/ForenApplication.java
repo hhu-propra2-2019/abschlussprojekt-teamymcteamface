@@ -1,4 +1,4 @@
-package mops.foren;
+package mops;
 
 import mops.foren.services.DomainService;
 import org.springframework.boot.SpringApplication;
