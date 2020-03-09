@@ -1,0 +1,83 @@
+= Anforderungen allgemein
+
+[Note]
+====
+* Administratoren legen beliebig viele Diskussionsforen an
+* Gruppen sollen eigene Foren erstellen und verwalten können
+** diese dürfen nur von Mitgliedern der Gruppe lesbar sein (außer Admins)
+* es gibt anonyme Posts, sonst werden Klarnamen verwendet
+* Foren sollen einen in einen Moderationsmodus versetzt werden können
+* es soll Möglichkeiten geben differenziert in gesamten Foren und Teilen dessen zu suchen
+====
+
+== User Stories
+
+=== Student, Standard
+
+1. Student meldet sich in MOPS an.
+2. Student klickt auf ein `berechtigtes` Forum.
+3. Der Student `erstellt` einen Thread in einem der Topics.
+4. Der Student `bearbeitet` seinen Thread, um weiter Informationen einzupflegen.
+5. Der Student meldet sich später wieder an, um die Posts zu seinem Thread zu `lesen`.
+
+=== Student, Suche/anonym
+
+1. Student `sucht` nach einem alten Thread im `gesamten` Forum.
+2. Er findet den gesuchten Thread.
+3. Er möchte eine ihm unangenehme Frage zum Thread `anonym` im Topic stellen.
+4. Der Student entscheidet den Post wieder zu `entfernen`.
+
+=== Student, Multimedia
+
+1. Student möchte einen Thread `mit einem Medium erstellen`.
+2. Das Medium ist größer als `10 MB` und die Erstellung der Thread wird vom Forum `abgelehnt`.
+3. Der Student fügt ein Medium `kleiner als 10 MB` hinzu und kann den Thread `erstellen`.
+4. Der Student versucht `erfolglos`, das Medium des Threads gegen eines `größer als 10 MB` zu `ersetzen`.
+5. Der Student `ersetzt` das Medium gegen ein anderes gültiges Medium.
+
+=== Student, Gruppe
+
+1. Eine Studentin `erstellt` ein eigenes `Gruppenforum` und wird `automatisch` zum Admin des Forums.
+2. Sie `fügt` weitere Studenten zum Gruppenforum `hinzu`.
+3. Sie `ernennt` eine andere Studentin zum Admin des Gruppenforums.
+4. Sie `schließt` einen anderen Studenten aus ihrem Gruppenforum `aus`.
+5. Sie `löscht` das Gruppenforum.
+
+=== Moderator, Freigabe
+
+1. Der Moderator erhält einen Thread aus einem moderierten Forum, den er `freigeben` soll.
+2. Der Moderator `liest` den Thread und `verändert` Teile des Inhalts.
+3. Der Moderator `gibt` den Thread `frei`, dieser erscheint dann im Forum.
+
+=== Moderator, Moderation
+
+1. Der Moderator `wird` über unangemessenen Post `informiert`.
+2. Der Moderator liest den Post und entscheidet diesen zu `zensieren`.
+3. Der Moderator `löscht` einen weiteren unangemessen Post.
+
+=== Moderator, Hilfestellung
+
+1. Der Moderator will auf einen Thread eines Studenten `antworten`, welcher zwei Fragen enthält.
+2. Der Moderator `zitiert` jede Frage separat und beantwortet diese in einem Post.
+
+=== Admin, Standard
+
+1. Der Admin `erstellt` ein neues Forum.
+2. Der Admin `erstellt` eine neue Topic.
+3. Der Admin `ernennt` einen neuen Admin für das Forum.
+4. Der Admin `löscht` das Forum `vollständig`.
+
+=== Admin, Korrektur
+
+1. Ein Thread in einem Forum ist falsch und wird vom Admin `bearbeitet`.
+2. Der Admin `fügt` einen Moderator zum Forum `hinzu` und `aktiviert den Moderationsmodus`.
+
+=== Admin, Ausschluss
+
+1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Post.
+2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Post und `schließt` den Studenten aus dem Forum `aus`.
+3. Der Student verhält sich in einem andern Forum genauso, der Admin `entfernt die Mitgliedschaft` des Users in `allen` Topics.
+
+
+
+
