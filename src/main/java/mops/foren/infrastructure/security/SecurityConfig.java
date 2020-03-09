@@ -1,4 +1,4 @@
-package mops.foren.security;
+package mops.foren.infrastructure.security;
 
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.KeycloakSecurityComponents;
