@@ -1,0 +1,49 @@
+= NOT FINAL !!!11!!
+
+Zuerst einmal unsere Klassentabelle in "schön" :
+In der ersten Tabelle stehen die Namen der Klassen und ihre Felder, in der darunter die relevanten Funktione die jede Klasse haben sollte.
+Topic bezeichnet z.B ein Fach wie Aldat, dies kann dann mehrere Threads haben wie z.B. Ankündigungen, Orga, Diskussion etc.
+Subthreads sind die "Starterpostings" mit der Eingangsfrage und Posts dann die Antworten darauf.
+
+Die Services sind dann jeweils eigene Klassen welche den entsprechenden Inhalt bereitstellen, wenn dieser wirklich angefragt wird.
+Wir wollten vermeiden, dass beim aufrufen eines Topics direkt eine Liste mit den Thread Objekten geladen werden muss, sondern zunächst nur deren Thema, entsprechend soll bei der Übericht über die Subthreads auch nicht direkt jede Diskussion komplett aus der DB geholt werden, sondern erst über den PostService wenn ein entsprechende Subthread aufgerufen wird
+
+[cols="1,1,1,1,1,1" options="header"]
+|===
+
+|Forum|Topic|Thread|Post|content|user
+|Title|Title|Title|User(Author)|size|name
+|Description|Description|Preview|Date|link(MinIO)|mail
+|Course| | |Text| |role
+||||| |photo
+|||| | |Foren/Rechte
+|===
+
+[cols="1,1,1,1,1,1" options="header"]
+|===
+|Functions| | | | |
+|ThreadService|TopicService|ThreadService|PostService|UserService|
+|addUser()| | | | |
+|addTopic|addThread()|post()| | getUserForForum|
+|edit()|edit()|edit()|edit()| |edit()
+|delete()|delete()|delete()|delete()|delete() |delete()
+
+|===
+
+Die Rechteverwaltung in unsere Forum muss unabhänig von Keycloak sein, da wir von dort ja nur administrative Rechte bekommen, jedoch keine Inhaltlichen (Ein Prof ist in Keycloak wahrscheinlich kein Admin, sollte aber in einem Forum einer sein können).
+Daher würde wir beim erstellen der Instanz eines Users prüfen in welchen Foren er mit welchen Rechten ist und darüber seinen Zugriff managen.
+
+== Grober Überblick in die anderen Schichten
+
+=== DB
+
+Auf dem Ring der Application Services würden wir dann nochmals Klassen erstellen, die wirklich unserem Datenbank-modell entsprechen.
+Diese müssten dann natürlich noch konsistent in die entsprechenden Objekte unser Domain abgebildet werden.
+Beispielsweise würden wir in so einem TreadDAO das entsprechende Topic speichern.
+
+Auf dem Application Service Ring würde dann auch ein paar von uns definierte Interfaces liegen, die dann die Zugriffe zur DB zur Verfügung stellen.
+Das wird dann, wie in der Vorlesung, von einer entsprehenden Klasse auf dem äußeren Ring implemtiert.
+
+Die Services würden dann mit einem Interface injected werden.
+
+NOTE: Ich glaube relativ sinnvoll ist es, wenn wir uns ein paar konkrete User Stories ausdenken und mal grob gucken, ob diese so mit unserer Architekutur machbar sind und nicht gegen diese verstoßen.
