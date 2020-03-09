@@ -16,49 +16,49 @@
 
 1. Student meldet sich in MOPS an.
 2. Student klickt auf ein `berechtigtes` Forum.
-3. Der Student `erstellt` einen Beitrag in einem der Topics.
-4. Der Student `bearbeitet` seinen Beitrag, um weiter Informationen einzupflegen.
-5. Der Student meldet sich später wieder an, um die Antworten zu `lesen`.
+3. Der Student `erstellt` einen Thread in einem der Topics.
+4. Der Student `bearbeitet` seinen Thread, um weiter Informationen einzupflegen.
+5. Der Student meldet sich später wieder an, um die Posts zu seinem Thread zu `lesen`.
 
 === Student, Suche/anonym
 
-1. Student `sucht` nach einem alten Beitrag im `gesamten` Forum.
-2. Er findet den gesuchten Beitrag.
-3. Er möchte eine ihm unangenehme Frage zum Beitrag `anonym` im Forum stellen.
-4. Der Student entscheidet die Frage wieder zu `entfernen`.
+1. Student `sucht` nach einem alten Thread im `gesamten` Forum.
+2. Er findet den gesuchten Thread.
+3. Er möchte eine ihm unangenehme Frage zum Thread `anonym` im Topic stellen.
+4. Der Student entscheidet den Post wieder zu `entfernen`.
 
 === Student, Multimedia
 
-1. Student möchte einen Beitrag `mit einem Medium erstellen`.
-2. Das Medium ist größer als `10 MB` und die Erstellung des Beitrags wird vom Forum `abgelehnt`.
-3. Der Student fügt ein Medium `kleiner als 10 MB` hinzu und kann den Beitrag `erstellen`.
-4. Der Student versucht `erfolglos`, das Medium des Beitrags gegen eines `größer als 10 MB` zu `ersetzen`.
+1. Student möchte einen Thread `mit einem Medium erstellen`.
+2. Das Medium ist größer als `10 MB` und die Erstellung der Thread wird vom Forum `abgelehnt`.
+3. Der Student fügt ein Medium `kleiner als 10 MB` hinzu und kann den Thread `erstellen`.
+4. Der Student versucht `erfolglos`, das Medium des Threads gegen eines `größer als 10 MB` zu `ersetzen`.
 5. Der Student `ersetzt` das Medium gegen ein anderes gültiges Medium.
 
 === Student, Gruppe
 
 1. Eine Studentin `erstellt` ein eigenes `Gruppenforum` und wird `automatisch` zum Admin des Forums.
-2. Sie `fügt` weitere Studenten zum Forum `hinzu`.
-3. Sie `ernennt` eine andere Studentin zum Admin des Forums.
-4. Sie `schließt` einen anderen Studenten aus ihrem Forum `aus`.
+2. Sie `fügt` weitere Studenten zum Gruppenforum `hinzu`.
+3. Sie `ernennt` eine andere Studentin zum Admin des Gruppenforums.
+4. Sie `schließt` einen anderen Studenten aus ihrem Gruppenforum `aus`.
 5. Sie `löscht` das Gruppenforum.
 
 === Moderator, Freigabe
 
-1. Der Moderator erhält einen Beitrag aus einem moderierten Forum, den er `freigeben` soll.
-2. Der Moderator `liest` den Beitrag und `verändert` Teile des Inhalts.
-3. Der Moderator `gibt` den Beitrag `frei`, dieser erscheint dann im Forum.
+1. Der Moderator erhält einen Thread aus einem moderierten Forum, den er `freigeben` soll.
+2. Der Moderator `liest` den Thread und `verändert` Teile des Inhalts.
+3. Der Moderator `gibt` den Thread `frei`, dieser erscheint dann im Forum.
 
 === Moderator, Moderation
 
-1. Der Moderator `wird` über unangemessenen Beitrag `informiert`.
-2. Der Moderator liest den Beitrag und entscheidet diesen zu `zensieren`.
-3. Der Moderator `löscht` einen weiteren unangemessen Beitrag.
+1. Der Moderator `wird` über unangemessenen Thread `informiert`.
+2. Der Moderator liest den Thread und entscheidet diesen zu `zensieren`.
+3. Der Moderator `löscht` einen weiteren unangemessen Thread.
 
 === Moderator, Hilfestellung
 
-1. Der Moderator will auf einen Beitrag eines Studenten `antworten`, welcher zwei Fragen enthält.
-2. Der Moderator `zitiert` jede Frage separat und beantwortet diese in einer Antwort.
+1. Der Moderator will auf einen Thread eines Studenten `antworten`, welcher zwei Fragen enthält.
+2. Der Moderator `zitiert` jede Frage separat und beantwortet diese in einem Post.
 
 === Admin, Standard
 
@@ -69,13 +69,13 @@
 
 === Admin, Korrektur
 
-1. Ein Beitrag in einem Forum ist falsch und wird vom Admin `bearbeitet`.
+1. Ein Thread in einem Forum ist falsch und wird vom Admin `bearbeitet`.
 2. Der Admin `fügt` einen Moderator zum Forum `hinzu` und `aktiviert den Moderationsmodus`.
 
 === Admin, Ausschluss
 
-1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Beitrag.
-2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Beitrag und `schließt` den Studenten aus dem Forum `aus`.
+1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Thread.
+2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Thread und `schließt` den Studenten aus dem Forum `aus`.
 3. Der Student verhält sich in einem andern Forum genauso, der Admin `entfernt die Mitgliedschaft` des Users in `allen` Topics.
 
 
