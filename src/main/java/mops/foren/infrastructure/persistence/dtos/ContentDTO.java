@@ -1,4 +1,4 @@
-package mops.foren.infrastructure.persistence.DTOs;
+package mops.foren.infrastructure.persistence.dtos;
 
 import lombok.Data;
 import mops.foren.domainmodel.ContentType;

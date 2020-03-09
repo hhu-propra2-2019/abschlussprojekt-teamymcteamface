@@ -1,4 +1,4 @@
-package mops.foren.infrastructure.persistence.DTOs;
+package mops.foren.infrastructure.persistence.dtos;
 
 import lombok.Data;
 
@@ -7,26 +7,27 @@ import java.util.Set;
 
 @Entity
 @Data
-@Table(name = "course")
-public class CourseDTO {
+@Table(name = "forum")
+public class ForumDTO {
     @Id
     @GeneratedValue
     private Long id;
 
-    private String name;
+    private String title;
 
-    private String semester;
+    private String description;
 
-    private String lecturer;
-
-
-    @OneToOne(mappedBy = "course")
-    private ForumDTO forum;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
-            name = "user_course",
+            name = "user_forum",
             joinColumns = {@JoinColumn(name = "id")},
             inverseJoinColumns = {@JoinColumn(name = "username")})
     private Set<UserDTO> users;
+
+    @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
+    private Set<TopicDTO> topics;
+
+    @OneToOne
+    private CourseDTO course;
 }
