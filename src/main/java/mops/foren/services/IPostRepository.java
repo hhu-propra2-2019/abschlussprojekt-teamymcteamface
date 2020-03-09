@@ -1,4 +1,4 @@
-package mops.foren.domainmodel;
+package mops.foren.services;
 
 public interface IPostRepository {
 }

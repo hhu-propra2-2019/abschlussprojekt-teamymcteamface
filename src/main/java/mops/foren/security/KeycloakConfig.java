@@ -1,4 +1,4 @@
-package mops.foren.infrastructure.security;
+package mops.foren.security;
 
 import org.keycloak.adapters.springboot.KeycloakSpringBootConfigResolver;
 import org.springframework.context.annotation.Bean;

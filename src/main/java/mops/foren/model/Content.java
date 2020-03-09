@@ -1,4 +1,4 @@
-package mops.foren.domainmodel;
+package mops.foren.model;
 
 import java.net.URL;
 

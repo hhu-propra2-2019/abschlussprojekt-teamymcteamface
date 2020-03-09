@@ -1,4 +1,4 @@
-package mops.foren.domainmodel;
+package mops.foren.services;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
