@@ -17,7 +17,8 @@
 1. Student meldet sich in MOPS an.
 2. Student klickt auf ein `berechtigtes` Forum.
 3. Der Student `erstellt` einen Beitrag in einem der Topics.
-4. Der Student meldet sich später wieder an, um die Antworten zu `lesen`.
+4. Der Student `bearbeitet` seinen Beitrag, um weiter Informationen einzupflegen.
+5. Der Student meldet sich später wieder an, um die Antworten zu `lesen`.
 
 === Student, Suche/anonym
 
@@ -38,8 +39,9 @@
 
 1. Eine Studentin `erstellt` ein eigenes `Gruppenforum` und wird `automatisch` zum Admin des Forums.
 2. Sie `fügt` weitere Studenten zum Forum `hinzu`.
-3. Sie `ernennt` einen andere Studentin zum Admin des Forums.
-4. Sie `löscht` das Gruppenforum.
+3. Sie `ernennt` eine andere Studentin zum Admin des Forums.
+4. Sie `schließt` einen anderen Studenten aus ihrem Forum `aus`.
+5. Sie `löscht` das Gruppenforum.
 
 === Moderator, Freigabe
 
@@ -47,30 +49,34 @@
 2. Der Moderator `liest` den Beitrag und `verändert` Teile des Inhalts.
 3. Der Moderator `gibt` den Beitrag `frei`, dieser erscheint dann im Forum.
 
-===  Moderator, Moderation
+=== Moderator, Moderation
 
 1. Der Moderator `wird` über unangemessenen Beitrag `informiert`.
 2. Der Moderator liest den Beitrag und entscheidet diesen zu `zensieren`.
-3. Der Moderator `löscht` einen weiteren unangemessen Beitrag und `aktiviert` anschließend den `Moderationsmodus`.
+3. Der Moderator `löscht` einen weiteren unangemessen Beitrag.
+
+=== Moderator, Hilfestellung
+
+1. Der Moderator will auf einen Beitrag eines Studenten `antworten`, welcher zwei Fragen enthält.
+2. Der Moderator `zitiert` jede Frage separat und beantwortet diese in einer Antwort.
 
 === Admin, Standard
 
 1. Der Admin `erstellt` ein neues Forum.
 2. Der Admin `erstellt` eine neue Topic.
 3. Der Admin `ernennt` einen neuen Admin für das Forum.
-4. Der Admin `fügt` den neuen Admin zum Forum `hinzu`.
-5. Der Admin `löscht` das Forum `vollständig`.
+4. Der Admin `löscht` das Forum `vollständig`.
 
 === Admin, Korrektur
 
-1. Ein Beitrag in einem Forum ist falsch und wird vom Admin `korrigiert`.
+1. Ein Beitrag in einem Forum ist falsch und wird vom Admin `bearbeitet`.
 2. Der Admin `fügt` einen Moderator zum Forum `hinzu` und `aktiviert den Moderationsmodus`.
 
 === Admin, Ausschluss
 
 1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Beitrag.
 2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Beitrag und `schließt` den Studenten aus dem Forum `aus`.
-3. Der Student verhält sich in einem andern Forum genauso, der Admin `entfernt die Mitgliedschaft` des Users in `allen` Foren.
+3. Der Student verhält sich in einem andern Forum genauso, der Admin `entfernt die Mitgliedschaft` des Users in `allen` Topics.
 
 
 
