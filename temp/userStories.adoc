@@ -51,9 +51,9 @@
 
 === Moderator, Moderation
 
-1. Der Moderator `wird` über unangemessenen Thread `informiert`.
-2. Der Moderator liest den Thread und entscheidet diesen zu `zensieren`.
-3. Der Moderator `löscht` einen weiteren unangemessen Thread.
+1. Der Moderator `wird` über unangemessenen Post `informiert`.
+2. Der Moderator liest den Post und entscheidet diesen zu `zensieren`.
+3. Der Moderator `löscht` einen weiteren unangemessen Post.
 
 === Moderator, Hilfestellung
 
@@ -74,8 +74,8 @@
 
 === Admin, Ausschluss
 
-1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Thread.
-2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Thread und `schließt` den Studenten aus dem Forum `aus`.
+1. Ein Student beleidigt andere in einem Forum, der Admin `zensiert` diesen Post.
+2. Der Student beleidigt erneut andere im Forum, der Admin `löscht` den Post und `schließt` den Studenten aus dem Forum `aus`.
 3. Der Student verhält sich in einem andern Forum genauso, der Admin `entfernt die Mitgliedschaft` des Users in `allen` Topics.
 
 
