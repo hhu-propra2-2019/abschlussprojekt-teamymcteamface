@@ -1,7 +1,7 @@
 package mops.foren.infrastructure.persistence.dtos;
 
 import lombok.Data;
-import mops.foren.model.ContentType;
+import mops.foren.domain.model.ContentType;
 
 import javax.persistence.*;
 

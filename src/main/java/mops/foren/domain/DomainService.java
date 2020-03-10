@@ -1,4 +1,4 @@
-package mops.foren.model;
+package mops.foren.domain;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
@@ -8,7 +8,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Retention(RUNTIME)
 @Target(TYPE)
-public @interface ApplicationService {
+public @interface DomainService {
 
     /**
      * Allows the user to directly specify the value of the annotation ("...")

@@ -1,6 +1,6 @@
 package mops.foren.applicationservices;
 
-import mops.foren.model.repositoryabstraction.IForumRepository;
+import mops.foren.domain.repositoryabstraction.IForumRepository;
 import org.springframework.stereotype.Service;
 
 @Service
