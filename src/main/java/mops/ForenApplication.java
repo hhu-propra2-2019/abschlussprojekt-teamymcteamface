@@ -1,5 +1,6 @@
 package mops;
 
+import mops.foren.model.ApplicationService;
 import mops.foren.model.DomainService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,8 @@ import static org.springframework.context.annotation.FilterType.ANNOTATION;
 @SpringBootApplication
 @ComponentScan(
         includeFilters = {
-                @Filter(type = ANNOTATION, classes = DomainService.class)
+                @Filter(type = ANNOTATION, classes = DomainService.class),
+                @Filter(type = ANNOTATION, classes = ApplicationService.class)
         }
 )
 public class ForenApplication {
