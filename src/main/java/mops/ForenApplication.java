@@ -1,6 +1,6 @@
 package mops;
 
-import mops.foren.services.DomainService;
+import mops.foren.model.DomainService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
