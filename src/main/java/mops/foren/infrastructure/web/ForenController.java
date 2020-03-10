@@ -24,7 +24,7 @@ public class ForenController {
 
     @GetMapping("/myForum")
     public String allForum() {
-        return "/";
+        return "myForums";
     }
 
     @GetMapping("/myForum/{forenID}")
