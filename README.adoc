@@ -39,23 +39,12 @@ vorhandene Wege, wie z.B. E-Mail, sehr mühselig und ineffizient.
 ==== Dokumentationen
 
 * Trello : Wir nutzen ein Trello Board um unsere Aufgaben zu koordinieren und einige generelle Infos zu sammeln.
-Das ist aktuell Team-Private, wir können aber gerne Korrektoren / Dozenten hinzufügen.
+Das ist aktuell Team-Private, wir können aber bei Interesse gerne Korrektoren / Dozenten hinzufügen.
 
 * Organisation des Forums
 
-![Organisation_Foren](/Documentation/Organisation_Foren.png)
+image:Documentation/Organisation_Foren.png[]
 
-* [Structure](/Documentation/structure.adoc) : Allgemeine Infos über die Klassenstruktur etc.
+* link:Documentation/structure.adoc[Structure] : Allgemeine Infos über die Klassenstruktur etc.
 
-
-
-
-
-
-
-
-
-Organisatorinnen sollen für Veranstaltungen beliebig viele Diskussionsforen anlegen können. Für eine Gruppe soll es auch die Möglichkeit geben, ein Forum anzulegen. Ein Forum soll nur für angemeldete Teilnehmerinnen bzw. Gruppenmitglieder lesbar sein. Die Foren sollten sich an den üblichen Implementierungen im Netz orientieren (Bitte nicht unbedingt an der Art, wie Ilias Beiträge organisiert orientieren). Foren sollen entweder anonym sein, oder automatisch die Klarnamen der Teilnehmerinnen verwenden. Es soll die Möglichkeit geben, für Foren einen Moderationsmodus einzuschalten, bei dem alle Beiträge erst durch eine Moderatorin freigeschaltet werden. Teilehmerinnen sollen die Möglichkeit bekommen Benachrichtigungen für ganze Foren oder auch einzelne Diskussionsthreads ein- bzw. auszuschalten.  Das System muss eine Volltextsuche bereitstellen (Leseberechtigungen beachten!).
-
-IMPORTANT: Das Forum muss gegen Sicherheitslücken (z.B. Injection, XSS, ...) abgesichert werden!
-
+* link:Documentation/documentation.adoc[ARC42 Doc] : Struktur Doku anhand von ARC42
