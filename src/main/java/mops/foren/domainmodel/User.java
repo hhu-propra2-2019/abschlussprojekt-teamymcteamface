@@ -11,8 +11,4 @@ public class User {
     public boolean hasPermission(Permission permission) {
         return role.hasPermission(permission);
     }
-
-    public boolean hasPermissions(Collection<Permission> permissions) {
-        return role.hasPermissions(permissions);
-    }
 }
