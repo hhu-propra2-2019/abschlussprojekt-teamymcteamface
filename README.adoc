@@ -1,5 +1,4 @@
-= Softwareentwicklung im Team: Vorbereitung auf das Projekt
-WS19/20
+= Softwareentwicklung im Team: Teamy McTeamFace
 :icons: font
 :icon-set: octicon
 :source-highlighter: rouge
@@ -12,7 +11,7 @@ ifdef::env-github[]
 endif::[]
 
 
-=== Foren
+== Foren
 
 ==== Problemstellung
 Der Austausch von Informationen sowie die Diskussion zwischen Studierenden, Dozenten und Mitarbeitern ist über
