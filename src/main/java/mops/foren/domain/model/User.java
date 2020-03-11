@@ -5,20 +5,19 @@ import java.util.HashMap;
 import java.util.List;
 
 public class User {
-    String name;
-    Email email;
-    HashMap<Long, Permission> permissons;
-    List<Forum> forums;
-    List<Post> posts;
-    Image image;
+    private String name;
+    private Email email;
+    private HashMap<Long, Permission> permissons;
+    private List<Long> forums;
 
-    Post getNewestPost() {
+    private Image image;
+
+    public boolean checkPermission(long id) {
         throw new UnsupportedOperationException();
     }
 
-    Thread getNewestResponse() {
-        throw new UnsupportedOperationException();
+    public List<Long> getUserForums() {
+        return this.forums;
     }
-
 }
 

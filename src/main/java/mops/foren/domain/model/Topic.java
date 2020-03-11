@@ -1,27 +1,13 @@
 package mops.foren.domain.model;
 
-import java.util.List;
-
 public class Topic {
+    private int id;
+
+    private int forumId;
+
     String title;
 
     String description;
 
     boolean moderated;
-
-    List<Thread> threads;
-
-    void addThread(Thread thread) {
-        throw new UnsupportedOperationException();
-    }
-
-    void deleteThread(Thread thread) {
-        throw new UnsupportedOperationException();
-    }
-
-
-    void changeModerationModus() {
-        throw new UnsupportedOperationException();
-    }
-
 }
