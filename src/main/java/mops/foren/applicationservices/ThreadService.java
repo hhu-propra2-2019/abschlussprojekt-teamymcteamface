@@ -13,7 +13,7 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Thread> getThreads(long topicId) {
+    public List<Thread> getThreads(Long topicId) {
         throw new UnsupportedOperationException();
     }
 
@@ -24,7 +24,7 @@ public class ThreadService {
      * @param user    The user that wants to create the thread
      * @param topicId The topicId the thread belongs to
      */
-    public void addThread(Thread thread, User user, long topicId) {
+    public void addThread(Thread thread, User user, Long topicId) {
         if (user.checkPermission(topicId)) {
             // ADD
         }

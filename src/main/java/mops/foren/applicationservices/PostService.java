@@ -14,7 +14,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getPosts(long threadId) {
+    public List<Post> getPosts(Long threadId) {
         throw new UnsupportedOperationException();
     }
 
@@ -25,7 +25,7 @@ public class PostService {
      * @param user     The user that wants to create the post
      * @param threadId The threadId the post belongs to
      */
-    public void addPost(Post post, User user, long threadId) {
+    public void addPost(Post post, User user, Long threadId) {
         if (user.checkPermission(threadId)) {
             // ADD
         }

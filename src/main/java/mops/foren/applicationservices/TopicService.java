@@ -14,7 +14,7 @@ public class TopicService {
         this.topicRepository = topicRepository;
     }
 
-    public List<Topic> getTopics(long forumId) {
+    public List<Topic> getTopics(Long forumId) {
         throw new UnsupportedOperationException();
     }
 
@@ -25,7 +25,7 @@ public class TopicService {
      * @param user    The user that wants to create the topic
      * @param forumId The forumId the topic belongs to
      */
-    public void addTopic(Topic topic, User user, long forumId) {
+    public void addTopic(Topic topic, User user, Long forumId) {
         if (user.checkPermission(forumId)) {
             // ADD
         }

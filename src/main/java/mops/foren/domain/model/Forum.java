@@ -1,7 +1,7 @@
 package mops.foren.domain.model;
 
 public class Forum {
-    private int id;
+    private Long id;
 
     String title;
 
