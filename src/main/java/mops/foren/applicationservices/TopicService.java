@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
@@ -26,7 +27,7 @@ public class TopicService {
      * @param forumId The forumId the topic belongs to
      */
     public void addTopic(Topic topic, User user, Long forumId) {
-        if (user.checkPermission(forumId)) {
+        if (user.checkPermission(new ForumId(forumId))) {
             // ADD
         }
     }

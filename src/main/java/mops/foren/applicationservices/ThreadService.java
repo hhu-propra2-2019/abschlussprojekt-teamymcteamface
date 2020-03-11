@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
@@ -25,7 +26,7 @@ public class ThreadService {
      * @param topicId The topicId the thread belongs to
      */
     public void addThread(Thread thread, User user, Long topicId) {
-        if (user.checkPermission(topicId)) {
+        if (user.checkPermission(new TopicId(topicId))) {
             // ADD
         }
     }

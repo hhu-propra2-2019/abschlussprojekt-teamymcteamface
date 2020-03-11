@@ -1,6 +1,7 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.Post;
+import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 
@@ -26,7 +27,7 @@ public class PostService {
      * @param threadId The threadId the post belongs to
      */
     public void addPost(Post post, User user, Long threadId) {
-        if (user.checkPermission(threadId)) {
+        if (user.checkPermission(new ThreadId(threadId))) {
             // ADD
         }
 
