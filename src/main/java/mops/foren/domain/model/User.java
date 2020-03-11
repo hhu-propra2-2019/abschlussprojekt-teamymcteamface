@@ -1,7 +1,6 @@
 package mops.foren.domain.model;
 
 import javax.validation.constraints.Email;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
