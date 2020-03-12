@@ -1,6 +1,7 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 
@@ -20,8 +21,8 @@ public class ForumService {
      * @param user The user
      * @return A list of forums.
      */
-    public List<Forum> getForen(User user) {
-        List<Long> forumIds = user.getUserForums();
+    public List<Forum> getForums(User user) {
+        List<ForumId> forumIds = user.getUserForums();
         // get Forums w Ids
         throw new UnsupportedOperationException();
     }

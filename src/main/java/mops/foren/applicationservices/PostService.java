@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.Post;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
@@ -15,7 +16,7 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getPosts(Long threadId) {
+    public List<Post> getPosts(ThreadId threadId) {
         throw new UnsupportedOperationException();
     }
 
@@ -26,8 +27,8 @@ public class PostService {
      * @param user     The user that wants to create the post
      * @param threadId The threadId the post belongs to
      */
-    public void addPost(Post post, User user, Long threadId) {
-        if (user.checkPermission(new ThreadId(threadId))) {
+    public void addPost(Post post, User user, ThreadId threadId) {
+        if (user.checkPermission(threadId, Permission.CREATE_POST)) {
             // ADD
         }
 

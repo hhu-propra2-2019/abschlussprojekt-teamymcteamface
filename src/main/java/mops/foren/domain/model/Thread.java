@@ -2,9 +2,9 @@ package mops.foren.domain.model;
 
 public class Thread {
 
-    private Long id;
+    private ThreadId id;
 
-    private Long topicId;
+    private TopicId topicId;
 
     String title;
 

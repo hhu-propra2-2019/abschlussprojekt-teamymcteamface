@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
@@ -14,7 +15,7 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Thread> getThreads(Long topicId) {
+    public List<Thread> getThreads(TopicId topicId) {
         throw new UnsupportedOperationException();
     }
 
@@ -25,8 +26,8 @@ public class ThreadService {
      * @param user    The user that wants to create the thread
      * @param topicId The topicId the thread belongs to
      */
-    public void addThread(Thread thread, User user, Long topicId) {
-        if (user.checkPermission(new TopicId(topicId))) {
+    public void addThread(Thread thread, User user, TopicId topicId) {
+        if (user.checkPermission(topicId, Permission.CREATE_THREAD)) {
             // ADD
         }
     }

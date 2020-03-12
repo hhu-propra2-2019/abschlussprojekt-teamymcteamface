@@ -7,16 +7,16 @@ import java.util.List;
 public class User {
     private String name;
     private Email email;
-    private HashMap<Long, Permission> permissions;
-    private List<Long> forums;
+    private HashMap<Id, Permission> permissions;
+    private List<ForumId> forums;
 
     private Image image;
 
-    public boolean checkPermission(Id id) {
-        return permissions.get(id.getId()) != null;
+    public boolean checkPermission(Id id, Permission neededPermission) {
+        return this.permissions.get(id) == neededPermission;
     }
 
-    public List<Long> getUserForums() {
+    public List<ForumId> getUserForums() {
         return this.forums;
     }
 }

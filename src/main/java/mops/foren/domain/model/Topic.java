@@ -1,9 +1,9 @@
 package mops.foren.domain.model;
 
 public class Topic {
-    private Long id;
+    private TopicId id;
 
-    private Long forumId;
+    private ForumId forumId;
 
     String title;
 
