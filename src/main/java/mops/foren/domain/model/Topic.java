@@ -1,8 +1,8 @@
 package mops.foren.domain.model;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
-@RequiredArgsConstructor
+@Data
 public class Topic {
     private final TopicId id;
 

@@ -1,10 +1,10 @@
 package mops.foren.domain.model;
 
-import lombok.RequiredArgsConstructor;
+import lombok.Data;
 
 import java.sql.Date;
 
-@RequiredArgsConstructor
+@Data
 public class Post {
     private final PostId id;
 
@@ -15,5 +15,7 @@ public class Post {
     private final Date creationDate;
 
     private String text;
+
+    private Boolean changed;
 
 }
