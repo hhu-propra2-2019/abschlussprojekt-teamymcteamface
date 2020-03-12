@@ -67,9 +67,9 @@
 </header>
 <main th:fragment="bodycontent">
 
-  <h1>Favoriten:</h1>
+  <h1>Meine Foren:</h1>
+  <th:block th:each="forum : ${forums}">
   <div class="row">
-    <div class="col">
       <div class="card">
         <div class="card-header">
           Propra2
@@ -79,30 +79,6 @@
           <a href="#" class="btn btn-primary">einsehen</a>
         </div>
       </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-header">
-          Aldat
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">offizielles Forum</h5>
-          <a href="#" class="btn btn-primary">einsehen</a>
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="card">
-        <div class="card-header">
-          TeamyMcTeamFace
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">privates Forum</h5>
-          <a href="#" class="btn btn-primary">einsehen</a>
-        </div>
-      </div>
-    </div>
-
   </div>
 </main>
 </body>

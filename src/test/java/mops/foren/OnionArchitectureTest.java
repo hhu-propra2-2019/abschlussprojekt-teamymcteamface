@@ -10,8 +10,8 @@ import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 public class OnionArchitectureTest {
     @ArchTest
     public static final ArchRule ONION_ARCHITECTURE = onionArchitecture()
-            .domainModels("..mops.foren.model..")
-            .domainServices("..mops.foren.model..")
+            .domainModels("..mops.foren.domain.model..")
+            .domainServices("..mops.foren.domain..")
             .applicationServices("..mops.foren.applicationservices..")
             .adapter("web", "..mops.foren.infrastructure.web..")
             .adapter("persistence", "..mops.foren.infrastructure.persistence..");

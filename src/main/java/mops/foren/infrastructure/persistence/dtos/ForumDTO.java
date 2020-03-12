@@ -27,7 +27,4 @@ public class ForumDTO {
 
     @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
     private Set<TopicDTO> topics;
-
-    @OneToOne
-    private CourseDTO course;
 }
