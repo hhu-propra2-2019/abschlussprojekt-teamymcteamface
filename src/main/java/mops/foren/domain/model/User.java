@@ -12,6 +12,7 @@ public class User {
     private Email email;
     private HashMap<Id, Permission> permissions;
     private PermissionManager permissionManager;
+    private List<ForumId> forums;
 
     private Image image;
 
@@ -19,8 +20,8 @@ public class User {
         return this.permissions.get(id) == neededPermission;
     }
 
-    //public List<ForumId> getUserForums() {
-    //    return this.forums;
-    //}
+    public List<ForumId> getUserForums() {
+        return this.forums;
+    }
 }
 
