@@ -1,9 +1,12 @@
 package mops.foren.domain.model;
 
-public class Topic {
-    private TopicId id;
+import lombok.RequiredArgsConstructor;
 
-    private ForumId forumId;
+@RequiredArgsConstructor
+public class Topic {
+    private final TopicId id;
+
+    private final ForumId forumId;
 
     private String title;
 

@@ -2,13 +2,14 @@ package mops.foren.domain.model;
 
 public class TopicId implements Id {
 
-    private Long id;
+    private final Long id;
 
     public TopicId(Long id) {
         this.id = id;
     }
 
+    @Override
     public Long getId() {
-        return id;
+        return this.id;
     }
 }

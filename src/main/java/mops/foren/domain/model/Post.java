@@ -6,9 +6,9 @@ import java.sql.Date;
 
 @RequiredArgsConstructor
 public class Post {
-    private PostId id;
+    private final PostId id;
 
-    private ThreadId threadId;
+    private final ThreadId threadId;
 
     private final User author;
 

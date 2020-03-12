@@ -2,7 +2,7 @@ package mops.foren.domain.model;
 
 public class PostId implements Id {
 
-    private Long id;
+    private final Long id;
 
     public PostId(Long id) {
         this.id = id;
