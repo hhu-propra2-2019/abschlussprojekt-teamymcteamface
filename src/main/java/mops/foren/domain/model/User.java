@@ -3,20 +3,19 @@ package mops.foren.domain.model;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import java.util.HashMap;
 import java.util.List;
 
 @Data
 public class User {
     private final String name;
     private Email email;
-    private HashMap<Id, Permission> permissions;
+    private PermissionManager permissionManager;
     private List<ForumId> forums;
 
     private Image image;
 
-    public boolean checkPermission(Id id, Permission neededPermission) {
-        return this.permissions.get(id) == neededPermission;
+    public boolean checkPermission(Id id, Permission permission) {
+        return this.permissionManager.checkPermission(id, permission);
     }
 
     public List<ForumId> getUserForums() {
