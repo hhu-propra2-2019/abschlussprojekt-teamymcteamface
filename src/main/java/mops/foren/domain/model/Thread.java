@@ -6,8 +6,8 @@ public class Thread {
 
     private TopicId topicId;
 
-    String title;
+    private String title;
 
-    String description;
+    private String description;
 
 }

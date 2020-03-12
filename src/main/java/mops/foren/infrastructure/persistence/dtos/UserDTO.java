@@ -16,14 +16,6 @@ public class UserDTO {
 
     private String email;
 
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_course",
-            joinColumns = @JoinColumn(name = "username"),
-            inverseJoinColumns = @JoinColumn(name = "id"))
-    private Set<CourseDTO> courses;
-
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "user_forum",

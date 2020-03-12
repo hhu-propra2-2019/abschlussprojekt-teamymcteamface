@@ -3,11 +3,9 @@ package mops.foren.domain.model;
 public class Forum {
     private ForumId id;
 
-    String title;
+    private String title;
 
-    String description;
-
-    Course course;
+    private String description;
 
     public void sendEmailToUsers() {
         throw new UnsupportedOperationException();

@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Data
@@ -26,7 +25,4 @@ public class PostDTO {
 
     @ManyToOne
     private UserDTO user;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "post")
-    private List<ContentDTO> contents;
 }

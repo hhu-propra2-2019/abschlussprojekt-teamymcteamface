@@ -5,9 +5,7 @@ public class Topic {
 
     private ForumId forumId;
 
-    String title;
+    private String title;
 
-    String description;
-
-    boolean moderated;
+    private String description;
 }

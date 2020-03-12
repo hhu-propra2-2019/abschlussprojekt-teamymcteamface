@@ -10,15 +10,10 @@ public class Post {
 
     private ThreadId threadId;
 
-    final User author;
+    private final User author;
 
-    final Date creationDate;
-
-    boolean edited;
+    private final Date creationDate;
 
     private String text;
 
-    void edit(Post post) {
-        throw new UnsupportedOperationException();
-    }
 }
