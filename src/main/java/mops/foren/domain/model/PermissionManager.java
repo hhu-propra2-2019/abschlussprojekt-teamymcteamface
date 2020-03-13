@@ -1,6 +1,8 @@
 package mops.foren.domain.model;
 
 
+import lombok.NonNull;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,15 +44,10 @@ public class PermissionManager {
      * @param user       - user that is trying to execute an operation which needs permission
      * @return Boolean
      */
-    public Boolean checkPermission(ForumId id, Permission permission, User author, User user) {
-        Boolean check = false;
-        if (OwnRights.hasPermission(permission)) {
-            check = user.equals(author);
-        }
-        if (!check) {
-            check = checkPermission(id, permission);
-        }
-        return check;
+    public Boolean checkPermission(ForumId id, Permission permission,
+                                   @NonNull User author, @NonNull User user) {
+
+        return user.equals(author) || checkPermission(id, permission);
     }
 
     public List<ForumId> getAllForums() {
