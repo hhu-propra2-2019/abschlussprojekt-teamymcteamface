@@ -37,14 +37,14 @@ public class ForenControllerTest {
 
     @Test
     void testForumMainpage() throws Exception {
-        mvcMock.perform(get("/foren/"))
+        mvcMock.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
 
     @Test
     void testProfileTemplate() throws Exception {
-        mvcMock.perform(get("/foren/profile"))
+        mvcMock.perform(get("/profile"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"));
     }
@@ -52,9 +52,9 @@ public class ForenControllerTest {
 
     @Test
     void testMyForumTemplate() throws Exception {
-        mvcMock.perform(get("/foren/myForum"))
+        mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("myForums"));
+                .andExpect(view().name("my-forums"));
     }
 
 }
