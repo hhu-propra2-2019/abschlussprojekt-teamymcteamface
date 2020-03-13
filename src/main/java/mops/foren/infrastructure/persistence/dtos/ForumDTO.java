@@ -23,6 +23,8 @@ public class ForumDTO {
 
     private String description;
 
+    @ManyToMany(mappedBy = "forums")
+    private Set<UserDTO> user;
 
     @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
     private Set<TopicDTO> topics;

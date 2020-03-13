@@ -1,15 +1,13 @@
 package mops.foren.infrastructure.persistence.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
 
 
 @Data
+@EqualsAndHashCode(exclude = "forums")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -23,6 +21,10 @@ public class UserDTO {
 
     private String email;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ForumDTO> forums;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_forum",
+            joinColumns = {@JoinColumn(name = "username")},
+            inverseJoinColumns = {@JoinColumn(name = "id")})
+    private Set<ForumDTO> forums;
 }
