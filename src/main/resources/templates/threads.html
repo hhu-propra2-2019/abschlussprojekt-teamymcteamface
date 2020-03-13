@@ -3,6 +3,8 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
@@ -47,10 +49,10 @@
         <a href="#welcome" th:href="@{./}">Dashboard</a>
       </li>
       <li class="">
-        <a href="" th:href="@{./my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
         <a href="#welcome" th:href="@{./profile}">Profil</a>
+      </li>
+      <li class="active">
+        <a href="#welcome" th:href="@{./blank}">Blank</a>
       </li>
       <li class="">
         <a href="#welcome" th:href="@{./sidenav}">Sidenav</a>
@@ -61,5 +63,25 @@
     </ul>
   </nav>
 </header>
+<main th:fragment="bodycontent">
+  <h1>Meine Foren:</h1>
+  <table class="table table-light">
+    <thead class="thead-light">
+    <tr>
+      <th>Name</th>
+      <th>Letzte Änderung</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="forum : ${forums}">
+      <tr>
+        <td th:text="forum.getTitle()">AlDat</td>
+        <td th:text="">14:37Uhr</td>
+      </tr>
+    </div>
+    </tbody>
+  </table>
+
+</main>
 </body>
 </html>

@@ -1,8 +1,14 @@
 package mops.foren.infrastructure.web;
 
+import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class ForenController {
@@ -18,7 +24,10 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums")
-    public String allForum() {
+    public String allForum(Model model) {
+
+        List<Forum> forums = new ArrayList<>(){{add(new Forum(new ForumId(1L), "AlDat", "Hi Ima Forum."));}};
+        model.addAttribute("forums", forums);
         return "my-forums";
     }
 
