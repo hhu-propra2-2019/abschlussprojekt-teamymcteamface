@@ -45,10 +45,11 @@ public class PermissionManager {
     public Boolean checkPermission(ForumId id, Permission permission, User author, User user) {
         Boolean check = false;
         if (OwnRights.hasPermission(permission)) {
-            check = author.equals(user);
+            check = user.equals(author);
         }
-
-        check = checkPermission(id,permission);
+        if (!check) {
+            check = checkPermission(id, permission);
+        }
         return check;
     }
 
