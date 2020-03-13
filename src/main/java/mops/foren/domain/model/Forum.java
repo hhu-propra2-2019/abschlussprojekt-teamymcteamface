@@ -14,8 +14,8 @@ public class Forum {
 
     private String description;
 
-    public LocalDateTime getLatestUpdate() {
-        return LocalDateTime.now();
+    public String getLatestUpdate() {
+        return LocalDateTime.now().toString();
     }
 
     public void sendEmailToUsers() {

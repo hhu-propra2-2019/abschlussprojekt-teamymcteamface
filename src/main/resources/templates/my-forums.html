@@ -4,7 +4,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-
+  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
@@ -25,6 +25,15 @@
         margin: 1rem;
         color: white;
         text-shadow: 0 0 3px black;
+      }
+
+      .mops-row {
+        transition-duration: 0.3s;
+      }
+
+      .mops-row:hover {
+        background: #a9d0f5;
+        transition-duration: 0.3s;
       }
 
       @media (min-width: 992px) {
@@ -74,11 +83,9 @@
     </thead>
     <tbody>
     <div th:each="forum : ${forums}">
-      <tr>
-        <a th:href="@{'./' + ${Long.toString(forum.getId().getId()}">
-          <td th:text="forum.getTitle()">AlDat</td>
-          <td th:text="forum.getLatestUpdate()">14:37Uhr</td>
-        </a>
+      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]]">
+          <td th:text="${forum.getTitle()}">AlDat</td>
+          <td th:text="${forum.getLatestUpdate()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>
