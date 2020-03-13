@@ -1,9 +1,11 @@
 package mops.foren.domain.model;
 
+
 import java.util.Set;
 
 public class PermissionManager {
 
+    private Set<ForumId> student;
     private Set<ForumId> moderator;
     private Set<ForumId> admin;
 
@@ -15,15 +17,21 @@ public class PermissionManager {
      * @param permission - the event represented by it permission-type
      * @return boolean
      */
-    public boolean checkPermission(Id id, Permission permission) {
-
-        if (moderator.contains(id)) {
-            return Moderator.hasPermission(permission);
+    public boolean checkPermission(ForumId id, Permission permission) {
+        if (Student.hasPermission(permission)) {
+            return student.contains(id);
         }
-        if (admin.contains(id)) {
-            return Admin.hasPermission(permission);
+        if (Moderator.hasPermission(permission)) {
+            return moderator.contains(id);
         }
-
+        if (Admin.hasPermission(permission)) {
+            return admin.contains(id);
+        }
         return false;
     }
+
+    public Set<ForumId> getAllForums() {
+        return student;
+    }
+
 }
