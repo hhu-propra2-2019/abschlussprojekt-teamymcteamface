@@ -16,6 +16,10 @@ public class ForumService {
         this.forumRepository = forumRepository;
     }
 
+    public String getMockForumName(ForumId forumId) {
+        return "Algorithmen und Datenstrukturen";
+    }
+
     /**
      * Method to get all forums for a user.
      *

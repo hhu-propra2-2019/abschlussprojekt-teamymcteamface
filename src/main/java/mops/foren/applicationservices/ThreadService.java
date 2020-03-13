@@ -1,10 +1,10 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.Permission;
-import mops.foren.domain.model.TopicId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ThreadService {
@@ -15,8 +15,33 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Thread> getThreads(TopicId topicId) {
+    public List<mops.foren.domain.model.Thread> getThreads(TopicId topicId) {
         throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Method to get mocked threads
+     *
+     * @param topicId The topic id
+     * @return A list of threads that belong to the topic
+     */
+    public List<Thread> getMockThreads(TopicId topicId) {
+        List<Thread> threads = new ArrayList<>();
+        threads.add(new Thread(new ThreadId(1L), new TopicId(2L),
+                "Alter, was ist eine IDE ?", "Sorry, bin etwas langsam..."));
+        threads.add(new Thread(new ThreadId(2L), new TopicId(2L),
+                "Ich bin einsam :(", "Hallo ?"));
+        threads.add(new Thread(new ThreadId(2L + 1L), new TopicId(2L),
+                "Ich will lieber Germanistik studieren", "Echt jetzt, Informatik ist doof."));
+        threads.add(new Thread(new ThreadId(2L + 2L), new TopicId(2L),
+                "Wann kriegen wie die Ergebnisse?", "Würde ich schon gerne wissen"));
+        threads.add(new Thread(new ThreadId(2L + 2L + 1L), new TopicId(2L),
+                "Habe eine Frage", "Was ist eine IDE ???"));
+        threads.add(new Thread(new ThreadId(2L + 2L + 2L), new TopicId(2L),
+                "Gute Website", "Checkt diese Website um das Internet zu verstehen."));
+
+        return threads;
+
     }
 
     /**

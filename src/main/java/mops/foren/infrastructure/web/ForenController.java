@@ -4,6 +4,7 @@ import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,8 +36,18 @@ public class ForenController {
         return "my-forums";
     }
 
+    /**
+     * yolo.
+     *
+     * @param forenID hello
+     * @param model   hello
+     * @return nix
+     */
     @GetMapping("/my-forums/{forenID}")
-    public String enterAForum(@PathVariable String forenID) {
+    public String enterAForum(@PathVariable String forenID, Model model) {
+        model.addAttribute("forumTitle", this.forumService.getMockForumName(
+                new ForumId(Long.valueOf(forenID))));
+        model.addAttribute("topics", this.topicService.getMockTopics(new ForumId(1L)));
         return "/";
     }
 
