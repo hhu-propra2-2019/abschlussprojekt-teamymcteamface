@@ -15,8 +15,10 @@ public class Forum {
 
     private String description;
 
+    private final LocalDateTime dateCreated = LocalDateTime.now();
+
     public String getLatestUpdate() {
-        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
+        return this.dateCreated.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }
 
     public String getStringId() {
