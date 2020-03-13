@@ -3,7 +3,7 @@ package mops.foren.infrastructure.persistence.mapper;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumDtoRepository;
+import mops.foren.infrastructure.persistence.repositories.ForumJPARepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
-public class MapperForum implements IForumRepository {
-    ForumDtoRepository forumRepository;
+public class ForumRepositoryImpl implements IForumRepository {
+    ForumJPARepository forumRepository;
 
-    public MapperForum(ForumDtoRepository forumRepository) {
+    public ForumRepositoryImpl(ForumJPARepository forumRepository) {
         this.forumRepository = forumRepository;
     }
 

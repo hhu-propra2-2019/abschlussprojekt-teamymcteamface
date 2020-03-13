@@ -5,8 +5,8 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumDtoRepository;
-import mops.foren.infrastructure.persistence.repositories.UserDtoRepository;
+import mops.foren.infrastructure.persistence.repositories.ForumJPARepository;
+import mops.foren.infrastructure.persistence.repositories.UserJPARepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -15,13 +15,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class MapperUser implements IUserRepository {
+public class UserRepositoryImpl implements IUserRepository {
 
 
-    UserDtoRepository userRepository;
-    ForumDtoRepository forumRepository;
+    UserJPARepository userRepository;
+    ForumJPARepository forumRepository;
 
-    public MapperUser(UserDtoRepository userRepository, ForumDtoRepository forumRepository) {
+    public UserRepositoryImpl(UserJPARepository userRepository, ForumJPARepository forumRepository) {
         this.userRepository = userRepository;
         this.forumRepository = forumRepository;
     }

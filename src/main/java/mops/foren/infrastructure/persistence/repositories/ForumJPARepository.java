@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ForumDtoRepository extends CrudRepository<ForumDTO, Long> {
+public interface ForumJPARepository extends CrudRepository<ForumDTO, Long> {
     @Override
     List<ForumDTO> findAllById(Iterable<Long> longs);
 
