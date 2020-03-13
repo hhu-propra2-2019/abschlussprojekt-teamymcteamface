@@ -1,16 +1,18 @@
 package mops.foren.domain.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
 import java.util.List;
 
 @Data
+@Builder
 public class User {
     private final String name;
     private Email email;
     private PermissionManager permissionManager;
-    private List<ForumId> forums;
+    private List<Long> forums;
 
     private Image image;
 
@@ -18,8 +20,12 @@ public class User {
         return this.permissionManager.checkPermission(id, permission);
     }
 
-    public List<ForumId> getUserForums() {
+    public List<Long> getUserForums() {
         return this.forums;
+    }
+
+    public boolean hasForen() {
+        return forums != null;
     }
 }
 

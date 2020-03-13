@@ -3,83 +3,97 @@
       th:replace="~{mopslayout :: html(name='Foren - Meine Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="utf-8">
-  <title>Foren</title>
-  <th:block th:fragment="headcontent">
-    <style>
-      thead {
-        background: #52a1eb !important;
-      }
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
+    <meta charset="utf-8">
+    <title>Foren</title>
+    <th:block th:fragment="headcontent">
+        <style>
+            thead {
+                background: #52a1eb !important;
+            }
 
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
+            main > div:first-child {
+                position: relative;
+                margin-bottom: 1rem;
+            }
 
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
+            main > div:first-child img {
+                border-radius: 1rem;
+                border: 1px solid black;
+            }
 
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
+            main > div:first-child > h2 {
+                position: absolute;
+                bottom: 0;
+                margin: 1rem;
+                color: white;
+                text-shadow: 0 0 3px black;
+            }
 
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
-  </th:block>
+            @media (min-width: 992px) {
+                main > div:first-child > h2 {
+                    font-size: 2.4rem;
+                }
+            }
+
+            @media (max-width: 576px) {
+                main > div:first-child > h2 {
+                    font-size: 1.0rem;
+                }
+            }
+        </style>
+    </th:block>
 </head>
 <body>
 <header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li class="active">
-        <a href="#welcome" th:href="@{./}">Dashboard</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{./profile}">Profil</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{./blank}">Blank</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{./sidenav}">Sidenav</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{./#welcome}">Propra 2</a>
-      </li>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <ul>
+            <li class="active">
+                <a href="#welcome" th:href="@{./}">Dashboard</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./profile}">Profil</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./blank}">Blank</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./sidenav}">Sidenav</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./#welcome}">Propra 2</a>
+            </li>
 
-    </ul>
-  </nav>
+        </ul>
+    </nav>
 </header>
 <main th:fragment="bodycontent">
 
-  <h1>Meine Foren:</h1>
-  <th:block th:each="forum : ${forums}">
-  <div class="row">
-      <div class="card">
-        <div class="card-header">
-          Propra2
+    <h1>Meine Foren:</h1>
+    <th:block th:each="forum : ${forums}">
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    Propra2
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">offizielles Forum</h5>
+                    <a class="btn btn-primary" href="#">einsehen</a>
+                </div>
+            </div>
         </div>
-        <div class="card-body">
-          <h5 class="card-title">offizielles Forum</h5>
-          <a href="#" class="btn btn-primary">einsehen</a>
-        </div>
-      </div>
-  </div>
+    </th:block>
+    <div>
+        <h2>Ein neues Forum angelgen</h2>
+        <form method="post" th:action="@{/my-forums/newForum}" th:object="${forum}">
+            <p>Geben Sie einen coolen Titel ein:</p>
+            <input class="form-group" id="title" name="title" placeholder="Titel"
+                   th:value="*{title}" type="text">
+            <p>Geben Sie eine noch coolere Beschreibung ein:</p>
+            <input class="form-control" id="description" name="description" placeholder="Beschreibung"
+                   th:value="*{description}" type="text">
+            <input class="btn btn-primary" type="submit" value="Erstelle ein neues Forum">
+        </form>
+    </div>
 </main>
 </body>
 </html>
