@@ -7,12 +7,14 @@ import mops.foren.domain.model.User;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 public class ForenController {
@@ -45,7 +47,7 @@ public class ForenController {
             }
             User user = userService.getUser(token.getAccount().getPrincipal().getName());
 
-            model.addAttribute("foren", forumService.getForums(user.getUserForums()));
+            model.addAttribute("forums", forumService.getForums(user.getUserForums()));
             ForumForm form = new ForumForm("", "");
             model.addAttribute("forum", form);
         }
@@ -53,9 +55,10 @@ public class ForenController {
     }
 
     @PostMapping("/my-forums/newForum")
-    public String newForum(KeycloakAuthenticationToken token, @ModelAttribute ForumForm forumForm) {
+    public String newForum(KeycloakAuthenticationToken token, @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
+        //errors
         User user = userService.getUser(token.getAccount().getPrincipal().getName());
-        Forum forum = Forum.builder().description(forumForm.description).title(forumForm.title).build();
+        Forum forum = forumForm.map();
         userService.addForum(user, forum);
         return "redirect:/my-forums";
     }

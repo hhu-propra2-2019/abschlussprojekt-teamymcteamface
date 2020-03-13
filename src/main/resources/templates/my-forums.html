@@ -72,7 +72,7 @@
     <th:block th:each="forum : ${forums}">
         <div class="row">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header" th:text="${forum?.title}">
                     Propra2
                 </div>
                 <div class="card-body">

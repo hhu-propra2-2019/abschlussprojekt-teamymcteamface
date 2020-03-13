@@ -3,7 +3,7 @@ package mops.foren.infrastructure.persistence.mapper;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.repositorys.ForumDtoRepository;
+import mops.foren.infrastructure.persistence.repositories.ForumDtoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package mops.foren.infrastructure.persistence.repositorys;
+package mops.foren.infrastructure.persistence.repositories;
 
 
 import mops.foren.infrastructure.persistence.dtos.UserDTO;

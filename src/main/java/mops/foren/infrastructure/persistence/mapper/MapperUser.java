@@ -5,8 +5,8 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.repositorys.ForumDtoRepository;
-import mops.foren.infrastructure.persistence.repositorys.UserDtoRepository;
+import mops.foren.infrastructure.persistence.repositories.ForumDtoRepository;
+import mops.foren.infrastructure.persistence.repositories.UserDtoRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -53,17 +53,11 @@ public class MapperUser implements IUserRepository {
 
     @Override
     public void updateUser(User user, Forum forum) {
-        List<ForumDTO> foren = new ArrayList<>();
-        if (user.hasForen()) {
-            foren = forumRepository.findAllById(user.getForums());
-        }
+        UserDTO userDTO = userRepository.findById(user.getName()).get();
         ForumDTO forumDTO = ForumDTO.builder().title(forum.getTitle())
                 .description(forum.getDescription())
                 .build();
-        foren.add(forumDTO);
-        UserDTO userDTO = UserDTO.builder().username(user.getName())
-                .forums(foren)
-                .build();
+        userDTO.getForums().add(forumDTO);
         userRepository.save(userDTO);
     }
 }
