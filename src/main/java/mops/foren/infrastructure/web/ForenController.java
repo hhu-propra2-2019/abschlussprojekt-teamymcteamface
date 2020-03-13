@@ -93,5 +93,4 @@ public class ForenController {
         }
         return userService.getUser(user);
     }
-
 }

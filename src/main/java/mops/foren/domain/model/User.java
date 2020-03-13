@@ -11,7 +11,7 @@ public class User {
     private final String name;
     private String email;
     private PermissionManager permissionManager;
-    private List<Long> forums;
+    private List<ForumId> forums;
 
     private Image image;
 
@@ -19,7 +19,7 @@ public class User {
         return this.permissionManager.checkPermission(id, permission);
     }
 
-    public List<Long> getUserForums() {
+    public List<ForumId> getUserForums() {
         return this.forums;
     }
 

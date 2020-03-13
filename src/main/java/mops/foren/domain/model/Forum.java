@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Forum {
-    private final Long id;
+    private final ForumId id;
 
     private String title;
 

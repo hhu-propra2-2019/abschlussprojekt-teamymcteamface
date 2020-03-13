@@ -1,6 +1,7 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
@@ -47,12 +48,12 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public User getUser(User user) {
         Optional<UserDTO> userDTO = userRepository.findById(user.getName());
-        List<Long> forenIds = getForenIdsFromUser(userDTO);
+        List<ForumId> forenIds = getForenIdsFromUser(userDTO);
         User userFromDB = mapUserDTOToUser(userDTO, forenIds);
         return userFromDB;
     }
 
-    private User mapUserDTOToUser(Optional<UserDTO> userDTO, List<Long> forenIds) {
+    private User mapUserDTOToUser(Optional<UserDTO> userDTO, List<ForumId> forenIds) {
         return User.builder()
                 .name(userDTO.get().getUsername())
                 .email(userDTO.get().getEmail())
@@ -60,13 +61,14 @@ public class UserRepositoryImpl implements IUserRepository {
                 .build();
     }
 
-    private List<Long> getForenIdsFromUser(Optional<UserDTO> userDTO) {
+    private List<ForumId> getForenIdsFromUser(Optional<UserDTO> userDTO) {
         if (userDTO.get().getForums() == null) {
             return new LinkedList<>();
         }
 
         return userDTO.get().getForums().stream()
                 .map(ForumDTO::getId)
+                .map(ForumId::new)
                 .collect(Collectors.toList());
     }
 
