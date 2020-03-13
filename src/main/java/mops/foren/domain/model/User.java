@@ -3,14 +3,13 @@ package mops.foren.domain.model;
 import lombok.Builder;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
 import java.util.List;
 
 @Data
 @Builder
 public class User {
     private final String name;
-    private Email email;
+    private String email;
     private PermissionManager permissionManager;
     private List<Long> forums;
 

@@ -12,17 +12,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean checkIfUserIsExistent(String name) {
-        return userRepository.findUser(name);
+    public boolean checkIfUserIsExistent(User user) {
+        return userRepository.isUserExistent(user);
     }
 
-    public void addNewUser(String name) {
-        userRepository.addNewUser(name);
+    public void addNewUser(User user) {
+        userRepository.addNewUser(user);
 
     }
 
-    public User getUser(String name) {
-        return userRepository.getUser(name);
+    public User getUser(User user) {
+        return userRepository.getUser(user);
     }
 
     public void addForum(User user, Forum forum) {

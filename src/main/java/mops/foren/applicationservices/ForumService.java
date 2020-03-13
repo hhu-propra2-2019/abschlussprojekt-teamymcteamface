@@ -21,11 +21,8 @@ public class ForumService {
      * @param user The user
      * @return A list of forums.
      */
-    public List<Forum> getForums(List<Long> forumIds) {
-        return forumRepository.getForums(forumIds);
+    public List<Forum> getForums(User user) {
+        return forumRepository.getForums(user);
     }
 
-    public void addForum(Forum forum, User user) {
-        throw new UnsupportedOperationException();
-    }
 }
