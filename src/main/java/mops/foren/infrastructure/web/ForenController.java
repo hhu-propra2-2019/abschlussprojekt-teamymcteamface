@@ -25,8 +25,10 @@ public class ForenController {
 
     @GetMapping("/my-forums")
     public String allForum(Model model) {
-
-        List<Forum> forums = new ArrayList<>(){{add(new Forum(new ForumId(1L), "AlDat", "Hi Ima Forum."));}};
+        List<Forum> forums = new ArrayList<>();
+        forums.add(new Forum(new ForumId(1L), "Algorithmen und Datenstrukturen", "Hi Ima Forum."));
+        forums.add(new Forum(new ForumId(2L), "Softwareentwicklung im Team", "Hi Ima Forum."));
+        forums.add(new Forum(new ForumId(3L), "TeamyMcTeamFace Beste Gruppe Bruder", ":)"));
         model.addAttribute("forums", forums);
         return "my-forums";
     }
