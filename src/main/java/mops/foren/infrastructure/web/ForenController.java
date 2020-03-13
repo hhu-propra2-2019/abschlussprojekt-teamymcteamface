@@ -45,10 +45,10 @@ public class ForenController {
      */
     @GetMapping("/my-forums/{forenID}")
     public String enterAForum(@PathVariable String forenID, Model model) {
-        model.addAttribute("forumTitle", this.forumService.getMockForumName(
+        model.addAttribute("forum", this.forumService.getMockForum(
                 new ForumId(Long.valueOf(forenID))));
         model.addAttribute("topics", this.topicService.getMockTopics(new ForumId(1L)));
-        return "/";
+        return "forum-mainpage";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}")

@@ -16,8 +16,8 @@ public class ForumService {
         this.forumRepository = forumRepository;
     }
 
-    public String getMockForumName(ForumId forumId) {
-        return "Algorithmen und Datenstrukturen";
+    public Forum getMockForum(ForumId forumId) {
+        return new Forum(new ForumId(1L), "Algorithmen und Datenstrukturen", "Hi Ima Forum.");
     }
 
     /**

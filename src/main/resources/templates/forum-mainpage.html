@@ -3,20 +3,31 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>    
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <meta charset="utf-8">
-  <title>Foren</title>
-  <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <title>Foren</title>
+    <th:block th:fragment="headcontent">
+        <style>
+            main > div:first-child {
+                position: relative;
+                margin-bottom: 1rem;
+            }
+
             main > div:first-child img {
                 border-radius: 1rem;
                 border: 1px solid black;
@@ -30,21 +41,22 @@
                 text-shadow: 0 0 3px black;
             }
 
-      .card {
-        box-shadow: 0 14px 28px rgba(0,0,0,0.15), 0 10px 10px rgba(0,0,0,0.12);
-        text-align: center;
-        width: fit-content;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin: 10px;
-        float: left;
-    }
+            .card {
+                box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.12);
+                text-align: center;
+                width: fit-content;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin: 10px;
+                float: left;
+            }
 
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
+            @media (min-width: 992px) {
+                main > div:first-child > h2 {
+                    font-size: 2.4rem;
+                }
+            }
+
             @media (max-width: 576px) {
                 main > div:first-child > h2 {
                     font-size: 1.0rem;
@@ -76,20 +88,26 @@
     </nav>
 </header>
 <main th:fragment="bodycontent">
-  <div style="border-left: 1px solid black; padding: 30px; width: 80%; height: 100vh; float: right;">
-    <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
-    <br>
-    <div th:text="forum.getDescription()">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae accusantium in aspernatur natus labore facilis animi harum!</div>
-    <br>
-    <div th:each="topic : ${topics}" class="justify-content-center">
-        <div class="card">
-            <div class="card-body">
-                <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
-                <button class="btn btn-primary" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]] + '/' + [[${topic.getId().getId().toString()}]]" type="button">Text</button>
+    <div style="padding: 30px;">
+        <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
+        <br>
+        <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
+            laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae
+            accusantium in aspernatur natus labore facilis animi harum!
+        </div>
+        <br>
+        <div th:each="topic : ${topics}" class="justify-content-center">
+            <div class="card">
+                <div class="card-body">
+                    <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
+                    <button class="btn btn-primary"
+                            th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]] + '/' + [[${topic.getId().getId().toString()}]]"
+                            type="button">Text
+                    </button>
+                </div>
             </div>
         </div>
-    </div>            
-</div>
+    </div>
 </main>
 </body>
 </html>
