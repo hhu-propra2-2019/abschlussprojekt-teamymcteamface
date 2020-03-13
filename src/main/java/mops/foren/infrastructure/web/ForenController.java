@@ -1,17 +1,23 @@
 package mops.foren.infrastructure.web;
 
-import mops.foren.domain.model.Forum;
-import mops.foren.domain.model.ForumId;
+import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.PostService;
+import mops.foren.applicationservices.ThreadService;
+import mops.foren.applicationservices.TopicService;
+import mops.foren.domain.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Controller
 public class ForenController {
+
+    private User user = new User("Test Boi");
+    private ForumService forumService = new ForumService(null);
+    private TopicService topicService = new TopicService(null);
+    private ThreadService threadService = new ThreadService(null);
+    private PostService postService = new PostService(null);
 
     @GetMapping("/")
     public String main() {
@@ -25,11 +31,7 @@ public class ForenController {
 
     @GetMapping("/my-forums")
     public String allForum(Model model) {
-        List<Forum> forums = new ArrayList<>();
-        forums.add(new Forum(new ForumId(1L), "Algorithmen und Datenstrukturen", "Hi Ima Forum."));
-        forums.add(new Forum(new ForumId(2L), "Softwareentwicklung im Team", "Hi Ima Forum."));
-        forums.add(new Forum(new ForumId(3L), "TeamyMcTeamFace Beste Gruppe Bruder", ":)"));
-        model.addAttribute("forums", forums);
+        model.addAttribute("forums", this.forumService.getMockForums(this.user));
         return "my-forums";
     }
 
