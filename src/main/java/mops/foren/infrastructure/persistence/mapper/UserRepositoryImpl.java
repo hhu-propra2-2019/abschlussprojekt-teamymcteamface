@@ -6,8 +6,8 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumJPARepository;
-import mops.foren.infrastructure.persistence.repositories.UserJPARepository;
+import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -19,10 +19,11 @@ import java.util.stream.Collectors;
 public class UserRepositoryImpl implements IUserRepository {
 
 
-    UserJPARepository userRepository;
-    ForumJPARepository forumRepository;
+    UserJpaRepository userRepository;
+    ForumJpaRepository forumRepository;
 
-    public UserRepositoryImpl(UserJPARepository userRepository, ForumJPARepository forumRepository) {
+    @SuppressWarnings("LineLength")
+    public UserRepositoryImpl(UserJpaRepository userRepository, ForumJpaRepository forumRepository) {
         this.userRepository = userRepository;
         this.forumRepository = forumRepository;
     }
@@ -34,11 +35,11 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public void addNewUser(User user) {
-        UserDTO userDTO = mapUserToUserDTO(user);
+        UserDTO userDTO = mapUserToUserDto(user);
         userRepository.save(userDTO);
     }
 
-    private UserDTO mapUserToUserDTO(User user) {
+    private UserDTO mapUserToUserDto(User user) {
         return UserDTO.builder()
                 .username(user.getName())
                 .email(user.getEmail())
@@ -49,11 +50,10 @@ public class UserRepositoryImpl implements IUserRepository {
     public User getUser(User user) {
         Optional<UserDTO> userDTO = userRepository.findById(user.getName());
         List<ForumId> forenIds = getForenIdsFromUser(userDTO);
-        User userFromDB = mapUserDTOToUser(userDTO, forenIds);
-        return userFromDB;
+        return mapUserDtoToUser(userDTO, forenIds);
     }
 
-    private User mapUserDTOToUser(Optional<UserDTO> userDTO, List<ForumId> forenIds) {
+    private User mapUserDtoToUser(Optional<UserDTO> userDTO, List<ForumId> forenIds) {
         return User.builder()
                 .name(userDTO.get().getUsername())
                 .email(userDTO.get().getEmail())

@@ -5,7 +5,7 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumJPARepository;
+import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ForumRepositoryImpl implements IForumRepository {
-    ForumJPARepository forumRepository;
+    ForumJpaRepository forumRepository;
 
-    public ForumRepositoryImpl(ForumJPARepository forumRepository) {
+    public ForumRepositoryImpl(ForumJpaRepository forumRepository) {
         this.forumRepository = forumRepository;
     }
 
@@ -33,7 +33,7 @@ public class ForumRepositoryImpl implements IForumRepository {
                 .collect(Collectors.toList());
     }
 
-    private Forum mapForumDTOToForum(ForumDTO f) {
+    private Forum mapForumDtoToForum(ForumDTO f) {
         return Forum.builder().id(new ForumId(f.getId()))
                 .title(f.getTitle())
                 .description(f.getDescription())
@@ -42,7 +42,7 @@ public class ForumRepositoryImpl implements IForumRepository {
 
     private List<Forum> getAllForums(List<ForumDTO> forumDtos) {
         return forumDtos.stream()
-                .map(this::mapForumDTOToForum)
+                .map(this::mapForumDtoToForum)
                 .collect(Collectors.toList());
     }
 }

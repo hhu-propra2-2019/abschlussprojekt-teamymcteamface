@@ -43,6 +43,7 @@ public class ForenController {
 
     @GetMapping("/my-forums")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
     public String allForum(KeycloakAuthenticationToken token, Model model) {
         User user = getUserFromDB(token);
         model.addAttribute("forums", forumService.getForums(user));
@@ -50,8 +51,8 @@ public class ForenController {
         return "my-forums";
     }
 
-
     @PostMapping("/my-forums/newForum")
+    @SuppressWarnings({"LineLength", "checkstyle:MissingJavadocMethod"})
     public String newForum(KeycloakAuthenticationToken token, @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
         //errors
         User user = getUserFromDB(token);
@@ -88,7 +89,7 @@ public class ForenController {
 
     private User getUserFromDB(KeycloakAuthenticationToken token) {
         User user = getUserFromToken(token);
-        if (userService.checkIfUserIsExistent(user) == false) {
+        if (!userService.checkIfUserIsExistent(user)) {
             userService.addNewUser(user);
         }
         return userService.getUser(user);
