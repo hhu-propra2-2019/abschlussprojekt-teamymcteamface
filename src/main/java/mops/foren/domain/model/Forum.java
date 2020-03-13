@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @AllArgsConstructor
@@ -14,8 +15,12 @@ public class Forum {
 
     private String description;
 
-    public LocalDateTime getLatestUpdate() {
-        return LocalDateTime.now();
+    public String getLatestUpdate() {
+        return LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
+    }
+
+    public String getStringId() {
+        return this.id.getId().toString();
     }
 
     public void sendEmailToUsers() {
