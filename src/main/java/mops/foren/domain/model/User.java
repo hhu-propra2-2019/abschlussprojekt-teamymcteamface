@@ -3,7 +3,8 @@ package mops.foren.domain.model;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
-import java.util.Set;
+import java.util.List;
+
 
 @Data
 public class User {
@@ -14,12 +15,17 @@ public class User {
 
     private Image image;
 
-    public boolean checkPermission(ForumId id, Permission permission) {
+    public Boolean checkPermission(ForumId id, Permission permission) {
         return this.permissionManager.checkPermission(id, permission);
     }
 
-    public Set<ForumId> getUserForums() {
+    public Boolean checkPermission(ForumId id, Permission permission,User author) {
+        return this.permissionManager.checkPermission(id, permission, author, this);
+    }
+
+    public List<ForumId> getUserForums() {
         return permissionManager.getAllForums();
     }
+
 }
 

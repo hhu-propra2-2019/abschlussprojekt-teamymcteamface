@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
@@ -24,10 +25,10 @@ public class ThreadService {
      *
      * @param thread  The thread to add
      * @param user    The user that wants to create the thread
-     * @param topicId The topicId the thread belongs to
+     * @param id    The topicId the thread belongs to
      */
-    public void addThread(Thread thread, User user, TopicId topicId) {
-        if (user.checkPermission(topicId, Permission.CREATE_THREAD)) {
+    public void addThread(Thread thread, User user, ForumId id) {
+        if (user.checkPermission(id, Permission.CREATE_THREAD)) {
             // ADD
         }
     }
