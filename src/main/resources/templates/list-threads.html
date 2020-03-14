@@ -30,6 +30,10 @@
         transition-duration: 0.3s;
       }
 
+      .mops-row>*:hover {
+        cursor: pointer;
+      }
+
       .mops-row:hover {
         background: #a9d0f5;
         transition-duration: 0.3s;
@@ -66,6 +70,7 @@
 </header>
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
+  <button class="btn btn-primary" th:onclick="location.href = '/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread erstellen</button>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>

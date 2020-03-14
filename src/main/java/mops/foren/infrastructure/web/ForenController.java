@@ -75,14 +75,17 @@ public class ForenController {
 
         model.addAttribute("threads", threads);
 
+        model.addAttribute("forumId", forumID);
+        model.addAttribute("topicId", topicID);
+
         return "list-threads";
     }
 
-    /*@GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
-    public String createNewThread(@PathVariable String forenID, @PathVariable String topicIdAsString, @PathVariable String topicID) {
+    @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
+    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
 
         return "createThread";
-    }*/
+    }
 
     @PostMapping("/my-forums/{forenID}/{topicID}/create-thread")
         public String postThreadIntoSystem() {
