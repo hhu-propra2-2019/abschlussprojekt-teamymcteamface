@@ -5,11 +5,15 @@ import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.List;
 
 @Controller
 public class ForenController {
@@ -52,8 +56,14 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID) {
-        return "/";
+    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+
+        model.addAttribute("forumTitle", this.forumService.getMockForum(
+                new ForumId(Long.valueOf(forenID))).getTitle());
+
+        model.addAttribute("threads", this.threadService.getMockThreads(new TopicId(Long.parseLong(topicID))));
+
+        return "list-threads";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/newThread")
