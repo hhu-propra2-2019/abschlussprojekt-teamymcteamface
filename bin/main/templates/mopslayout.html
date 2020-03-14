@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+  <title th:text="'Mops' + (${name} ? ' - ' + ${name} : '')">Mops</title>
+  <link href="../static/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <link href="../static/css/icono.min.css" rel="stylesheet" th:href="@{/css/icono.min.css}">
+  <link href="../static/css/styles.min.css" rel="stylesheet" th:href="@{/css/styles.min.css}">
+  <th:block th:if="${headcontent}" th:replace="${headcontent} ?: ~{}"></th:block>
+</head>
+<body>
+<header class="header header-main">
+  <input checked class="button button-sidebar button-sidebar-hide" name="button-sidebar" type="radio">
+  <input class="button button-sidebar button-navigation-primary-show" name="button-sidebar" th:if="${navigation}"
+         type="radio">
+  <input class="button button-sidebar button-sidebar-show" name="button-sidebar" type="radio">
+  <i class="icon icon-sidebar icon-sidebar-show icono-hamburger"></i>
+  <i class="icon icon-sidebar icon-navigation-primary-show icono-caretLeft" th:if="${navigation}"></i>
+  <i class="icon icon-sidebar icon-sidebar-hide icono-cross"></i>
+  <a class="brand" href="#">
+    <h1 th:text="'Mops' + (${name} ? ' - ' + ${name} : '')">Mops</h1>
+  </a>
+  <div class="form-search-wrapper">
+    <form class="form form-search" method="get">
+      <input class="button button-form-search button-form-search-toggle" name="searchFormIsVisible" type="checkbox"
+             value="true" th:checked="${#bools.isTrue(#strings.toString(param.searchFormIsVisible))}">
+      <i class="icon icon-form-search icon-form-search-hide icono-cross"></i>
+      <i class="icon icon-form-search icon-form-search-show icono-search"></i>
+      <input class="form-control textfield textfield-search" name="search" placeholder="Suchen..."
+             th:value="${param.search} ?: ''"
+             type="search">
+    </form>
+  </div>
+  <div class="sidebar">
+    <div class="navigation-wrapper">
+      <nav class="navigation navigation-primary" is="mops-navigation">
+        <ul>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/anna.jpg" th:src="@{/img/anna.jpg}">
+              Feedback
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/babsi.jpg" th:src="@{/img/babsi.jpg}">
+              Foren
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/dido.jpg" th:src="@{/img/dido.jpg}">
+              Gruppenbildung
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/eminem.jpg" th:src="@{/img/eminem.jpg}">
+              Java in der Praxis
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/fin.jpg" th:src="@{/img/fin.jpg}">
+              Klausurzulassung
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/joghurt.jpg" th:src="@{/img/joghurt.jpg}">
+              Korrektorinnen-bewerbung
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/ken.jpg" th:src="@{/img/ken.jpg}">
+              Lernportfolios
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/mampfi.jpg" th:src="@{/img/mampfi.jpg}">
+              Materialsammlung
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/mopsi.jpg" th:src="@{/img/mopsi.jpg}">
+              Modulhandbuch
+            </a>
+          </li>
+          <li>
+            <a href="#" th:href="@{./}">
+              <img src="../static/img/nick.jpg" th:src="@{/img/nick.jpg}">
+              Terminfindung
+            </a>
+          </li>
+          <li>
+            <a href="https://mops.style">
+              <img src="../static/img/peter.jpg" th:src="@{/img/peter.jpg}">
+              Styleguide
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <nav class="navigation navigation-secondary" is="mops-navigation" th:replace="${navigation} ?: ~{}">
+        <ul>
+          <li>
+            <a href="#">Link 1</a>
+          </li>
+          <li class="active">
+            <a href="#">Link 2</a>
+          </li>
+          <li>
+            <a href="#">Link 3</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</header>
+<div class="main-wrapper" th:insert="${bodycontent} ?: ~{:: main}">
+  <main is="mops-content">
+    <div class="alert alert-warning" role="alert">
+      Um hier Inhalt zu sehen, muss dem <a href="http://mops.style">Styleguide</a> gefolgt werden.
+    </div>
+  </main>
+</div>
+<footer class="footer footer-main">
+  <div class="account">
+    <a class="account-link" href="https://keycloak.cs.hhu.de/auth/realms/MOPS/account">
+      <img class="account-image" src="../static/img/elvis.jpg"
+           th:src="${account} ? (${account.image} ?: @{/img/elvis.jpg}) : @{/img/elvis.jpg}">
+      <div class="account-name">
+        <small th:if="${account}" th:text="${account} ? 'Angemeldet als' : ''">Angemeldet als</small>
+        <span
+          th:text="${account} ? (${account.name} ? ${#strings.abbreviate(account.name, 30)} : 'Unbekannt') : 'Anmelden'">Name</span>
+        <small th:if="${account}"
+               th:text="${account} ? (${#lists.size(account.roles)} ? 'in ' + (${#lists.size(account.roles)} == 1 ? 'der Rolle' : 'den Rollen') + ' ' + ${#strings.abbreviate(#strings.setJoin(account.roles, ', '), 30)} : 'in keinen Rollen') : 'in keinen Rollen'">in
+          den Rollen ...</small>
+      </div>
+    </a>
+    <div class="account-logout-wrapper" th:if="${account}">
+      <a class="account-logout" href="/logout" th:href="@{/logout}">Abmelden</a>
+    </div>
+  </div>
+  <span class="copyright" th:unless="${account}">© 2020 Mops</span>
+</footer>
+</body>
+</html>
