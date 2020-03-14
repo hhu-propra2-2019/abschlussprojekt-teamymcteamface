@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <meta charset="utf-8">
-  <title>Foren</title>
+  <title th:text="${forumTitle} + ' - ' + ${topicTitle}"></title>
   <th:block th:fragment="headcontent">
     <style>
       main > div:first-child {
@@ -52,32 +52,34 @@
 <header>
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
         <ul>
-          <li class="">
-            <a href="" th:href="@{./}">Dashboard</a>
-          </li>
-          <li class="active">
-            <a href="" th:href="@{./my-forums}">Meine Foren</a>
-          </li>
-          <li class="">
-            <a href="" th:href="@{./profile}">Profil</a>
-          </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./}">Dashboard</a>
+            </li>
+            <li class="active">
+                <a href="#welcome" th:href="@{./my-forums}">Meine Foren</a>
+            </li>
+            <li class="">
+              <a href="#welcome" th:href="@{./profile}">Profil</a>
+            </li>
         </ul>
     </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1>Meine Foren:</h1>
+  <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
+      <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
     </tr>
     </thead>
     <tbody>
-    <div th:each="forum : ${forums}">
-      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]]">
-          <td th:text="${forum.getTitle()}">AlDat</td>
-          <td th:text="${forum.getLatestUpdate()}">14:37Uhr</td>
+    <div th:each="thread : ${threads}">
+      <tr class="mops-row" th:onclick="">
+          <td th:text="${thread.getDescription()}">lorem</td>
+          <td th:text="${thread.getAuthor()}"></td>
+          <td th:text="${thread.getLatestUpdate()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>
