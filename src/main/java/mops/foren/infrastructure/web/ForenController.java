@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -62,14 +63,14 @@ public class ForenController {
      * @param model - Model sent to the user
      * @return - a redirect to the requested page
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forumIdAsString, @PathVariable String topicIdAsString, Model model) {
+    @GetMapping("/my-forums/{forumID}/{topicID}")
+    public String enterATopic(@PathVariable String forumID, @PathVariable String topicID, Model model) {
 
-        ForumId forumId = new ForumId(Long.valueOf(forumIdAsString));
+        ForumId forumId = new ForumId(Long.valueOf(forumID));
         String forumTitle = this.forumService.getMockForum(forumId).getTitle();
         model.addAttribute("forumTitle", forumTitle);
 
-        TopicId topicId = new TopicId(Long.parseLong(topicIdAsString));
+        TopicId topicId = new TopicId(Long.parseLong(topicID));
         List<Thread> threads = this.threadService.getMockThreads(topicId);
 
         model.addAttribute("threads", threads);
@@ -77,8 +78,14 @@ public class ForenController {
         return "list-threads";
     }
 
-    @GetMapping("/my-forums/{forenID}/{topicID}/newThread")
-    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
+    /*@GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
+    public String createNewThread(@PathVariable String forenID, @PathVariable String topicIdAsString, @PathVariable String topicID) {
+
         return "createThread";
-    }
+    }*/
+
+    @PostMapping("/my-forums/{forenID}/{topicID}/create-thread")
+        public String postThreadIntoSystem() {
+            return "redirect:/{forenID}/{topicID}";
+        }
 }
