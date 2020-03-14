@@ -20,7 +20,7 @@ public class ThreadService {
     }
 
     /**
-     * Method to get mocked threads
+     * Method to get mocked threads.
      *
      * @param topicId The topic id
      * @return A list of threads that belong to the topic

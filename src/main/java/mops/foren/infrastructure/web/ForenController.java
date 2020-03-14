@@ -5,7 +5,7 @@ import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import org.springframework.stereotype.Controller;
@@ -55,13 +55,24 @@ public class ForenController {
         return "forum-mainpage";
     }
 
+    /**
+     * Redirect the user to a certain list of topics.
+     * @param forumIdAsString - Forum ID
+     * @param topicIdAsString - Topic ID
+     * @param model - Model sent to the user
+     * @return - a redirect to the requested page
+     */
     @GetMapping("/my-forums/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+    public String enterATopic(@PathVariable String forumIdAsString, @PathVariable String topicIdAsString, Model model) {
 
-        model.addAttribute("forumTitle", this.forumService.getMockForum(
-                new ForumId(Long.valueOf(forenID))).getTitle());
+        ForumId forumId = new ForumId(Long.valueOf(forumIdAsString));
+        String forumTitle = this.forumService.getMockForum(forumId).getTitle();
+        model.addAttribute("forumTitle", forumTitle);
 
-        model.addAttribute("threads", this.threadService.getMockThreads(new TopicId(Long.parseLong(topicID))));
+        TopicId topicId = new TopicId(Long.parseLong(topicIdAsString));
+        List<Thread> threads = this.threadService.getMockThreads(topicId);
+
+        model.addAttribute("threads", threads);
 
         return "list-threads";
     }
