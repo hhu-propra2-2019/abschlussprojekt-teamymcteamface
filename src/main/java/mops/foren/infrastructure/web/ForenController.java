@@ -4,7 +4,6 @@ import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.User;
-import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -52,7 +51,7 @@ public class ForenController {
     @GetMapping("/my-forums")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String allForum(KeycloakAuthenticationToken token, Model model) {
-        User user = getUserFromDB(token);
+        User user = userService.getUserFromDB(token);
         model.addAttribute("forums", forumService.getForums(user));
         model.addAttribute("forum", form);
         return "my-forums";
@@ -68,13 +67,13 @@ public class ForenController {
      * @return A redirect to my-forums.
      */
     @PostMapping("/my-forums/newForum")
-    @SuppressWarnings("LineLength")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
-    public String newForum(KeycloakAuthenticationToken token, @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
+    public String newForum(KeycloakAuthenticationToken token,
+                           @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
         //errors
-        User user = getUserFromDB(token);
-        Forum forum = forumForm.map();
-        userService.addForum(user, forum);
+        User user = userService.getUserFromDB(token);
+        Forum forum = forumForm.getForum();
+        userService.addForumInUser(user, forum);
         return "redirect:/my-forums";
     }
 
@@ -91,24 +90,5 @@ public class ForenController {
     @GetMapping("/my-forums/{forenID}/{topicID}/newThread")
     public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
         return "createThread";
-    }
-
-    private User getUserFromToken(KeycloakAuthenticationToken token) {
-        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
-        String name = principal.getName();
-        String email = principal.getKeycloakSecurityContext().getIdToken().getEmail();
-        User user = User.builder()
-                .name(name)
-                .email(email)
-                .build();
-        return user;
-    }
-
-    private User getUserFromDB(KeycloakAuthenticationToken token) {
-        User user = getUserFromToken(token);
-        if (!userService.checkIfUserIsExistent(user)) {
-            userService.addNewUser(user);
-        }
-        return userService.getUser(user);
     }
 }

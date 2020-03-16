@@ -18,13 +18,5 @@ public class User {
     public boolean checkPermission(Id id, Permission permission) {
         return this.permissionManager.checkPermission(id, permission);
     }
-
-    public List<ForumId> getUserForums() {
-        return this.forums;
-    }
-
-    public boolean hasForen() {
-        return forums != null;
-    }
 }
 

@@ -5,11 +5,11 @@ import mops.foren.domain.model.User;
 
 public interface IUserRepository {
 
-    void addNewUser(User user);
+    void addNewUserToDB(User user);
 
-    User getUser(User user);
+    User getUserFromDB(User user);
 
-    void updateUser(User user, Forum forum);
+    void addForumToUser(User user, Forum forum);
 
-    boolean isUserExistent(User user);
+    Boolean isUserNotInDB(User user);
 }

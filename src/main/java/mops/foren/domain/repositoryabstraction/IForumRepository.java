@@ -6,5 +6,5 @@ import mops.foren.domain.model.User;
 import java.util.List;
 
 public interface IForumRepository {
-    List<Forum> getForums(User user);
+    List<Forum> getForumsFromDB(User user);
 }

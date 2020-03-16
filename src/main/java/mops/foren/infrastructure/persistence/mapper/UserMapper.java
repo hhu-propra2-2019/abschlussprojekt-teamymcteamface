@@ -32,7 +32,6 @@ public abstract class UserMapper {
      * @param user the user object that should be mapped.
      * @return the resulting UserDTO object.
      */
-
     public static UserDTO mapUserToUserDto(User user) {
         return UserDTO.builder()
                 .username(user.getName())
