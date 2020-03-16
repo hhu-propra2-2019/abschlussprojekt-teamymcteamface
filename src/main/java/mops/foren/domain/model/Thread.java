@@ -12,4 +12,6 @@ public class Thread {
 
     private String description;
 
+    private User author;
+
 }
