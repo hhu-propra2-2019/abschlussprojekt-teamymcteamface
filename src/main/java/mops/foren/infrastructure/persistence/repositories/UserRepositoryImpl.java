@@ -1,4 +1,4 @@
-package mops.foren.infrastructure.persistence.mapper;
+package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
@@ -6,8 +6,8 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
-import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
+import mops.foren.infrastructure.persistence.mapper.ForumMapper;
+import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.LinkedList;
@@ -35,31 +35,18 @@ public class UserRepositoryImpl implements IUserRepository {
 
     @Override
     public void addNewUser(User user) {
-        UserDTO userDTO = mapUserToUserDto(user);
+        UserDTO userDTO = UserMapper.mapUserToUserDto(user);
         userRepository.save(userDTO);
     }
 
-    private UserDTO mapUserToUserDto(User user) {
-        return UserDTO.builder()
-                .username(user.getName())
-                .email(user.getEmail())
-                .build();
-    }
 
     @Override
     public User getUser(User user) {
         Optional<UserDTO> userDTO = userRepository.findById(user.getName());
         List<ForumId> forenIds = getForenIdsFromUser(userDTO);
-        return mapUserDtoToUser(userDTO, forenIds);
+        return UserMapper.mapUserDtoToUser(userDTO, forenIds);
     }
 
-    private User mapUserDtoToUser(Optional<UserDTO> userDTO, List<ForumId> forenIds) {
-        return User.builder()
-                .name(userDTO.get().getUsername())
-                .email(userDTO.get().getEmail())
-                .forums(forenIds)
-                .build();
-    }
 
     private List<ForumId> getForenIdsFromUser(Optional<UserDTO> userDTO) {
         if (userDTO.get().getForums() == null) {
@@ -75,16 +62,9 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public void updateUser(User user, Forum forum) {
         UserDTO userDTO = userRepository.findById(user.getName()).get();
-        ForumDTO forumDTO = mapForumToForumDTO(forum);
+        ForumDTO forumDTO = ForumMapper.mapForumToForumDTO(forum);
         userDTO.getForums().add(forumDTO);
         userRepository.save(userDTO);
-    }
-
-    private ForumDTO mapForumToForumDTO(Forum forum) {
-        return ForumDTO.builder()
-                .title(forum.getTitle())
-                .description(forum.getDescription())
-                .build();
     }
 
 

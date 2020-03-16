@@ -1,11 +1,10 @@
-package mops.foren.infrastructure.persistence.mapper;
+package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.Forum;
-import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
+import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -33,16 +32,10 @@ public class ForumRepositoryImpl implements IForumRepository {
                 .collect(Collectors.toList());
     }
 
-    private Forum mapForumDtoToForum(ForumDTO f) {
-        return Forum.builder().id(new ForumId(f.getId()))
-                .title(f.getTitle())
-                .description(f.getDescription())
-                .build();
-    }
 
     private List<Forum> getAllForums(List<ForumDTO> forumDtos) {
         return forumDtos.stream()
-                .map(this::mapForumDtoToForum)
+                .map(ForumMapper::mapForumDtoToForum)
                 .collect(Collectors.toList());
     }
 }
