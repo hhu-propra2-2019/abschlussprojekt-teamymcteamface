@@ -22,7 +22,7 @@ public class ForumService {
      * @return A list of forums.
      */
     public List<Forum> getForums(User user) {
-        return forumRepository.getForums(user);
+        return forumRepository.getForumsFromDB(user);
     }
 
 }

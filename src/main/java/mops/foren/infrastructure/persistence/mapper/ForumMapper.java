@@ -9,15 +9,16 @@ import org.springframework.stereotype.Service;
 public abstract class ForumMapper {
 
     /**
-     * This method maps a ForumDto object to a Forum object.
+     * This method maps a ForumDto object to the corresponding Forum object.
      *
-     * @param f a ForumDTO.
+     * @param forumDTO a ForumDTO.
      * @return the corresponding Forum.
      */
-    public static Forum mapForumDtoToForum(ForumDTO f) {
-        return Forum.builder().id(new ForumId(f.getId()))
-                .title(f.getTitle())
-                .description(f.getDescription())
+    public static Forum mapForumDtoToForum(ForumDTO forumDTO) {
+        return Forum.builder()
+                .id(new ForumId(forumDTO.getId()))
+                .title(forumDTO.getTitle())
+                .description(forumDTO.getDescription())
                 .build();
     }
 

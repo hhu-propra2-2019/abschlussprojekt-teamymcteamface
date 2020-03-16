@@ -3,6 +3,8 @@ package mops.foren.applicationservices;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
+import org.keycloak.KeycloakPrincipal;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 
 @ApplicationService
 public class UserService {
@@ -12,20 +14,47 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public boolean checkIfUserIsExistent(User user) {
-        return userRepository.isUserExistent(user);
+    /**
+     * Checks if a user is already in the db.
+     * If the user is not in the db, a new user will be created.
+     *
+     * @param token the token from keycloak.
+     * @return the user form the db.
+     */
+    public User getUserFromDB(KeycloakAuthenticationToken token) {
+        User user = getUserFromToken(token);
+        if (checkIfUserIsNotInDB(user)) {
+            addNewUser(user);
+        }
+        return getUser(user);
     }
 
-    public void addNewUser(User user) {
-        userRepository.addNewUser(user);
+    private boolean checkIfUserIsNotInDB(User user) {
+        return userRepository.isUserNotInDB(user);
+    }
+
+    private void addNewUser(User user) {
+        userRepository.addNewUserToDB(user);
 
     }
 
-    public User getUser(User user) {
-        return userRepository.getUser(user);
+    private User getUser(User user) {
+        return userRepository.getUserFromDB(user);
     }
 
-    public void addForum(User user, Forum forum) {
-        userRepository.updateUser(user, forum);
+    public void addForumInUser(User user, Forum forum) {
+        userRepository.addForumToUser(user, forum);
     }
+
+    private User getUserFromToken(KeycloakAuthenticationToken token) {
+        KeycloakPrincipal principal = (KeycloakPrincipal) token.getPrincipal();
+        String name = principal.getName();
+        String email = principal.getKeycloakSecurityContext().getIdToken().getEmail();
+        User user = User.builder()
+                .name(name)
+                .email(email)
+                .build();
+        return user;
+    }
+
 }

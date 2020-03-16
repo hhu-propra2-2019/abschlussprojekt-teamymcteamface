@@ -20,7 +20,7 @@ public class ForumForm {
      *
      * @return matching Forum.
      */
-    public Forum map() {
+    public Forum getForum() {
         return Forum.builder()
                 .description(this.description)
                 .title(this.title)

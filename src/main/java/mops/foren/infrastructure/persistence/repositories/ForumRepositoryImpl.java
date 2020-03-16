@@ -18,8 +18,14 @@ public class ForumRepositoryImpl implements IForumRepository {
         this.forumRepository = forumRepository;
     }
 
+    /**
+     * This method get the forums of an specific user from the db.
+     *
+     * @param user which forums are requested.
+     * @return a list of forums from the user.
+     */
     @Override
-    public List<Forum> getForums(User user) {
+    public List<Forum> getForumsFromDB(User user) {
         List<ForumDTO> forumDtos = getFroumDTOs(user);
         List<Forum> forumList = getAllForums(forumDtos);
         return forumList;
@@ -27,7 +33,7 @@ public class ForumRepositoryImpl implements IForumRepository {
 
     private List<ForumDTO> getFroumDTOs(User user) {
         return user.getForums().stream()
-                .map(f -> forumRepository.findById(f.getId()))
+                .map(forumId -> forumRepository.findById(forumId.getId()))
                 .map(forumDTO -> forumDTO.get())
                 .collect(Collectors.toList());
     }
