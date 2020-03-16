@@ -41,9 +41,16 @@ public class ForenController {
         return "profile";
     }
 
+
+    /**
+     * Method checks if user is in the DB and gets all his forums.
+     *
+     * @param token Keyclock token.
+     * @param model Content we add to html per thymleaf.
+     * @return Get-mapping for my-forums.
+     */
     @GetMapping("/my-forums")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
-    @SuppressWarnings("checkstyle:MissingJavadocMethod")
     public String allForum(KeycloakAuthenticationToken token, Model model) {
         User user = getUserFromDB(token);
         model.addAttribute("forums", forumService.getForums(user));
@@ -51,8 +58,18 @@ public class ForenController {
         return "my-forums";
     }
 
+
+    /**
+     * Method creats a new Forum.
+     *
+     * @param token     Keyclock token.
+     * @param forumForm A model attribute from thymleaf.
+     * @param errors    Errors that occured during the parsing of the ForumForm.
+     * @return A redirect to my-forums.
+     */
     @PostMapping("/my-forums/newForum")
-    @SuppressWarnings({"LineLength", "checkstyle:MissingJavadocMethod"})
+    @SuppressWarnings("LineLength")
+    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newForum(KeycloakAuthenticationToken token, @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
         //errors
         User user = getUserFromDB(token);
