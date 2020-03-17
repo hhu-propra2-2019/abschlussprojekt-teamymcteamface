@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +24,7 @@ public class ThreadDTO {
     @ManyToOne
     private TopicDTO topic;
 
-    @OneToMany(mappedBy = "thread")
-    private Set<PostDTO> posts;
+    @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER)
+    private List<PostDTO> posts;
 
 }

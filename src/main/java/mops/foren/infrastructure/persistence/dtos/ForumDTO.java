@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,5 +28,5 @@ public class ForumDTO {
     private Set<UserDTO> user;
 
     @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
-    private Set<TopicDTO> topics;
+    private List<TopicDTO> topics;
 }

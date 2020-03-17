@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -29,7 +29,7 @@ public class TopicDTO {
     @ManyToOne
     private ForumDTO forum;
 
-    @OneToMany(mappedBy = "topic")
-    private Set<ThreadDTO> threads;
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    private List<ThreadDTO> threads;
 
 }
