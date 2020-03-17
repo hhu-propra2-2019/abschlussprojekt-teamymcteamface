@@ -1,7 +1,7 @@
 package mops.foren;
 
+import com.c4_soft.springaddons.test.security.context.support.WithMockKeycloackAuth;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -12,8 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -50,10 +49,9 @@ public class ForenControllerTest {
                 .andExpect(view().name("profile"));
     }
 
-
     @Test
-    @Disabled("Mock Keycloak so we can Test")
-    void testMyForumTemplate() throws Exception {
+    @WithMockKeycloackAuth(roles = "studentin")
+    void testMyForumTemplateAuthenticated() throws Exception {
         mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
