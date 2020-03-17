@@ -1,9 +1,6 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.Permission;
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 
 import java.util.List;
@@ -25,10 +22,10 @@ public class PostService {
      *
      * @param post     The post to add
      * @param user     The user that wants to create the post
-     * @param threadId The threadId the post belongs to
+     * @param forumId The threadId the post belongs to
      */
-    public void addPost(Post post, User user, ThreadId threadId) {
-        if (user.checkPermission(threadId, Permission.CREATE_POST)) {
+    public void addPost(Post post, User user, ForumId forumId) {
+        if (user.checkPermission(forumId, Permission.CREATE_POST)) {
             // ADD
         }
 
