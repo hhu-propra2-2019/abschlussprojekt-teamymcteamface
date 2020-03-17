@@ -2,7 +2,7 @@ package mops.foren.domain.model;
 
 import lombok.Data;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 public class Post {
@@ -12,7 +12,7 @@ public class Post {
 
     private final User author;
 
-    private final Date creationDate;
+    private final LocalDateTime creationDate;
 
     private String text;
 
