@@ -2,12 +2,12 @@
 
 [Note]
 ====
-* Administratoren legen beliebig viele Diskussionsforen an
-* Gruppen sollen eigene Foren erstellen und verwalten können
+* Administratoren legen beliebig viele Topics an.
+* Gruppen sollen eigene Foren erstellen und verwalten können (Dies geschieht in "Gruppenbildung").
 ** diese dürfen nur von Mitgliedern der Gruppe lesbar sein (außer Admins)
 * es gibt anonyme Posts, sonst werden Klarnamen verwendet
-* Foren sollen einen in einen Moderationsmodus versetzt werden können
-* es soll Möglichkeiten geben differenziert in gesamten Foren und Teilen dessen zu suchen
+* Topics sollen in einen Moderationsmodus versetzt werden können
+* es soll Möglichkeiten geben differenziert in gesamten Foren und Teilen dessen zu suchen.
 ====
 
 == User Stories
@@ -35,14 +35,6 @@
 4. Der Student versucht `erfolglos`, das Medium des Threads gegen eines `größer als 10 MB` zu `ersetzen`.
 5. Der Student `ersetzt` das Medium gegen ein anderes gültiges Medium.
 
-=== Student, Gruppe
-
-1. Eine Studentin `erstellt` ein eigenes `Gruppenforum` und wird `automatisch` zum Admin des Forums.
-2. Sie `fügt` weitere Studenten zum Gruppenforum `hinzu`.
-3. Sie `ernennt` eine andere Studentin zum Admin des Gruppenforums.
-4. Sie `schließt` einen anderen Studenten aus ihrem Gruppenforum `aus`.
-5. Sie `löscht` das Gruppenforum.
-
 === Moderator, Freigabe
 
 1. Der Moderator erhält einen Thread aus einem moderierten Forum, den er `freigeben` soll.
@@ -62,10 +54,9 @@
 
 === Admin, Standard
 
-1. Der Admin `erstellt` ein neues Forum.
-2. Der Admin `erstellt` eine neue Topic.
-3. Der Admin `ernennt` einen neuen Admin für das Forum.
-4. Der Admin `löscht` das Forum `vollständig`.
+1. Der Admin `erstellt` eine neue Topic.
+2. Der Admin `ernennt` einen neuen Admin für das Topic.
+3. Der Admin `löscht` das Topic `vollständig`.
 
 === Admin, Korrektur
 
