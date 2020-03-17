@@ -1,55 +1,55 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.Forum;
-import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
+import mops.foren.domain.repositoryabstraction.ITopicRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
+import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
+import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
-public class ForumRepositoryImpl implements IForumRepository {
-    ForumJpaRepository forumRepository;
+public class TopicRepositoryImpl implements ITopicRepository {
+    private TopicJpaRepository topicRepository;
 
-    public ForumRepositoryImpl(ForumJpaRepository forumRepository) {
-        this.forumRepository = forumRepository;
+    public TopicRepositoryImpl(TopicJpaRepository topicRepository) {
+        this.topicRepository = topicRepository;
     }
 
     /**
-     * This method get the forums of an specific user from the db.
+     * This method get the topics of an specific forum from the db.
      *
-     * @param user which forums are requested.
-     * @return a list of forums from the user.
+     * @param forum which forums are requested.
+     * @return a list of topics from the user.
      */
     @Override
-    public List<Forum> getForumsFromDB(User user) {
-        List<ForumDTO> forumDtos = getFroumDTOs(user);
-        List<Forum> forumList = getAllForums(forumDtos);
-        return forumList;
+    public List<Topic> getTopicsFromDB(TopicId topicId) {
+        List<TopicDTO> topicDtos = getTopicDTOs(user);
+        List<Topic> topicList = getAllTopics(topicDtos);
+        return topicList;
     }
 
-    private List<ForumDTO> getFroumDTOs(User user) {
-        return user.getForums().stream()
-                .map(forumId -> forumRepository.findById(forumId.getId()))
+    private List<ForumDTO> getTopicDTOs(Forum forum) {
+        return forum.getTopics().stream()
+                .map(forumId -> topicRepository.findById(forum.getId().getId()))
                 .map(forumDTO -> forumDTO.get())
                 .collect(Collectors.toList());
     }
 
 
-    private List<Forum> getAllForums(List<ForumDTO> forumDtos) {
-        return forumDtos.stream()
-                .map(ForumMapper::mapForumDtoToForum)
+    private List<Topic> getAllTopics(List<TopicDTO> topicDtos) {
+        return topicDtos.stream()
+                .map(TopicMapper::mapTopicDtoToTopic)
                 .collect(Collectors.toList());
     }
 
-    public Forum getOneForumFromDB(ForumId forumId) {
-        return forumRepository.findById(forumId.getId()).stream()
-                .map(ForumMapper::mapForumDtoToForum)
+    public Topic getOneTopicFromDB(TopicId topicId) {
+        return topicRepository.findById(topicId.getId()).stream()
+                .map(TopicMapper::mapTopicDtoToTopic)
                 .collect(Collectors.toList()).get(0);
     }
 }
