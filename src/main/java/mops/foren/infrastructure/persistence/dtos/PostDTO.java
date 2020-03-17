@@ -31,4 +31,6 @@ public class PostDTO {
 
     @ManyToOne
     private UserDTO user;
+
+    private String text;
 }
