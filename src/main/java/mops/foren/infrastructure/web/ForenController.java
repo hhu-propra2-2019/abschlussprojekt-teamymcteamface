@@ -1,8 +1,10 @@
 package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -23,11 +25,13 @@ public class ForenController {
 
     UserService userService;
     ForumService forumService;
+    TopicService topicService;
     ForumForm form = new ForumForm("", "");
 
-    public ForenController(UserService userService, ForumService forumService) {
+    public ForenController(UserService userService, ForumService forumService, TopicService topicService) {
         this.userService = userService;
         this.forumService = forumService;
+        this.topicService = topicService;
     }
 
     @GetMapping("/")
@@ -78,8 +82,14 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}")
-    public String enterAForum(@PathVariable String forenID) {
-        return "/";
+    public String enterAForum(@PathVariable String forenID, Model model) {
+
+        ForumId forumIdWrapped = new ForumId(Long.valueOf(forenID));
+
+        model.addAttribute("topics", this.topicService.getTopics(forumIdWrapped));
+        model.addAttribute("forum", this.forumService.getForum(forumIdWrapped));
+
+        return "forum-mainpage";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}")

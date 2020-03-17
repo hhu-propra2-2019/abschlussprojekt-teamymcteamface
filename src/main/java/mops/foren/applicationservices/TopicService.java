@@ -8,6 +8,7 @@ import mops.foren.domain.repositoryabstraction.ITopicRepository;
 
 import java.util.List;
 
+@ApplicationService
 public class TopicService {
 
     private ITopicRepository topicRepository;
