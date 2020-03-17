@@ -50,6 +50,13 @@ public class ForenControllerTest {
     }
 
     @Test
+    void testMyForumTemplateNotAuthenticated() throws Exception {
+        mvcMock.perform(get("/my-forums"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/sso/login"));
+    }
+
+    @Test
     @WithMockKeycloackAuth(roles = "studentin")
     void testMyForumTemplateAuthenticated() throws Exception {
         mvcMock.perform(get("/my-forums"))
