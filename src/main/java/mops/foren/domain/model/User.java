@@ -12,6 +12,7 @@ public class User {
     private final String name;
     private String email;
     private PermissionManager permissionManager;
+    private List<ForumId> forums;
 
 
     private Image image;
@@ -20,7 +21,7 @@ public class User {
         return this.permissionManager.checkPermission(id, permission);
     }
 
-    public Boolean checkPermission(ForumId id, Permission permission,User author) {
+    public Boolean checkPermission(ForumId id, Permission permission, User author) {
         return this.permissionManager.checkPermission(id, permission, author, this);
     }
 
