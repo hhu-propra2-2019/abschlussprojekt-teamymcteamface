@@ -64,4 +64,11 @@ public class ForenControllerTest {
                 .andExpect(view().name("my-forums"));
     }
 
+    @Test
+    @WithMockKeycloackAuth(roles = "wrongRole")
+    void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
+        mvcMock.perform(get("/my-forums"))
+                .andExpect(status().is(403));
+    }
+
 }
