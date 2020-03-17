@@ -1,21 +1,18 @@
 <!DOCTYPE html>
 <html lang="en"
-      th:replace="~{mopslayout :: html(name='Foren - Meine Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <title>Foren</title>
-    <th:block th:fragment="headcontent">
-        <style>
-            thead {
-                background: #52a1eb !important;
-            }
-
-            main > div:first-child {
-                position: relative;
-                margin-bottom: 1rem;
-            }
-
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <meta charset="utf-8">
+  <title>Foren</title>
+  <th:block th:fragment="headcontent">
+    <style>
+      main > div:first-child {
+        position: relative;
+        margin-bottom: 1rem;
+      }
             main > div:first-child img {
                 border-radius: 1rem;
                 border: 1px solid black;
@@ -29,12 +26,24 @@
                 text-shadow: 0 0 3px black;
             }
 
-            @media (min-width: 992px) {
-                main > div:first-child > h2 {
-                    font-size: 2.4rem;
-                }
-            }
+      .mops-row {
+        transition-duration: 0.3s;
+      }
 
+      .mops-row>*:hover {
+        cursor: pointer;
+      }
+
+      .mops-row:hover {
+        background: #a9d0f5;
+        transition-duration: 0.3s;
+      }
+
+      @media (min-width: 992px) {
+        main > div:first-child > h2 {
+          font-size: 2.4rem;
+        }
+      }
             @media (max-width: 576px) {
                 main > div:first-child > h2 {
                     font-size: 1.0rem;
@@ -47,53 +56,36 @@
 <header>
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
         <ul>
-            <li class="active">
-                <a href="#welcome" th:href="@{./}">Dashboard</a>
-            </li>
-            <li class="">
-                <a href="#welcome" th:href="@{./profile}">Profil</a>
-            </li>
-            <li class="">
-                <a href="#welcome" th:href="@{./blank}">Blank</a>
-            </li>
-            <li class="">
-                <a href="#welcome" th:href="@{./sidenav}">Sidenav</a>
-            </li>
-            <li class="">
-                <a href="#welcome" th:href="@{./#welcome}">Propra 2</a>
-            </li>
-
+          <li class="">
+            <a href="" th:href="@{./}">Dashboard</a>
+          </li>
+          <li class="active">
+            <a href="" th:href="@{./my-forums}">Meine Foren</a>
+          </li>
+          <li class="">
+            <a href="" th:href="@{./profile}">Profil</a>
+          </li>
         </ul>
     </nav>
 </header>
 <main th:fragment="bodycontent">
-
-    <h1>Meine Foren:</h1>
-    <th:block th:each="forum : ${forums}">
-        <div class="row">
-            <div class="card">
-                <div class="card-header" th:text="${forum?.title}">
-                    Propra2
-                </div>
-                <div class="card-body">
-                    <h5 class="card-title">offizielles Forum</h5>
-                    <a class="btn btn-primary" href="#">einsehen</a>
-                </div>
-            </div>
-        </div>
-    </th:block>
-    <div>
-        <h2>Ein neues Forum angelgen</h2>
-        <form method="post" th:action="@{/my-forums/newForum}" th:object="${forum}">
-            <p>Geben Sie einen coolen Titel ein:</p>
-            <input class="form-group" id="title" name="title" placeholder="Titel"
-                   th:value="*{title}" type="text">
-            <p>Geben Sie eine noch coolere Beschreibung ein:</p>
-            <input class="form-control" id="description" name="description" placeholder="Beschreibung"
-                   th:value="*{description}" type="text">
-            <input class="btn btn-primary" type="submit" value="Erstelle ein neues Forum">
-        </form>
+  <h1>Meine Foren:</h1>
+  <table class="table table-light">
+    <thead class="thead-light">
+    <tr>
+      <th>Name</th>
+      <th>Letzte Änderung</th>
+    </tr>
+    </thead>
+    <tbody>
+    <div th:each="forum : ${forums}">
+      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]]">
+          <td th:text="${forum.getTitle()}">AlDat</td>
+          <td th:text="${forum.getTitle()}">14:37Uhr</td>
+      </tr>
     </div>
+    </tbody>
+  </table>
 </main>
 </body>
 </html>
