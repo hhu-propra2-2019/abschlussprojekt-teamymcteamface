@@ -1,12 +1,18 @@
 package mops.foren.infrastructure.persistence.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 @Table(name = "forum")
 public class ForumDTO {
     @Id
@@ -17,13 +23,8 @@ public class ForumDTO {
 
     private String description;
 
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "user_forum",
-            joinColumns = {@JoinColumn(name = "id")},
-            inverseJoinColumns = {@JoinColumn(name = "username")})
-    private Set<UserDTO> users;
+    @ManyToMany(mappedBy = "forums")
+    private Set<UserDTO> user;
 
     @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
     private Set<TopicDTO> topics;

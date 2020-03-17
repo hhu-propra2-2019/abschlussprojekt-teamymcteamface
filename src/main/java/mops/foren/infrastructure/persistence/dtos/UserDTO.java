@@ -1,12 +1,17 @@
 package mops.foren.infrastructure.persistence.dtos;
 
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
 
-@Entity
+
 @Data
+@EqualsAndHashCode(exclude = "forums")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
 @Table(name = "user")
 public class UserDTO {
     @Id
@@ -16,7 +21,7 @@ public class UserDTO {
 
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_forum",
             joinColumns = {@JoinColumn(name = "username")},
