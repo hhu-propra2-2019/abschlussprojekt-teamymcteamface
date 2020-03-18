@@ -29,7 +29,7 @@ public class TopicDTO {
     @ManyToOne
     private ForumDTO forum;
 
-    @OneToMany(mappedBy = "topic")
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
     private List<ThreadDTO> threads;
 
 }
