@@ -1,5 +1,6 @@
 package mops.foren.domain.repositoryabstraction;
 
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.Topic;
 

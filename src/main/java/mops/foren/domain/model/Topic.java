@@ -1,8 +1,10 @@
 package mops.foren.domain.model;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Topic {
     private final TopicId id;
 

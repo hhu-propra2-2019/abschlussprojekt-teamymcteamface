@@ -8,7 +8,7 @@ import mops.foren.domain.model.User;
 import java.util.List;
 
 public interface IPostRepository {
-    List<Thread> getPostsFromThread(Thread thread);
+    List<Post> getPostsFromThread(Thread thread);
 
     Post getPostById(PostId postId);
 

@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public abstract class UserMapper {
-
     /**
      * Maps a userDTO object to the resulting user object.
      *
@@ -37,5 +37,21 @@ public abstract class UserMapper {
                 .username(user.getName())
                 .email(user.getEmail())
                 .build();
+    }
+
+    public static User mapUserDtoToUser(UserDTO userDTO) {
+        List<ForumId> forenIds = getForumIdFromUserDto(userDTO);
+        return User.builder()
+                .name(userDTO.getUsername())
+                .email(userDTO.getEmail())
+                .forums(forenIds)
+                .build();
+    }
+
+    private static List<ForumId> getForumIdFromUserDto(UserDTO userDTO) {
+        return userDTO.getForums().stream()
+                .map(ForumMapper::mapForumDtoToForum)
+                .map(forum -> new ForumId(forum.getId().getId()))
+                .collect(Collectors.toList());
     }
 }

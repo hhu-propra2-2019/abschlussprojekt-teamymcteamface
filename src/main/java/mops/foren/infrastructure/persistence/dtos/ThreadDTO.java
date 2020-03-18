@@ -21,6 +21,8 @@ public class ThreadDTO {
 
     private String title;
 
+    private String description;
+
     @ManyToOne
     private TopicDTO topic;
 
