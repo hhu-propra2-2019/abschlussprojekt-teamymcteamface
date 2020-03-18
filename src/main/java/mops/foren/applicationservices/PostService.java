@@ -5,6 +5,7 @@ import mops.foren.domain.repositoryabstraction.IPostRepository;
 
 import java.util.List;
 
+@ApplicationService
 public class PostService {
 
     private IPostRepository postRepository;
@@ -14,7 +15,7 @@ public class PostService {
     }
 
     public List<Post> getPosts(ThreadId threadId) {
-        throw new UnsupportedOperationException();
+        return this.postRepository.getPostsFromDB(threadId);
     }
 
     /**
