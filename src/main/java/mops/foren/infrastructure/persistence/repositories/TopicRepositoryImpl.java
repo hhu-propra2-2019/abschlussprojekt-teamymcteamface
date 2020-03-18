@@ -18,8 +18,9 @@ public class TopicRepositoryImpl implements ITopicRepository {
     private TopicJpaRepository topicRepository;
     private ForumJpaRepository forumRepository;
 
-    public TopicRepositoryImpl(TopicJpaRepository topicRepository) {
+    public TopicRepositoryImpl(TopicJpaRepository topicRepository, ForumJpaRepository forumRepository) {
         this.topicRepository = topicRepository;
+        this.forumRepository = forumRepository;
     }
 
     /**
@@ -28,6 +29,7 @@ public class TopicRepositoryImpl implements ITopicRepository {
      * @param forum which forums are requested.
      * @return a list of topics from the user.
      */
+    @Override
     public List<Topic> getTopicsFromDB(ForumId forumId) {
         List<TopicDTO> topicDtos = getTopicDTOs(forumRepository.findById(forumId.getId()).get());
         List<Topic> topicList = getAllTopics(topicDtos);

@@ -9,8 +9,6 @@ VALUES ('studentin', 'stud0@gmail.com', 'Bernhard Zimmermann'),
        ('orga2', 'orga2@gmail.com', 'Marianne Baum'),
        ('actuator', 'actuator@gmail.com', 'Christian Meter');
 
-
-
 INSERT
 INTO forum (id, description, title)
 VALUES (1,
@@ -33,6 +31,12 @@ VALUES (1,
         'Wir lehren sie in diesem Modul das Machine Learning.
          Bitte besuchen sie regelmäßig die Vorlesung, da es kein Skript geben wird!',
         'Machine Learning');
+
+INSERT INTO `topic` (`id`,`description`,`moderated`,`title`,`forum_id`) VALUES (1,'Hier sind offizielle Ankündigungen und Informationen',1,'Ankündigungen',1);
+INSERT INTO `topic` (`id`,`description`,`moderated`,`title`,`forum_id`) VALUES (2,'Hier kann über Aufgaben und Probleme diskutiert werden',0,'Aufgabenstellungen',1);
+INSERT INTO `topic` (`id`,`description`,`moderated`,`title`,`forum_id`) VALUES (3,'Hier werden nur Memes gepostet',0,'Off-Topic',1);
+INSERT INTO `topic` (`id`,`description`,`moderated`,`title`,`forum_id`) VALUES (4,'Hier sind offizielle Ankündigungen und Informationen',1,'Ankündigungen',2);
+INSERT INTO `topic` (`id`,`description`,`moderated`,`title`,`forum_id`) VALUES (5,'Hier kann über Aufgaben und Probleme diskutiert werden',0,'Aufgabenstellungen',2);
 
 
 INSERT
