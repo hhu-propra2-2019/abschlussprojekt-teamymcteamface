@@ -1,11 +1,8 @@
 package mops.foren.infrastructure.web;
 
-import mops.foren.applicationservices.ForumService;
-import mops.foren.applicationservices.TopicService;
-import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Forum;
-import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.User;
+import mops.foren.applicationservices.*;
+import mops.foren.domain.model.*;
+import mops.foren.domain.model.Thread;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +15,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @SessionScope
@@ -26,6 +24,8 @@ public class ForenController {
     UserService userService;
     ForumService forumService;
     TopicService topicService;
+    ThreadService threadService;
+    PostService postService;
     ForumForm form = new ForumForm("", "");
 
     /**
@@ -34,12 +34,16 @@ public class ForenController {
      * @param userService  - injected UserService (ApplicationService)
      * @param forumService - injected ForumService (ApplicationService)
      * @param topicService - TopicService (ApplicationService)
+     * @param threadService - ThreadService (ApplicationService)
      */
     public ForenController(UserService userService, ForumService forumService,
-                           TopicService topicService) {
+                           TopicService topicService, ThreadService threadService,
+                           PostService postService) {
         this.userService = userService;
         this.forumService = forumService;
         this.topicService = topicService;
+        this.threadService = threadService;
+        this.postService = postService;
     }
 
     @GetMapping("/")
@@ -108,8 +112,29 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID) {
-        return "/";
+    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+
+        ForumId forumId = new ForumId(Long.valueOf(forenID));
+        model.addAttribute("forumTitle", forumService.getForum(forumId).getTitle());
+        model.addAttribute("forumId", forenID);
+        model.addAttribute("topicId", topicID);
+
+        TopicId topicId = new TopicId(Long.valueOf(topicID));
+        model.addAttribute("threads", threadService.getThreads(topicId));
+
+        return "list-threads";
+    }
+
+    @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
+    public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
+                                 @PathVariable String threadID, Model model) {
+
+        ThreadId threadId = new ThreadId(Long.valueOf(threadID));
+        List<Post> posts = this.postService.getPosts(threadId);
+        model.addAttribute("threadTitle", this.threadService.getThread(threadId));
+        model.addAttribute("posts", posts);
+
+        return "thread";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/newThread")
