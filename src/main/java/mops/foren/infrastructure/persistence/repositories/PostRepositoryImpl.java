@@ -28,7 +28,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromThread(Thread thread) {
-        List<PostDTO> threadDtos = this.postRepository.findByThread(thread.getId().getId());
+        List<PostDTO> threadDtos = this.postRepository.findByThread_Id(thread.getId().getId());
         return threadDtos.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());

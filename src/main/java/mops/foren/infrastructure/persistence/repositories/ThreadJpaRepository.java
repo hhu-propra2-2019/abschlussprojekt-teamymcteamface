@@ -8,5 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ThreadJpaRepository extends CrudRepository<ThreadDTO, Long> {
-    List<ThreadDTO> findByTopic(Long id);
+    List<ThreadDTO> findByTopic_Id(Long id);
 }
