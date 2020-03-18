@@ -29,37 +29,37 @@ public class ForenControllerTest {
      */
     @BeforeEach
     public void setup() {
-        mvcMock = MockMvcBuilders
-                .webAppContextSetup(context)
+        this.mvcMock = MockMvcBuilders
+                .webAppContextSetup(this.context)
                 .apply(springSecurity())
                 .build();
     }
 
     @Test
     void testForumMainpage() throws Exception {
-        mvcMock.perform(get("/"))
+        this.mvcMock.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
 
     @Test
     void testProfileTemplate() throws Exception {
-        mvcMock.perform(get("/profile"))
+        this.mvcMock.perform(get("/profile"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"));
     }
 
     @Test
     void testMyForumTemplateNotAuthenticated() throws Exception {
-        mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/sso/login"));
     }
 
     @Test
-    @WithMockKeycloackAuth(roles = "studentin")
+    @WithMockKeycloackAuth(roles = "studentin", name = "studentin")
     void testMyForumTemplateAuthenticated() throws Exception {
-        mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
     }
@@ -67,7 +67,7 @@ public class ForenControllerTest {
     @Test
     @WithMockKeycloackAuth(roles = "wrongRole")
     void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
-        mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isForbidden());
     }
 

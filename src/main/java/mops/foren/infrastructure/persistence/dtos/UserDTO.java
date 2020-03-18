@@ -3,7 +3,6 @@ package mops.foren.infrastructure.persistence.dtos;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -34,7 +33,7 @@ public class UserDTO {
     @MapKeyColumn(name = "forumId")
     @Column(name = "role")
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "username"))
-    private Map<Long, Long> roles = new HashMap<Long, Long>();
+    private Map<Long, Long> roles;
 
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
