@@ -1,1 +1,13 @@
 = Teamdocumentation
+
+Diese Dokumentation fixiert die während des Entwicklungsprozesses aufgetretenen Probleme und Lösungen, sowie die Entscheidungen die das Team in der Entwicklung getroffen hat.
+
+[NOTE]
+====
+Constrains:
+
+* Was für `Probleme` sind aufgetreten?
+* Welche `Entscheidungen` wurden getroffen oder geändert?
+Warum?
+* Welche `Wochenziele` wurden gesetzt und wurden diese eingehalten.
+====
