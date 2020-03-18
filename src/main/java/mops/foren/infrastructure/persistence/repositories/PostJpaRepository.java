@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface PostJpaRepository extends CrudRepository<PostDTO, Long> {
-    List<PostDTO> findByThread(Long id);
+    List<PostDTO> findByThread_Id(Long id);
 
     List<PostDTO> findByAuthor(String name);
 }

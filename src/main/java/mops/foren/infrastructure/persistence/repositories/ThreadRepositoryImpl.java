@@ -28,7 +28,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
      */
     @Override
     public List<Thread> getThreadsFromTopic(Topic topic) {
-        List<ThreadDTO> threadDtos = this.threadRepository.findByTopic(topic.getId().getId());
+        List<ThreadDTO> threadDtos = this.threadRepository.findByTopic_Id(topic.getId().getId());
         return threadDtos.stream()
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
