@@ -25,3 +25,12 @@ Warum?
 * Einigung auf eine `Architektur sowie ein Model`, welches dann anschließend implementiert werden soll.
 * Das Ziel konnte am Ende der Woche termingerecht erreicht werden, Fortschritt wurde in den Masterbranch integriert.
 
+=== Woche 2
+
+==== Ziel
+
+* Integration eines ersten Spikes in das Projekt.
+* Ein erster kleiner Workflow im Gesamtsystem sollte möglich sein.
+* Das Ziel konnte nicht termingerecht erreicht werden.
+Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
+
