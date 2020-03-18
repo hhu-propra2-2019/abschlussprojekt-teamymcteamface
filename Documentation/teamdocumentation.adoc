@@ -11,3 +11,17 @@ Constrains:
 Warum?
 * Welche `Wochenziele` wurden gesetzt und wurden diese eingehalten.
 ====
+
+== Probleme und Lösungen
+
+== Wochenziele
+
+=== Woche 1
+
+==== Ziel
+
+* einheitliche `Konfiguration der IDE` sowie der CI
+* Festlegen von `Regeln und Workflows` für das Team
+* Einigung auf eine `Architektur sowie ein Model`, welches dann anschließend implementiert werden soll.
+* Das Ziel konnte am Ende der Woche termingerecht erreicht werden, Fortschritt wurde in den Masterbranch integriert.
+
