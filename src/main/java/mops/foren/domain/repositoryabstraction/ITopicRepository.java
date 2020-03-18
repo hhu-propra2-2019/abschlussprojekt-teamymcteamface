@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ITopicRepository {
 
-    List<Topic> getTopicsFromDB(TopicId topicId);
+    List<Topic> getTopicsFromDB(ForumId forumId);
 
     Topic getOneTopicFromDB(TopicId topicId);
 }

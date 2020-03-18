@@ -9,12 +9,14 @@ import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class TopicRepositoryImpl implements ITopicRepository {
     private TopicJpaRepository topicRepository;
+    private ForumJpaRepository forumRepository;
 
     public TopicRepositoryImpl(TopicJpaRepository topicRepository) {
         this.topicRepository = topicRepository;
@@ -27,16 +29,13 @@ public class TopicRepositoryImpl implements ITopicRepository {
      * @return a list of topics from the user.
      */
     public List<Topic> getTopicsFromDB(ForumId forumId) {
-        List<TopicDTO> topicDtos = getTopicDTOs(forumId);
+        List<TopicDTO> topicDtos = getTopicDTOs(forumRepository.findById(forumId.getId()).get());
         List<Topic> topicList = getAllTopics(topicDtos);
         return topicList;
     }
 
-    private List<ForumDTO> getTopicDTOs(Forum forum) {
-        return forum.getTopics().stream()
-                .map(forumId -> topicRepository.findById(forum.getId().getId()))
-                .map(forumDTO -> forumDTO.get())
-                .collect(Collectors.toList());
+    private List<TopicDTO> getTopicDTOs(ForumDTO forum) {
+        return new ArrayList<>(forum.getTopics());
     }
 
 
@@ -47,8 +46,8 @@ public class TopicRepositoryImpl implements ITopicRepository {
     }
 
     public Topic getOneTopicFromDB(TopicId topicId) {
-        return topicRepository.findById(topicId.getId()).stream()
-                .map(TopicMapper::mapTopicDtoToTopic)
-                .collect(Collectors.toList()).get(0);
+        TopicDTO topicDto = topicRepository.findById(topicId.getId()).get();
+
+        return TopicMapper.mapTopicDtoToTopic(topicDto);
     }
 }
