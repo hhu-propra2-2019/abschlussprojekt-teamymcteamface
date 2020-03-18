@@ -18,7 +18,7 @@ public class TopicService {
     }
 
     public List<Topic> getTopics(ForumId forumId) {
-        throw new UnsupportedOperationException();
+        return topicRepository.getTopicsFromDB(forumId);
     }
 
     /**
