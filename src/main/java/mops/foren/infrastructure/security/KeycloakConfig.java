@@ -33,9 +33,9 @@ class KeycloakConfig {
     public RestTemplate serviceAccountRestTemplate() {
         ClientCredentialsResourceDetails resourceDetails = new ClientCredentialsResourceDetails();
         resourceDetails.setGrantType(OAuth2Constants.CLIENT_CREDENTIALS);
-        resourceDetails.setAccessTokenUri(tokenUri);
-        resourceDetails.setClientId(clientId);
-        resourceDetails.setClientSecret(clientSecret);
+        resourceDetails.setAccessTokenUri(this.tokenUri);
+        resourceDetails.setClientId(this.clientId);
+        resourceDetails.setClientSecret(this.clientSecret);
 
         return new OAuth2RestTemplate(resourceDetails);
     }

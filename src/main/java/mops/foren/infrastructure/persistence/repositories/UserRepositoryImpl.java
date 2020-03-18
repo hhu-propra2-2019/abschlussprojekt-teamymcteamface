@@ -36,7 +36,7 @@ public class UserRepositoryImpl implements IUserRepository {
      */
     @Override
     public Boolean isUserNotInDB(User user) {
-        return !userRepository.findById(user.getName()).isPresent();
+        return !this.userRepository.findById(user.getName()).isPresent();
     }
 
     /**
@@ -47,7 +47,7 @@ public class UserRepositoryImpl implements IUserRepository {
     @Override
     public void addNewUserToDB(User user) {
         UserDTO userDTO = UserMapper.mapUserToUserDto(user);
-        userRepository.save(userDTO);
+        this.userRepository.save(userDTO);
     }
 
 
@@ -59,7 +59,7 @@ public class UserRepositoryImpl implements IUserRepository {
      */
     @Override
     public User getUserFromDB(User user) {
-        Optional<UserDTO> userDTO = userRepository.findById(user.getName());
+        Optional<UserDTO> userDTO = this.userRepository.findById(user.getName());
         List<ForumId> forenIds = getForenIdsFromUser(userDTO);
         return UserMapper.mapUserDtoToUser(userDTO, forenIds);
     }
@@ -85,10 +85,10 @@ public class UserRepositoryImpl implements IUserRepository {
      */
     @Override
     public void addForumToUser(User user, Forum forum) {
-        UserDTO userDTO = userRepository.findById(user.getName()).get();
+        UserDTO userDTO = this.userRepository.findById(user.getName()).get();
         ForumDTO forumDTO = ForumMapper.mapForumToForumDTO(forum);
         userDTO.getForums().add(forumDTO);
-        userRepository.save(userDTO);
+        this.userRepository.save(userDTO);
     }
 
 

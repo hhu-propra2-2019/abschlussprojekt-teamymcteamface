@@ -18,7 +18,7 @@ public class TopicService {
     }
 
     public List<Topic> getTopics(ForumId forumId) {
-        return topicRepository.getTopicsFromDB(forumId);
+        return this.topicRepository.getTopicsFromDB(forumId);
     }
 
     /**

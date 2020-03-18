@@ -9,7 +9,6 @@ import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Repository
@@ -35,7 +34,7 @@ public class ForumRepositoryImpl implements IForumRepository {
 
     private List<ForumDTO> getFroumDTOs(User user) {
         return user.getForums().stream()
-                .map(forumId -> forumRepository.findById(forumId.getId()))
+                .map(forumId -> this.forumRepository.findById(forumId.getId()))
                 .map(forumDTO -> forumDTO.get())
                 .collect(Collectors.toList());
     }
@@ -47,8 +46,9 @@ public class ForumRepositoryImpl implements IForumRepository {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Forum getOneForumFromDB(ForumId forumId) {
-        return forumRepository.findById(forumId.getId()).stream()
+        return this.forumRepository.findById(forumId.getId()).stream()
                 .map(ForumMapper::mapForumDtoToForum)
                 .collect(Collectors.toList()).get(0);
     }

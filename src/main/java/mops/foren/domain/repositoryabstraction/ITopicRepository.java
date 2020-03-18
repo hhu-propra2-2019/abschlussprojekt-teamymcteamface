@@ -1,6 +1,5 @@
 package mops.foren.domain.repositoryabstraction;
 
-import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;

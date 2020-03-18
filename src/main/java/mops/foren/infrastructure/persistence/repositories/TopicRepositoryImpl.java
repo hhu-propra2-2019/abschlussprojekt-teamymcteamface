@@ -1,11 +1,11 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.*;
-import mops.foren.domain.repositoryabstraction.IForumRepository;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
-import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +18,8 @@ public class TopicRepositoryImpl implements ITopicRepository {
     private TopicJpaRepository topicRepository;
     private ForumJpaRepository forumRepository;
 
-    public TopicRepositoryImpl(TopicJpaRepository topicRepository, ForumJpaRepository forumRepository) {
+    public TopicRepositoryImpl(TopicJpaRepository topicRepository,
+                               ForumJpaRepository forumRepository) {
         this.topicRepository = topicRepository;
         this.forumRepository = forumRepository;
     }
@@ -26,12 +27,13 @@ public class TopicRepositoryImpl implements ITopicRepository {
     /**
      * This method get the topics of an specific forum from the db.
      *
-     * @param forum which forums are requested.
+     * @param forumId - id of the requested forum
      * @return a list of topics from the user.
      */
     @Override
     public List<Topic> getTopicsFromDB(ForumId forumId) {
-        List<TopicDTO> topicDtos = getTopicDTOs(forumRepository.findById(forumId.getId()).get());
+        ForumDTO forumDto = this.forumRepository.findById(forumId.getId()).get();
+        List<TopicDTO> topicDtos = getTopicDTOs(forumDto);
         List<Topic> topicList = getAllTopics(topicDtos);
         return topicList;
     }
@@ -47,8 +49,9 @@ public class TopicRepositoryImpl implements ITopicRepository {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public Topic getOneTopicFromDB(TopicId topicId) {
-        TopicDTO topicDto = topicRepository.findById(topicId.getId()).get();
+        TopicDTO topicDto = this.topicRepository.findById(topicId.getId()).get();
 
         return TopicMapper.mapTopicDtoToTopic(topicDto);
     }

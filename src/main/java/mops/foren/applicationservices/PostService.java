@@ -20,8 +20,8 @@ public class PostService {
     /**
      * Method to add a post.
      *
-     * @param post     The post to add
-     * @param user     The user that wants to create the post
+     * @param post    The post to add
+     * @param user    The user that wants to create the post
      * @param forumId The threadId the post belongs to
      */
     public void addPost(Post post, User user, ForumId forumId) {

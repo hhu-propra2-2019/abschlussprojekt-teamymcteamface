@@ -26,7 +26,7 @@ public class User {
     }
 
     public List<ForumId> getUserForums() {
-        return permissionManager.getAllForums();
+        return this.permissionManager.getAllForums();
     }
 
 }

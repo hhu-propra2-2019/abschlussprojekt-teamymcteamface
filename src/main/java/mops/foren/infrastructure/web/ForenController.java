@@ -28,7 +28,15 @@ public class ForenController {
     TopicService topicService;
     ForumForm form = new ForumForm("", "");
 
-    public ForenController(UserService userService, ForumService forumService, TopicService topicService) {
+    /**
+     * Constructor for ForenController. The parameters are injected.
+     *
+     * @param userService  - injected UserService (ApplicationService)
+     * @param forumService - injected ForumService (ApplicationService)
+     * @param topicService - TopicService (ApplicationService)
+     */
+    public ForenController(UserService userService, ForumService forumService,
+                           TopicService topicService) {
         this.userService = userService;
         this.forumService = forumService;
         this.topicService = topicService;
@@ -55,9 +63,9 @@ public class ForenController {
     @GetMapping("/my-forums")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String allForum(KeycloakAuthenticationToken token, Model model) {
-        User user = userService.getUserFromDB(token);
-        model.addAttribute("forums", forumService.getForums(user));
-        model.addAttribute("forum", form);
+        User user = this.userService.getUserFromDB(token);
+        model.addAttribute("forums", this.forumService.getForums(user));
+        model.addAttribute("forum", this.form);
         return "my-forums";
     }
 
@@ -74,13 +82,20 @@ public class ForenController {
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newForum(KeycloakAuthenticationToken token,
                            @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
-        //errors
-        User user = userService.getUserFromDB(token);
+
+        User user = this.userService.getUserFromDB(token);
         Forum forum = forumForm.getForum();
-        userService.addForumInUser(user, forum);
+        this.userService.addForumInUser(user, forum);
         return "redirect:/my-forums";
     }
 
+    /**
+     * Mapping to the main-page of a certain forum.
+     *
+     * @param forenID - id of the forum
+     * @param model   - Model
+     * @return
+     */
     @GetMapping("/my-forums/{forenID}")
     public String enterAForum(@PathVariable String forenID, Model model) {
 

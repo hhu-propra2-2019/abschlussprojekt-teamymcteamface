@@ -23,9 +23,11 @@ public class ForumService {
      * @return A list of forums.
      */
     public List<Forum> getForums(User user) {
-        return forumRepository.getForumsFromDB(user);
+        return this.forumRepository.getForumsFromDB(user);
     }
 
-    public Forum getForum(ForumId forumId) { return forumRepository.getOneForumFromDB(forumId);}
+    public Forum getForum(ForumId forumId) {
+        return this.forumRepository.getOneForumFromDB(forumId);
+    }
 
 }

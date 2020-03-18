@@ -23,9 +23,9 @@ public class ThreadService {
     /**
      * Method to add a thread.
      *
-     * @param thread  The thread to add
-     * @param user    The user that wants to create the thread
-     * @param id    The topicId the thread belongs to
+     * @param thread The thread to add
+     * @param user   The user that wants to create the thread
+     * @param id     The topicId the thread belongs to
      */
     public void addThread(Thread thread, User user, ForumId id) {
         if (user.checkPermission(id, Permission.CREATE_THREAD)) {
