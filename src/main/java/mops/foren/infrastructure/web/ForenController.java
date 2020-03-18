@@ -56,7 +56,7 @@ public class ForenController {
     /**
      * Method checks if user is in the DB and gets all his forums.
      *
-     * @param token Keyclock token.
+     * @param token Keycloak token.
      * @param model Content we add to html per thymleaf.
      * @return Get-mapping for my-forums.
      */
