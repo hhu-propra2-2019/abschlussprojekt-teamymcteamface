@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "thread")
 public class ThreadDTO {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
