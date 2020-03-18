@@ -26,9 +26,8 @@ public class TopicRepositoryImpl implements ITopicRepository {
      * @param forum which forums are requested.
      * @return a list of topics from the user.
      */
-    @Override
-    public List<Topic> getTopicsFromDB(TopicId topicId) {
-        List<TopicDTO> topicDtos = getTopicDTOs(user);
+    public List<Topic> getTopicsFromDB(ForumId forumId) {
+        List<TopicDTO> topicDtos = getTopicDTOs(forumId);
         List<Topic> topicList = getAllTopics(topicDtos);
         return topicList;
     }

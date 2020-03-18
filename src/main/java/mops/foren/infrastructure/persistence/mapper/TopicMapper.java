@@ -1,7 +1,26 @@
 package mops.foren.infrastructure.persistence.mapper;
 
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.TopicId;
+import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TopicMapper {
+public abstract class TopicMapper {
+
+    /**
+     * This method maps a ForumDto object to the corresponding Forum object.
+     *
+     * @param topicDTO a TopicDTO.
+     * @return the corresponding Forum.
+     */
+    public static Topic mapTopicDtoToTopic(TopicDTO topicDTO) {
+        return Topic.builder()
+                .id(new TopicId(topicDTO.getId()))
+                .title(topicDTO.getTitle())
+                .description(topicDTO.getDescription())
+                .forumId(new ForumId(topicDTO.getForum().getId()))
+                .build();
+    }
 }
