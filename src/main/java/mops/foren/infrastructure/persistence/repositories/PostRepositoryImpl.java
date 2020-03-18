@@ -20,6 +20,12 @@ public class PostRepositoryImpl implements IPostRepository {
         this.postRepository = postRepository;
     }
 
+    /**
+     * This method gets all post for a given thread.
+     *
+     * @param thread the tread where all the post should be in.
+     * @return a list of post that are in the given tread.
+     */
     @Override
     public List<Post> getPostsFromThread(Thread thread) {
         List<PostDTO> threadDtos = postRepository.findByThread(thread.getId().getId());
@@ -28,12 +34,24 @@ public class PostRepositoryImpl implements IPostRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * This method get a Post with the given id.
+     *
+     * @param postId the id of the post, which is wanted.
+     * @return the wanted post.
+     */
     @Override
     public Post getPostById(PostId postId) {
         PostDTO postDTO = postRepository.findById(postId.getId()).get();
         return PostMapper.mapPostDtoToPost(postDTO);
     }
 
+    /**
+     * This method gets all Post from an user.
+     *
+     * @param user the user, where the posts are wanted.
+     * @return a list of all post from the user.
+     */
     @Override
     public List<Post> getPostsFromUser(User user) {
         List<PostDTO> postByAuthor = postRepository.findByAuthor(user.getName());

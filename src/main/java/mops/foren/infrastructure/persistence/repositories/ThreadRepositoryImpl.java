@@ -20,6 +20,12 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         this.threadRepository = threadRepository;
     }
 
+    /**
+     * This method gets all Threads with the given topic.
+     *
+     * @param topic the topic the treads should be in.
+     * @return a list of threads with the wanted topic.
+     */
     @Override
     public List<Thread> getThreadsFromTopic(Topic topic) {
         List<ThreadDTO> threadDtos = threadRepository.findByTopic(topic.getId().getId());
@@ -28,6 +34,12 @@ public class ThreadRepositoryImpl implements IThreadRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * This method gets a thread with the given id.
+     *
+     * @param threadId the id of the wanted thread.
+     * @return the tread with the given id.
+     */
     @Override
     public Thread getThreadById(ThreadId threadId) {
         ThreadDTO threadDTO = threadRepository.findById(threadId.getId()).get();

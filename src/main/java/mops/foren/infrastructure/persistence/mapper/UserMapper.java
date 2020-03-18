@@ -39,6 +39,12 @@ public abstract class UserMapper {
                 .build();
     }
 
+    /**
+     * Maps a userDTO object to the resulting user object.
+     *
+     * @param userDTO the userDTO object that should be mapped.
+     * @return the resulting user.
+     */
     public static User mapUserDtoToUser(UserDTO userDTO) {
         List<ForumId> forenIds = getForumIdFromUserDto(userDTO);
         return User.builder()

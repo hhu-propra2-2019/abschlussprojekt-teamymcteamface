@@ -36,6 +36,5 @@ public abstract class PostMapper {
                 .text(postDTO.getText())
                 .creationDate(LocalDateTime.parse(postDTO.getDateTime().toString()))
                 .build();
-
     }
 }
