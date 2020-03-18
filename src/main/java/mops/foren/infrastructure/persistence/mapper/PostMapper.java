@@ -7,18 +7,16 @@ import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
 public abstract class PostMapper {
-
+    @Autowired
     private static UserJpaRepository userRepository;
 
-    public PostMapper(UserJpaRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     /**
      * This method maps an postDTO object to the corresponding Post object.
