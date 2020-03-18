@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "post")
 public class PostDTO {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String author;
 
