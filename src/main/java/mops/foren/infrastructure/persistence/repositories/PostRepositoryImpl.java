@@ -28,7 +28,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromThread(Thread thread) {
-        List<PostDTO> threadDtos = postRepository.findByThread(thread.getId().getId());
+        List<PostDTO> threadDtos = this.postRepository.findByThread(thread.getId().getId());
         return threadDtos.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
@@ -42,7 +42,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public Post getPostById(PostId postId) {
-        PostDTO postDTO = postRepository.findById(postId.getId()).get();
+        PostDTO postDTO = this.postRepository.findById(postId.getId()).get();
         return PostMapper.mapPostDtoToPost(postDTO);
     }
 
@@ -54,7 +54,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromUser(User user) {
-        List<PostDTO> postByAuthor = postRepository.findByAuthor(user.getName());
+        List<PostDTO> postByAuthor = this.postRepository.findByAuthor(user.getName());
         return postByAuthor.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
