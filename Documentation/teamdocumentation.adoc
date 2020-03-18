@@ -34,3 +34,8 @@ Warum?
 * Das Ziel konnte nicht termingerecht erreicht werden.
 Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
 
+=== Woche 3
+
+==== Ziel
+
+* Integration der Anwendungslogik, sodass die ersten Userstories durchgeführt werden können.
