@@ -48,8 +48,7 @@ public class ForumRepositoryImpl implements IForumRepository {
 
     @Override
     public Forum getOneForumFromDB(ForumId forumId) {
-        return this.forumRepository.findById(forumId.getId()).stream()
-                .map(ForumMapper::mapForumDtoToForum)
-                .collect(Collectors.toList()).get(0);
+        ForumDTO forumDTO = this.forumRepository.findById(forumId.getId()).get();
+        return ForumMapper.mapForumDtoToForum(forumDTO);
     }
 }
