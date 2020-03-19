@@ -38,6 +38,12 @@ public class TopicRepositoryImpl implements ITopicRepository {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Method to get one topic from the DB.
+     *
+     * @param topicId the topic id
+     * @return the topic
+     */
     @Override
     public Topic getOneTopicFromDB(TopicId topicId) {
         TopicDTO topicDto = this.topicRepository.findById(topicId.getId()).get();
