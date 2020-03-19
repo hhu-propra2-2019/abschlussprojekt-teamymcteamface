@@ -31,11 +31,11 @@ public class UserMapper {
      * @return the resulting user.
      */
     public static User mapUserDtoToUser(UserDTO userDTO) {
-        List<ForumId> forenIds = getForumIdFromUserDto(userDTO);
+        List<ForumId> forumIds = getForumIdFromUserDto(userDTO);
         return User.builder()
                 .name(userDTO.getUsername())
                 .email(userDTO.getEmail())
-                .forums(forenIds)
+                .forums(forumIds)
                 .build();
     }
 
