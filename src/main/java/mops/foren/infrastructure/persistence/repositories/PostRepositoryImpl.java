@@ -1,7 +1,9 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.*;
-import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.Post;
+import mops.foren.domain.model.PostId;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
@@ -21,21 +23,6 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public List<Post> getPostsFromDB(ThreadId threadId) {
         return this.postRepository.findByThread_Id(threadId.getId()).stream()
-                .map(PostMapper::mapPostDtoToPost)
-                .collect(Collectors.toList());
-    }
-
-
-    /**
-     * This method gets all post for a given thread.
-     *
-     * @param thread the tread where all the post should be in.
-     * @return a list of post that are in the given tread.
-     */
-    @Override
-    public List<Post> getPostsFromThread(Thread thread) {
-        List<PostDTO> threadDtos = this.postRepository.findByThread_Id(thread.getId().getId());
-        return threadDtos.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
     }

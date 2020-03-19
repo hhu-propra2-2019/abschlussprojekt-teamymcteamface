@@ -2,7 +2,6 @@ package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
@@ -25,20 +24,6 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     @Override
     public List<Thread> getThreadsFromDB(TopicId topicId) {
         return this.threadRepository.findByTopic_Id(topicId.getId()).stream()
-                .map(ThreadMapper::mapThreadDtoToThread)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * This method gets all Threads with the given topic.
-     *
-     * @param topic the topic the treads should be in.
-     * @return a list of threads with the wanted topic.
-     */
-    @Override
-    public List<Thread> getThreadsFromTopic(Topic topic) {
-        List<ThreadDTO> threadDtos = this.threadRepository.findByTopic_Id(topic.getId().getId());
-        return threadDtos.stream()
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
     }
