@@ -45,9 +45,34 @@ Bis zur grundlegenden Implementierung des Domainmodels, gibt es bei uns nur den 
 === Security/Keycloak
 
 ====
-Die Einbindung und Konfiguration von sicherheitstechnischer Software in die Infrastruktur, sowie den Tests, insbesondere Keycloak hat allen Teammitglieder gleichermaßen Probleme bereitet.
-Dies lag zum einen an der mangelnden Erfahrung mit Keycloak und zum anderen an dem ambivalenten Demoprojekt.
+Die Implementierung/Nutzung der Security Frameworks gestaltete sich, vor allem aufgrund der mangelnden Erfahrung diesbezüglich im Team,
+als Herausforderung. Insbesondere die Implementierung von Keycloak in unsere Infrastruktur und Tests war ein größeres Hinderniss.
 ====
+* Die meisten Fragen konnte durch ausprobieren oder in Zusammenarbeit mit den Bereuern gelöst werden. Für das Testen haben wir eine Mock
+Konfiguration gefunden welche den Tests Zugriff auf die nötigen Routen ermöglicht. Da auch die Keycloak Demo erweitert wird bleibt dies aber ein fortlaufender Prozess.
+
+=== wiederkehrende Diskussion über die Architektur
+
+====
+Obwohl wir uns zu Beginn für eine Onion Architektur entschieden haben, traten während der konkreten Umsetzung dieser Architektur und der Datenbankanbindung
+immer wieder Diskussionen auf, ob eine Schicht Architektur nicht sinnvoller ist.
+====
+* Um eine Analyse Paralyse zu vermeiden haben wir uns nach einer erneuten Abstimmung entgültig dazu entschieden, die Onion Architektur durchzuführen.
+
+=== Pull Request Review
+
+====
+Aufgrund unterschiedlicher Standarts bzgl. der Code Review zu Beginn des Projektes kam es häufiger zu Merges in den Dev Branch, welche nicht den gemeinsam vereinbarten Standards entsprachen.
+====
+* Es hat sich etabliert, dass Die Review von Personen/Teams durchgeführt wird, welche nicht direkt an der Erstellung des PRs beteiligt waren.
+Bei größeren PRs setzten sich meist eine "PR-fremde" und eine involvierte Person zusammen, damit inhaltliche Fragen direkt geklärt werden können.
+
+=== Datenbankdiskussion
+
+====
+Bereits vor der ersten Implementierung entstanden viele Diskussionen wie die Daten zu persistieren sind und ob aktuelle Ansatz der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
+====
+* Wir haben uns dazu entschieden, Datenbank- und Modellimplementierung konsequent differenziert zu behandeln und umzusetzten.
 
 == Wochenziele
 
