@@ -136,16 +136,12 @@ public class ForenController {
     /**
      * Mapping to the thread page.
      *
-     * @param forenID  the forum id
-     * @param topicID  the topic id
      * @param threadID the thread id
      * @param model    the model
      * @return The template for the thread
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
-    public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
-                                 @PathVariable String threadID, Model model) {
-
+    @GetMapping("/thread")
+    public String displayAThread(@RequestParam("treadId") Long threadID, Model model) {
         ThreadId threadId = new ThreadId(Long.valueOf(threadID));
         List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
@@ -163,7 +159,7 @@ public class ForenController {
         Post post = postForm.getPost(user, new ThreadId(treadId));
         Thread thread = this.threadService.getThread(new ThreadId(treadId));
         this.threadService.addPostInThread(thread, post);
-        return "redirect:/";
+        return "redirect:/thread?treadId=" + treadId;
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
