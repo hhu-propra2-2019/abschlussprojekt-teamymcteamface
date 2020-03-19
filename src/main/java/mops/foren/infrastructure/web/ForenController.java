@@ -135,7 +135,7 @@ public class ForenController {
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
         model.addAttribute("posts", posts);
 
-        return "thread";
+        return "thread2";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")

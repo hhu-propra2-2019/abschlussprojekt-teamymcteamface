@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren - Dashboard', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -12,6 +13,7 @@
     <title>Foren - Posts</title>
 
 </head>
+<th:block th:fragment="headcontent">
 <style>
     .content {
         padding: 40px;
@@ -51,62 +53,46 @@
         clear: right;
     }
 </style>
-
+</th:block>
 <body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <ul>
+            <li class="">
+                <a href="#welcome" th:href="@{./}">Dashboard</a>
+            </li>
+            <li class="active">
+                <a href="#welcome" th:href="@{./my-forums}">Meine Foren</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{./profile}">Profil</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main th:fragment="bodycontent">
     <div class="container">
         <div class="content">
-            <h4 style="text-align: left;">Ich brauche Hilfe bei Blatt 8 Aufgabe 4. Wieso benutzt man da Dijkstra. <br> Kann mir bitte jemand helfen ich dreh durch</h4>
-            <div style="clear: initial;" class="row">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="preview-pic">
+            <h2 style="text-align: left;" th:text="${threadTitle.getTitle()}">Title</h2>
+            <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
+                <div th:class="card">
+                    <div th:class="card-header">
+                        <div th:class="preview-pic">
 
                         </div>
-                        <div class="author" style="float: left;">
+                        <div th:class="author" th:text="${post.getAuthor().getName()}" style="float: left;">
                             Jens Bendisposto
                         </div>
-                        <div class="created-date" style="float: right;">
+                        <div th:class="created-date" th:text="${post.getCreationDate()}" style="float: right;">
                             12.03.2020
                         </div>
                     </div>
-                    <div class="card-body">
-                        <p class="card-text">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus necessitatibus numquam odit tempore incidunt nesciunt nulla laborum consequatur illum iste obcaecati doloremque eos cumque amet, architecto eius accusamus, laboriosam
-                            sapiente. Mollitia amet vel porro libero atque officia quaerat, enim, rem voluptatibus eaque sequi expedita non natus? Aperiam est iste quidem neque eveniet natus maiores culpa sequi inventore. Illo, voluptatum explicabo. Sequi,
-                            consequuntur dolores repudiandae ex, dolore totam quasi eius exercitationem fugiat recusandae deleniti obcaecati natus facere qui, nostrum consequatur labore unde! Debitis cum expedita, itaque velit exercitationem labore minus
-                            ab? Laborum, placeat minima minus ullam soluta aliquid eum dolorum. Minima dolore modi architecto eveniet! Harum suscipit aut mollitia illo id quis aspernatur quae dolorem numquam nisi voluptatibus a, dolores qui. Molestias,
-                            laudantium fuga maiores tempora et labore maxime eos, dicta explicabo blanditiis aliquid repellendus nostrum? Provident neque placeat doloremque exercitationem atque, quis pariatur cupiditate libero blanditiis ratione deleniti
-                            commodi minus?</p>
-                        <i class="edit-button fa fa-pencil" aria-hidden="true"></i>
+                    <div th:class="card-body">
+                        <p th:class="card-text" th:text="${post.getText()}"></p>
                     </div>
                 </div>
             </div>
-            <div style="clear: initial;" class="row">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="preview-pic">
 
-                        </div>
-                        <div class="author" style="float: left;">
-                            Jens Bendisposto
-                        </div>
-                        <div class="created-date" style="float: right;">
-                            12.03.2020
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="card quote">
-                            <div class="card-header">
-                                Jens B.
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque excepturi perferendis aspernatur? Ipsam id beatae repellendus labore nobis cumque nulla, corporis deleniti asperiores aperiam ea. Quos ullam optio culpa corporis.</p>
-                            </div>
-                        </div>
-                        <p class="card-text">Find ich gut.</p>
-                        <i class="edit-button fa fa-pencil" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
             <hr class="content-divider" style="width: auto;">
 
             <div class="row write-answer">
@@ -127,5 +113,6 @@
         </div>
     </div>
 </body>
+</main>
 
 </html>
