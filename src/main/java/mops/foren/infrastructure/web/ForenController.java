@@ -20,12 +20,12 @@ import java.util.List;
 @SessionScope
 public class ForenController {
 
-    UserService userService;
-    ForumService forumService;
-    TopicService topicService;
-    ThreadService threadService;
-    PostService postService;
-    ForumForm form = new ForumForm("", "");
+    private UserService userService;
+    private ForumService forumService;
+    private TopicService topicService;
+    private ThreadService threadService;
+    private PostService postService;
+    private ForumForm form = new ForumForm("", "");
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -97,7 +97,7 @@ public class ForenController {
      *
      * @param forenID - id of the forum
      * @param model   - Model
-     * @return
+     * @return The template for the forum main page
      */
     @GetMapping("/my-forums/{forenID}")
     public String enterAForum(@PathVariable String forenID, Model model) {
@@ -110,22 +110,39 @@ public class ForenController {
         return "forum-mainpage";
     }
 
+    /**
+     * Mapping to the topic page.
+     *
+     * @param forenID the forum id
+     * @param topicID the topic id
+     * @param model   the model
+     * @return The template for the threads
+     */
     @GetMapping("/my-forums/{forenID}/{topicID}")
     public String enterATopic(@PathVariable String forenID,
                               @PathVariable String topicID, Model model) {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
-        model.addAttribute("forumTitle", forumService.getForum(forumId).getTitle());
+        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
         model.addAttribute("author", "nesu57");
 
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        model.addAttribute("threads", threadService.getThreads(topicId));
+        model.addAttribute("threads", this.threadService.getThreads(topicId));
 
         return "list-threads";
     }
 
+    /**
+     * Mapping to the thread page.
+     *
+     * @param forenID  the forum id
+     * @param topicID  the topic id
+     * @param threadID the thread id
+     * @param model    the model
+     * @return The template for the thread
+     */
     @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
     public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
                                  @PathVariable String threadID, Model model) {
