@@ -8,6 +8,7 @@ import mops.foren.domain.repositoryabstraction.ITopicRepository;
 
 import java.util.List;
 
+@ApplicationService
 public class TopicService {
 
     private ITopicRepository topicRepository;
@@ -17,7 +18,7 @@ public class TopicService {
     }
 
     public List<Topic> getTopics(ForumId forumId) {
-        throw new UnsupportedOperationException();
+        return this.topicRepository.getTopicsFromDB(forumId);
     }
 
     /**

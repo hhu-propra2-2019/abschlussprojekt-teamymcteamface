@@ -1,6 +1,7 @@
 package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
@@ -26,14 +27,14 @@ public class ForumRepositoryImpl implements IForumRepository {
      */
     @Override
     public List<Forum> getForumsFromDB(User user) {
-        List<ForumDTO> forumDtos = getFroumDTOs(user);
+        List<ForumDTO> forumDtos = getForumDTOs(user);
         List<Forum> forumList = getAllForums(forumDtos);
         return forumList;
     }
 
-    private List<ForumDTO> getFroumDTOs(User user) {
+    private List<ForumDTO> getForumDTOs(User user) {
         return user.getForums().stream()
-                .map(forumId -> forumRepository.findById(forumId.getId()))
+                .map(forumId -> this.forumRepository.findById(forumId.getId()))
                 .map(forumDTO -> forumDTO.get())
                 .collect(Collectors.toList());
     }
@@ -43,5 +44,11 @@ public class ForumRepositoryImpl implements IForumRepository {
         return forumDtos.stream()
                 .map(ForumMapper::mapForumDtoToForum)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Forum getOneForumFromDB(ForumId forumId) {
+        ForumDTO forumDTO = this.forumRepository.findById(forumId.getId()).get();
+        return ForumMapper.mapForumDtoToForum(forumDTO);
     }
 }

@@ -23,13 +23,13 @@ public class PermissionManager {
      */
     public Boolean checkPermission(ForumId id, Permission permission) {
         if (Student.hasPermission(permission)) {
-            return student.contains(id);
+            return this.student.contains(id);
         }
         if (Moderator.hasPermission(permission)) {
-            return moderator.contains(id);
+            return this.moderator.contains(id);
         }
         if (Admin.hasPermission(permission)) {
-            return admin.contains(id);
+            return this.admin.contains(id);
         }
         return false;
     }
@@ -51,7 +51,7 @@ public class PermissionManager {
     }
 
     public List<ForumId> getAllForums() {
-        return student.stream().collect(Collectors.toList());
+        return this.student.stream().collect(Collectors.toList());
     }
 
 }

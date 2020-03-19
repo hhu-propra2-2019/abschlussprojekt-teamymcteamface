@@ -19,8 +19,6 @@ public class PostDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String author;
-
 
     @CreationTimestamp
     private LocalDateTime dateTime;
@@ -28,8 +26,8 @@ public class PostDTO {
     @ManyToOne
     private ThreadDTO thread;
 
-    @ManyToOne
-    private UserDTO user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private UserDTO author;
 
     private String text;
 }

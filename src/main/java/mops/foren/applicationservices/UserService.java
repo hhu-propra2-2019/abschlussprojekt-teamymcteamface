@@ -30,20 +30,20 @@ public class UserService {
     }
 
     private boolean checkIfUserIsNotInDB(User user) {
-        return userRepository.isUserNotInDB(user);
+        return this.userRepository.isUserNotInDB(user);
     }
 
     private void addNewUser(User user) {
-        userRepository.addNewUserToDB(user);
+        this.userRepository.addNewUserToDB(user);
 
     }
 
     private User getUser(User user) {
-        return userRepository.getUserFromDB(user);
+        return this.userRepository.getUserFromDB(user);
     }
 
     public void addForumInUser(User user, Forum forum) {
-        userRepository.addForumToUser(user, forum);
+        this.userRepository.addForumToUser(user, forum);
     }
 
     private User getUserFromToken(KeycloakAuthenticationToken token) {

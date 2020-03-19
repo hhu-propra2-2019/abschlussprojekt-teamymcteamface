@@ -1,6 +1,7 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 
@@ -22,7 +23,11 @@ public class ForumService {
      * @return A list of forums.
      */
     public List<Forum> getForums(User user) {
-        return forumRepository.getForumsFromDB(user);
+        return this.forumRepository.getForumsFromDB(user);
+    }
+
+    public Forum getForum(ForumId forumId) {
+        return this.forumRepository.getOneForumFromDB(forumId);
     }
 
 }

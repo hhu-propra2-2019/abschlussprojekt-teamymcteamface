@@ -21,10 +21,14 @@ public class ThreadDTO {
 
     private String title;
 
+    private String description;
+
+    private String author;
+
     @ManyToOne
     private TopicDTO topic;
 
-    @OneToMany(mappedBy = "thread", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY)
     private List<PostDTO> posts;
 
 }
