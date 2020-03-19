@@ -32,6 +32,23 @@ Die Verlegung des Praktikums ins `Home Office` führt zu Problemen in der Kommun
 * Mithilfe von Hangouts konnten wir einen neuen Workflow in unsere Arbeit integrieren und des Weiteren an getroffenen Reglements festhalten.
 Es hat allerdings Zeit gekostet, bis sich die Teammitglieder auf die neue Arbeitsweise eingestellt haben.
 
+=== Permission System
+
+====
+Es gab inhaltliche und softwaretechnische Diskrepanzen, wie und in welchem Umfang das Permission System implementiert werden soll.
+Deshalb wurde die Software häufig diskutiert und geändert, ohne konkreten Mehrwert zu liefern.
+====
+
+* Wir haben uns entschieden das Permission System so spät wie möglich zu implementieren und dann an die Gegebenheiten des Domainmodel anzupassen.
+Bis zur grundlegenden Implementierung des Domainmodels, gibt es bei uns nur den User `Studentin`.
+
+=== Security/Keycloak
+
+====
+Die Einbindung und Konfiguration von sicherheitstechnischer Software in die Infrastruktur, sowie den Tests, insbesondere Keycloak hat allen Teammitglieder gleichermaßen Probleme bereitet.
+Dies lag zum einen an der mangelnden Erfahrung mit Keycloak und zum anderen an dem ambivalenten Demoprojekt.
+====
+
 == Wochenziele
 
 === Woche 1
