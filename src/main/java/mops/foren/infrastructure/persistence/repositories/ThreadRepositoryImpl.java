@@ -28,6 +28,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
     }
+
     /**
      * This method gets all Threads with the given topic.
      *
