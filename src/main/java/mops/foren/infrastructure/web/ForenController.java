@@ -174,5 +174,4 @@ public class ForenController {
     public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
         return "create-thread";
     }
-
 }
