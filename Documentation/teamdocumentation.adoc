@@ -98,4 +98,4 @@ Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
 
 ==== Ziel
 
-* Integration der Anwendungslogik, sodass die ersten link:/userstories.adoc[Userstories] durchgeführt werden können.
+* Integration der Anwendungslogik, sodass die ersten link:userstories.adoc[Userstories] durchgeführt werden können.
