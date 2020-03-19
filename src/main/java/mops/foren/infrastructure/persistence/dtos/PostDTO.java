@@ -21,14 +21,13 @@ public class PostDTO {
     private Long id;
     private String author;
 
-
     @CreationTimestamp
     private LocalDateTime dateTime;
 
     @ManyToOne
     private ThreadDTO thread;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserDTO user;
 
     private String text;
