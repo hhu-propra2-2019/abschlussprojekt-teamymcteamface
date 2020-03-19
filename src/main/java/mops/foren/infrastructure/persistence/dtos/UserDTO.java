@@ -3,6 +3,7 @@ package mops.foren.infrastructure.persistence.dtos;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +23,14 @@ public class UserDTO {
 
     private String email;
 
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_forum",
+            joinColumns = {@JoinColumn(name = "username")},
+            inverseJoinColumns = {@JoinColumn(name = "id")})
+    private Set<ForumDTO> forums;
+
     /**
      * Creates role-table (automatically) and maps roles of user
      * inside forums in this Map.
@@ -35,11 +44,6 @@ public class UserDTO {
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "username"))
     private Map<Long, Long> roles;
 
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_forum",
-            joinColumns = {@JoinColumn(name = "username")},
-            inverseJoinColumns = {@JoinColumn(name = "id")})
-    private Set<ForumDTO> forums;
+    @OneToMany(mappedBy = "author")
+    private List<PostDTO> posts;
 }
