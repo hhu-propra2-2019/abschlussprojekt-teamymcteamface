@@ -83,3 +83,6 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 * TOPIC - ein übergreifender Beitrag in einem Forum z.B. "Ankündigungen"
 * THREAD - ein einzelner Beitrag einem Topic z.B. eine Frage.
+
+== Weitere Dokumentationen
+Unsere Teamdokumentation finden Sie link:Documentation/teamdocumentation.adoc[hier]
