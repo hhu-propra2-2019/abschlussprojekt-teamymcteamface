@@ -60,29 +60,23 @@ VALUES (1, 'Klausurtermine', 1),
        (9, 'Ich will lieber Germanistik studieren', 2),
        (10, 'Was ist Hibernate ?', 2);
 
-
 INSERT
-INTO post (id, author, date_time, thread_id, user_username, text)
-VALUES (1,
-        'Peter Organisatorus',
-        '2020-03-12 14:32:04',
-        1,
-        'orga',
-        'Hallo Zusammen \nDie Klausur findet am 13.07. statt ! Um 13:00 in 5D.'),
-       (2,
-        'Lisa Schmidt',
-        '2020-03-12 15:12:49',
-        1,
-        'studentin1',
-        'Och nöö, da bin ich im Urlaub :('),
-       (3,
-        'Peter Organisatorus',
-        '2020-03-12 16:05:50',
-        1,
-        'orga',
-        'hahahaha, verkackt.');
-
-
+ INTO post (id, author_username, date_time, thread_id,text)
+ VALUES (1,
+         'studentin',
+         '2020-03-12 14:32:04',
+         1,
+         'Hallo Zusammen \nDie Klausur findet am 13.07. statt ! Um 13:00 in 5D.'),
+        (2,
+         'studentin1',
+         '2020-03-12 15:12:49',
+         1,
+         'Och nöö, da bin ich im Urlaub :('),
+        (3,
+         'orga2',
+         '2020-03-12 16:05:50',
+         1,
+         'hahahaha, verkackt.');
 
 INSERT
 INTO user_forum (username, id)
