@@ -90,7 +90,7 @@
         <tbody>
         <div th:each="thread : ${threads}">
             <tr class="mops-row"
-                th:onclick="'window.location.href = \'' + @{/thread(treadId=${thread.getId().getId()})} + '\''">
+                th:onclick="'window.location.href = \'' + @{/thread(threadId=${thread.getId().getId()})} + '\''">
                 <td th:text="${thread.getTitle()}">lorem</td>
                 <td th:text="${author}"></td>
                 <td>14:37Uhr</td>

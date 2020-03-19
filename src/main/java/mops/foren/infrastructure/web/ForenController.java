@@ -141,7 +141,7 @@ public class ForenController {
      * @return The template for the thread
      */
     @GetMapping("/thread")
-    public String displayAThread(@RequestParam("treadId") Long threadID, Model model) {
+    public String displayAThread(@RequestParam("threadId") Long threadID, Model model) {
         ThreadId threadId = new ThreadId(threadID);
         List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
@@ -156,22 +156,23 @@ public class ForenController {
      *
      * @param token    Keyclock token
      * @param postForm a form to create posts.
-     * @param treadId  The id of the thread the post is in.
+     * @param threadId The id of the thread the post is in.
      * @return The template for the thread
      */
     @PostMapping("/post/newPost")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token, @ModelAttribute PostForm postForm,
-                          @RequestParam("treadId") Long treadId) {
+                          @RequestParam("threadId") Long threadId) {
         User user = this.userService.getUserFromDB(token);
-        Post post = postForm.getPost(user, new ThreadId(treadId));
-        Thread thread = this.threadService.getThread(new ThreadId(treadId));
+        Post post = postForm.getPost(user, new ThreadId(threadId));
+        Thread thread = this.threadService.getThread(new ThreadId(threadId));
         this.threadService.addPostInThread(thread, post);
-        return "redirect:/thread?treadId=" + treadId;
+        return "redirect:/thread?threadId=" + threadId;
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
     public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
         return "create-thread";
     }
+
 }

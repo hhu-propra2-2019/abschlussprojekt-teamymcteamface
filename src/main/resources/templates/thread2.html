@@ -109,7 +109,7 @@
                             Antwort erstellen
                         </div>
                     </div>
-                    <form method="post" th:action="@{/post/newPost(treadId=${threadTitle.getId().getId()})}"
+                    <form method="post" th:action="@{/post/newPost(threadId=${threadTitle.getId().getId()})}"
                           th:object="${post}">
                         <div class="card-body">
                             <div class="form-group">
