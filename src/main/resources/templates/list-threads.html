@@ -83,7 +83,7 @@
     <div th:each="thread : ${threads}">
       <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/' + [[${thread.getId().getId().toString()}]]">
           <td th:text="${thread.getTitle()}">lorem</td>
-          <td th:text="${thread.getAuthor()}"></td>
+          <td th:text="${author}"></td>
           <td>14:37Uhr</td>
       </tr>
     </div>

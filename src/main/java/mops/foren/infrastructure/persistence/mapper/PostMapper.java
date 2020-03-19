@@ -25,7 +25,7 @@ public abstract class PostMapper {
      * @return the resulting Post.
      */
     public static Post mapPostDtoToPost(PostDTO postDTO) {
-        UserDTO authorDto = userRepository.findById(postDTO.getAuthor()).get();
+        UserDTO authorDto = postDTO.getUser();
         User author = UserMapper.mapUserDtoToUser(authorDto);
         return Post.builder()
                 .id(new PostId(postDTO.getId()))

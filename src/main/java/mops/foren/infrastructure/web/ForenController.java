@@ -118,6 +118,7 @@ public class ForenController {
         model.addAttribute("forumTitle", forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
+        model.addAttribute("author", "nesu57");
 
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         model.addAttribute("threads", threadService.getThreads(topicId));
@@ -137,8 +138,8 @@ public class ForenController {
         return "thread";
     }
 
-    @GetMapping("/my-forums/{forenID}/{topicID}/newThread")
+    @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
     public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
-        return "createThread";
+        return "create-thread";
     }
 }

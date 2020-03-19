@@ -54,48 +54,50 @@
 </style>
 
 <body>
-<div class="container">
-  <div class="content">
-    <h4 style="text-align: left;" th:text="${threadTitle}">Title</h4>
-    <div id="post-container" th:each="post : ${posts}">
-      <div style="clear: initial;" class="row">
+<main th:fragment="bodycontent">
+  <div>
+    <div class="content">
+      <h4 style="text-align: left;" th:text="${threadTitle}">Title</h4>
+      <div id="post-container" th:each="post : ${posts}">
+        <div style="clear: initial;" class="row">
+          <div class="card">
+            <div class="card-header">
+              <div class="preview-pic">
+
+              </div>
+              <div class="author" th:text="${post.getAuthor().getName()}" style="float: left;">
+                Jens Bendisposto
+              </div>
+              <div class="created-date" th:text="${post.getCreationDate()}" style="float: right;">
+                12.03.2020
+              </div>
+            </div>
+            <div class="card-body">
+              <p class="card-text" th:text="${post.getText()}">PostContent</p>
+              <i class="edit-button fa fa-pencil" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr class="content-divider" style="width: auto;">
+      <div class="row write-answer">
         <div class="card">
           <div class="card-header">
-            <div class="preview-pic">
-
-            </div>
-            <div class="author" th:text="${post.getAuthor().getName()}" style="float: left;">
-              Jens Bendisposto
-            </div>
-            <div class="created-date" th:text="${post.getCreationDate()}" style="float: right;">
-              12.03.2020
+            <div class="author" style="float: left; clear: left;">
+              Antwort erstellen
             </div>
           </div>
           <div class="card-body">
-            <p class="card-text" th:text="${post.getText()}">PostContent</p>
-            <i class="edit-button fa fa-pencil" aria-hidden="true"></i>
+            <div class="form-group">
+              <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea>
+            </div>
           </div>
+          <button class="btn btn-primary" type="button">abschicken</button>
         </div>
-      </div>
-    </div>
-    <hr class="content-divider" style="width: auto;">
-    <div class="row write-answer">
-      <div class="card">
-        <div class="card-header">
-          <div class="author" style="float: left; clear: left;">
-            Antwort erstellen
-          </div>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <textarea id="my-textarea" class="form-control" name="" rows="3"></textarea>
-          </div>
-        </div>
-        <button class="btn btn-primary" type="button">abschicken</button>
       </div>
     </div>
   </div>
-</div>
+</main>
 </body>
 
 </html>
