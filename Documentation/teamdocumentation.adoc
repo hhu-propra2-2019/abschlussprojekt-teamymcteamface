@@ -14,6 +14,24 @@ Warum?
 
 == Probleme und Lösungen
 
+=== Aufgabenteilung
+
+====
+Die Aufgabenaufteilung im Team bzw. in Teams von 2 Personen gestaltete sich schwierig.Oft kam es dazu, dass die Vorstellungen der konkreten Implementierungen, trotz der gleichen Idee sehr unterschiedlich waren.
+Als das Projekt noch klein war, gab es zudem nicht genug unabhängige Baustellen für jedes Team.
+====
+
+* Wir haben stets versucht viel zu kommunizieren (teilweise zu viel), um Missverständnisse auszuräumen, Implementierungen zu fixieren und Aufgaben sinnvoll aufzuteilen.
+
+=== Remote Praktikum
+
+====
+Die Verlegung des Praktikums ins `Home Office` führt zu Problemen in der Kommunikation und Koordination der Teams und somit zu einem Produktivitätsverlust.
+====
+
+* Mithilfe von Hangouts konnten wir einen neuen Workflow in unsere Arbeit integrieren und des Weiteren an getroffenen Reglements festhalten.
+Es hat allerdings Zeit gekostet, bis sich die Teammitglieder auf die neue Arbeitsweise eingestellt haben.
+
 == Wochenziele
 
 === Woche 1
