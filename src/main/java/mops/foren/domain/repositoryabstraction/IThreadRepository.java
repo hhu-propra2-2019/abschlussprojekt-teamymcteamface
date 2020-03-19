@@ -1,5 +1,6 @@
 package mops.foren.domain.repositoryabstraction;
 
+import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
@@ -10,4 +11,6 @@ public interface IThreadRepository {
     List<Thread> getThreadsFromDB(TopicId topicId);
 
     Thread getThreadById(ThreadId threadId);
+
+    void addPostInThread(Thread thread, Post post);
 }

@@ -28,7 +28,7 @@ public class ThreadDTO {
     @ManyToOne
     private TopicDTO topic;
 
-    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostDTO> posts;
 
 }

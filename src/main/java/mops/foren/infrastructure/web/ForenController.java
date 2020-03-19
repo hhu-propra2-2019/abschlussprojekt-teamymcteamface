@@ -1,15 +1,13 @@
 package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.*;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -26,6 +24,7 @@ public class ForenController {
     private ThreadService threadService;
     private PostService postService;
     private ForumForm form = new ForumForm("", "");
+    private PostForm postForm = new PostForm("");
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -151,8 +150,20 @@ public class ForenController {
         List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
         model.addAttribute("posts", posts);
+        model.addAttribute("post", this.postForm);
 
         return "thread2";
+    }
+
+    @PostMapping("/post/newPost")
+    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
+    public String newPost(KeycloakAuthenticationToken token, @ModelAttribute PostForm postForm,
+                          @RequestParam("treadId") Long treadId) {
+        User user = this.userService.getUserFromDB(token);
+        Post post = postForm.getPost(user, new ThreadId(treadId));
+        Thread thread = this.threadService.getThread(new ThreadId(treadId));
+        this.threadService.addPostInThread(thread, post);
+        return "redirect:/";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")

@@ -1,7 +1,7 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.*;
 import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
 import java.util.List;
@@ -22,6 +22,12 @@ public class ThreadService {
     public Thread getThread(ThreadId threadId) {
         return this.threadRepository.getThreadById(threadId);
     }
+
+
+    public void addPostInThread(Thread thread, Post post) {
+        this.threadRepository.addPostInThread(thread, post);
+    }
+
 
     /**
      * Method to add a thread.
