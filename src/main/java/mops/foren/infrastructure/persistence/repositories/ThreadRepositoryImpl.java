@@ -18,11 +18,9 @@ import java.util.stream.Collectors;
 public class ThreadRepositoryImpl implements IThreadRepository {
 
     ThreadJpaRepository threadRepository;
-    PostJpaRepository postJpaRepository;
 
-    public ThreadRepositoryImpl(ThreadJpaRepository threadRepository, PostJpaRepository postJpaRepository) {
+    public ThreadRepositoryImpl(ThreadJpaRepository threadRepository) {
         this.threadRepository = threadRepository;
-        this.postJpaRepository = postJpaRepository;
     }
 
     @Override

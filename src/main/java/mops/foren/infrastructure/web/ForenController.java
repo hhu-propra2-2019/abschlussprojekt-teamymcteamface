@@ -142,7 +142,7 @@ public class ForenController {
      */
     @GetMapping("/thread")
     public String displayAThread(@RequestParam("treadId") Long threadID, Model model) {
-        ThreadId threadId = new ThreadId(Long.valueOf(threadID));
+        ThreadId threadId = new ThreadId(threadID);
         List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
         model.addAttribute("posts", posts);
@@ -151,6 +151,14 @@ public class ForenController {
         return "thread2";
     }
 
+    /**
+     * Creating a post and redirecting to the thread page.
+     *
+     * @param token    Keyclock token
+     * @param postForm a form to create posts.
+     * @param treadId  The id of the thread the post is in.
+     * @return The template for the thread
+     */
     @PostMapping("/post/newPost")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token, @ModelAttribute PostForm postForm,

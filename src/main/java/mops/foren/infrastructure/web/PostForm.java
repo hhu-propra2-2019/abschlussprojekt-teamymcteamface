@@ -9,6 +9,14 @@ import mops.foren.domain.model.User;
 public class PostForm {
     private final String postContent;
 
+
+    /**
+     * This method maps return the corresponding Post.
+     *
+     * @param user     The user, that made the post.
+     * @param threadId The id of the thread the post is in.
+     * @return The resulting post object.
+     */
     public Post getPost(User user, ThreadId threadId) {
         return Post.builder()
                 .changed(false)

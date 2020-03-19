@@ -32,6 +32,13 @@ public abstract class PostMapper {
                 .build();
     }
 
+    /**
+     * This method maps a Post to the corresponding PostDTO.
+     *
+     * @param post      the post that should be mapped.
+     * @param threadDTO The Tread that the post lives in.
+     * @return the corresponding PostDTO object.
+     */
     public static PostDTO mapPostToPostDto(Post post, ThreadDTO threadDTO) {
         return PostDTO.builder()
                 .author(UserMapper.mapUserToUserDto(post.getAuthor()))
