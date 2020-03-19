@@ -2,7 +2,6 @@ package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.*;
 import mops.foren.domain.model.*;
-import mops.foren.domain.model.Thread;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,9 +30,9 @@ public class ForenController {
     /**
      * Constructor for ForenController. The parameters are injected.
      *
-     * @param userService  - injected UserService (ApplicationService)
-     * @param forumService - injected ForumService (ApplicationService)
-     * @param topicService - TopicService (ApplicationService)
+     * @param userService   - injected UserService (ApplicationService)
+     * @param forumService  - injected ForumService (ApplicationService)
+     * @param topicService  - TopicService (ApplicationService)
      * @param threadService - ThreadService (ApplicationService)
      */
     public ForenController(UserService userService, ForumService forumService,
@@ -112,7 +111,8 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+    public String enterATopic(@PathVariable String forenID,
+                              @PathVariable String topicID, Model model) {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         model.addAttribute("forumTitle", forumService.getForum(forumId).getTitle());
