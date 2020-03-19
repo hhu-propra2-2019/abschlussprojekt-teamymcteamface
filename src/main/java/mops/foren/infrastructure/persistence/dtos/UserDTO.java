@@ -24,7 +24,7 @@ public class UserDTO {
     private String email;
 
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_forum",
             joinColumns = {@JoinColumn(name = "username")},
