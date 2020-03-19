@@ -85,4 +85,4 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 * THREAD - ein einzelner Beitrag einem Topic z.B. eine Frage.
 
 == Weitere Dokumentationen
-Unsere Teamdokumentation finden Sie link:Documentation/teamdocumentation.adoc[hier]
+Unsere Teamdokumentation finden Sie link:/teamdocumentation.adoc[hier]
