@@ -4,6 +4,7 @@ import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
+import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,4 +25,19 @@ public abstract class ThreadMapper {
                 .build();
     }
 
+    /**
+     * Method to map a Thread on the corresponsing ThreadDto.
+     *
+     * @param thread   the thread
+     * @param topicDTO the topicDTO that the thread is in
+     * @return The ThreadDto
+     */
+    public static ThreadDTO mapThreadToThreadDto(Thread thread, TopicDTO topicDTO) {
+        return ThreadDTO.builder()
+                .author(thread.getAuthor())
+                .description(thread.getDescription())
+                .title(thread.getTitle())
+                .topic(topicDTO)
+                .build();
+    }
 }
