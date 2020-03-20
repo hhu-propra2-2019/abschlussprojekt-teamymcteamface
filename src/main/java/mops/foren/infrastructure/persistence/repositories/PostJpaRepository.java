@@ -11,5 +11,5 @@ import java.util.List;
 public interface PostJpaRepository extends CrudRepository<PostDTO, Long> {
     List<PostDTO> findByThread_Id(Long id);
 
-    List<PostDTO> findByAuthor(String name);
+    List<PostDTO> findByAuthor_Username(String name);
 }
