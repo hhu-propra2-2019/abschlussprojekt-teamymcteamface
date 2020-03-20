@@ -42,6 +42,12 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         return ThreadMapper.mapThreadDtoToThread(threadDTO);
     }
 
+    /**
+     * Method to add a post with the given threadId.
+     *
+     * @param threadId The thread id
+     * @param post     The post to add
+     */
     @Override
     public void addPostInThread(ThreadId threadId, Post post) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
