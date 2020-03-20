@@ -57,16 +57,19 @@
 </header>
 <main th:fragment="bodycontent">
   <h1>Thread erstellen:</h1>
-  <form th:object="${form}">
+  <form method="post" th:action="@{/forum/newThread(forenId=${forenId.getId()},topicId=${topicId.getId()})}"
+        th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
-      <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100" placeholder="Gebe einen Titel ein."
-             type="text">
+      <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100"
+             name="title"
+             placeholder="Gebe einen Titel ein." th:value="*{title}" type="text">
       <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Inhalt:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"
+                th:value="*{content}"></textarea>
     </div>
     <div class="form-group">
       <label for="media">Lade Medien hoch</label>

@@ -171,14 +171,19 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
-    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+    public String createNewThread(@PathVariable Long forenID, @PathVariable Long topicID, Model model) {
         model.addAttribute("form", this.threadForm);
+        System.out.println(topicID);
+        System.out.println(forenID);
+        model.addAttribute("forenId", new ForumId(forenID));
+        model.addAttribute("topicId", new TopicId(topicID));
         return "create-thread";
     }
 
-    @PostMapping("foren/{forenId}/newThread")
-    public String addNewThread(@PathVariable Long forenId, @RequestParam("topicId") Long topicId) {
-        System.out.println("Yoyoyo");
-        return "redirect:/myforums/" + forenId + "/" + topicId;
+    @PostMapping("/forum/newThread")
+    public String addNewThread(@RequestParam("forenId") Long forenId, @RequestParam("topicId") Long topicId,
+                               @ModelAttribute ThreadForm threadForm) {
+        System.out.println(threadForm);
+        return "redirect:/my-forums/" + forenId + "/" + topicId;
     }
 }
