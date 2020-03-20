@@ -25,31 +25,30 @@ public class UserRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private UserRepositoryImpl userRepositoryImpl;
+    private final UserRepositoryImpl userRepositoryImpl;
 
     /**
      * Jpa user repository that can be assumed to work correctly. Used for database setup before
      * the actual tests.
      */
-    private UserJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
     private User user1;
     private User user2;
 
-    /**
-     * Set up method with injection. SetsUp the tests.
-     *
-     * @param userJpaRepository  user jpa repository (assumed to work correctly)
-     * @param userRepositoryImpl repository under test
-     */
     @Autowired
-    @BeforeEach
-    public void setUp(UserJpaRepository userJpaRepository,
-                      UserRepositoryImpl userRepositoryImpl) {
+    public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
+                                   UserRepositoryImpl userRepositoryImpl) {
         this.userJpaRepository = userJpaRepository;
 
         this.userRepositoryImpl = userRepositoryImpl;
+    }
 
+    /**
+     * Set up method with injection. SetsUp the tests.
+     */
+    @BeforeEach
+    public void setUp() {
         ForumDTO forum1DTO = ForumDTO.builder()
                 .id(1L)
                 .title("forum1")
