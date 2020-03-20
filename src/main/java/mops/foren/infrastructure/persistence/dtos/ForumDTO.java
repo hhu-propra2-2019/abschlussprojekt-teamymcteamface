@@ -27,6 +27,6 @@ public class ForumDTO {
     @ManyToMany(mappedBy = "forums")
     private Set<UserDTO> user;
 
-    @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "forum", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<TopicDTO> topics;
 }
