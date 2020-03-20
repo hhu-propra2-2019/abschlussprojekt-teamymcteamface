@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"
-      th:replace="~{mopslayout :: html(name='Foren - Dashboard', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -87,10 +87,10 @@
             <div th:class="preview-pic">
 
             </div>
-            <div style="float: left;" th:class="author" th:text="${post.getAuthor().getName()}">
+            <div th:class="author" th:text="${post.getAuthor().getName()}" style="float: left;">
               Jens Bendisposto
             </div>
-            <div style="float: right;" th:class="created-date" th:text="${post.getCreationDate()}">
+            <div th:class="created-date" th:text="${post.getFormattedDate()}" style="float: right;">
               12.03.2020
             </div>
           </div>
@@ -123,7 +123,7 @@
       </div>
     </div>
   </div>
-</body>
 </main>
+</body>
 
 </html>

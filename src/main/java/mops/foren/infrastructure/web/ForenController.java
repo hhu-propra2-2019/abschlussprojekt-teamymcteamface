@@ -160,21 +160,21 @@ public class ForenController {
     /**
      * Creating a post and redirecting to the thread page.
      *
-     * @param token     Keyclock token
-     * @param postForm  a form to create posts.
-     * @param threadIdL The id of the thread the post is in.
+     * @param token        Keycloak token
+     * @param postForm     a form to create posts.
+     * @param threadIdLong The id of the thread the post is in.
      * @return The template for the thread
      */
     @PostMapping("/post/newPost")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token,
                           @ModelAttribute PostForm postForm,
-                          @RequestParam("threadId") Long threadIdL) {
-        ThreadId threadId = new ThreadId(threadIdL);
+                          @RequestParam("threadId") Long threadIdLong) {
+        ThreadId threadId = new ThreadId(threadIdLong);
         User user = this.userService.getUserFromDB(token);
         Post post = postForm.getPost(user, threadId);
         this.threadService.addPostInThread(threadId, post);
-        return "redirect:/thread?threadId=" + threadIdL;
+        return "redirect:/thread?threadId=" + threadIdLong;
     }
 
     /**

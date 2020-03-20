@@ -72,7 +72,6 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
-    testImplementation 'com.c4-soft.springaddons:spring-security-test-keycloack-addons:1.2.0'
 }
 
 

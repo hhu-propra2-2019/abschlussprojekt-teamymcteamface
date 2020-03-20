@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Repository
 public class ThreadRepositoryImpl implements IThreadRepository {
 
-    ThreadJpaRepository threadRepository;
+    private ThreadJpaRepository threadRepository;
 
     public ThreadRepositoryImpl(ThreadJpaRepository threadRepository) {
         this.threadRepository = threadRepository;
