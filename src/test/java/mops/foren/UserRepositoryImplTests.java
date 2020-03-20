@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -49,21 +48,14 @@ public class UserRepositoryImplTests {
      */
     @BeforeEach
     public void setUp() {
-        ForumDTO forum1DTO = ForumDTO.builder()
-                .id(1L)
-                .title("forum1")
-                .description("description1")
-                .build();
 
-        Set<ForumDTO> setWithForum1DTO = new HashSet<>(Arrays.asList(forum1DTO));
+        Set<ForumDTO> setWithoutForumDTO = new HashSet<>();
 
         UserDTO user1DTO = UserDTO.builder()
                 .username("user1")
                 .email("user1@hhu.de")
-                .forums(setWithForum1DTO)
+                .forums(setWithoutForumDTO)
                 .build();
-
-        Set<ForumDTO> setWithoutForumDTO = new HashSet<>();
 
         UserDTO user2DTO = UserDTO.builder()
                 .username("user2")
