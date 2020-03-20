@@ -25,6 +25,7 @@ public class ThreadForm {
                 .title(this.title)
                 .description(this.content)
                 .topicId(topicId)
+                .author(user.getName())
                 .build();
     }
 }
