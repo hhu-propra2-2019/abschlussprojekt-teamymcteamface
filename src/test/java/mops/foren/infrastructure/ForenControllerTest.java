@@ -1,4 +1,4 @@
-package mops.foren;
+package mops.foren.infrastructure;
 
 import com.c4_soft.springaddons.test.security.context.support.WithMockKeycloackAuth;
 import org.junit.jupiter.api.BeforeEach;

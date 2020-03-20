@@ -1,6 +1,5 @@
-package mops.foren;
+package mops.foren.infrastructure.web;
 
-import mops.foren.infrastructure.web.Account;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.RefreshableKeycloakSecurityContext;
 import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
@@ -13,6 +12,12 @@ import java.util.Set;
 import static org.mockito.Mockito.*;
 
 public class KeycloakTokenMock {
+    /**
+     * This Method builds a Authetication token to
+     * allow the test to enter secured routes.
+     *
+     * @param account Object that contains information from Keycloaktoken
+     */
     public static void setupTokenMock(Account account) {
         String userName = account.getName();
         String userEmail = account.getEmail();
@@ -22,7 +27,8 @@ public class KeycloakTokenMock {
         when(principal.getKeycloakSecurityContext().getIdToken().getEmail()).thenReturn(userEmail);
         SimpleKeycloakAccount keyaccount = new SimpleKeycloakAccount(principal, roles,
                 mock(RefreshableKeycloakSecurityContext.class));
-        KeycloakAuthenticationToken authenticationToken = new KeycloakAuthenticationToken(keyaccount, true);
+        KeycloakAuthenticationToken authenticationToken =
+                new KeycloakAuthenticationToken(keyaccount, true);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authenticationToken);
     }
