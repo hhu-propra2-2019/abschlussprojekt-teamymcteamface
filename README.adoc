@@ -47,3 +47,5 @@ image:Documentation/Organisation_Foren.png[]
 * link:Documentation/structure.adoc[Structure] : Allgemeine Infos über die Klassenstruktur etc.
 
 * link:Documentation/documentation.adoc[ARC42 Doc] : Struktur Doku anhand von ARC42
+
+* link:Documentation/teamdocumentation.adoc[Team Doc] : Dokumentation der Teamarbeit
