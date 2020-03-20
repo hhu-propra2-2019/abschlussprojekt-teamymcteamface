@@ -1,9 +1,8 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.*;
+import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
-
-import java.util.List;
 
 @ApplicationService
 public class PostService {
@@ -14,8 +13,8 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getPosts(ThreadId threadId) {
-        return this.postRepository.getPostsFromDB(threadId);
+    public PostPage getPosts(ThreadId threadId, Integer page) {
+        return this.postRepository.getPostPageFromDB(threadId, page);
     }
 
     /**

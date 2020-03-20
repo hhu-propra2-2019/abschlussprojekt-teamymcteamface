@@ -2,6 +2,7 @@ package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.*;
 import mops.foren.domain.model.*;
+import mops.foren.domain.model.paging.PostPage;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,7 +15,6 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @SessionScope
@@ -148,9 +148,11 @@ public class ForenController {
                                  @PathVariable String threadID, Model model) {
 
         ThreadId threadId = new ThreadId(Long.valueOf(threadID));
-        List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
-        model.addAttribute("posts", posts);
+
+        PostPage postPage = this.postService.getPosts(threadId, 0);
+        model.addAttribute("posts", postPage.getPosts());
+        model.addAttribute("pagingObject", postPage.getPaging());
 
         return "thread2";
     }
