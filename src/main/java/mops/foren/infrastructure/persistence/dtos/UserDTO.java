@@ -46,4 +46,7 @@ public class UserDTO {
 
     @OneToMany(mappedBy = "author")
     private List<PostDTO> posts;
+
+    @OneToMany(mappedBy = "author")
+    private List<ThreadDTO> threads;
 }
