@@ -47,7 +47,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromUser(User user) {
-        List<PostDTO> postByAuthor = this.postRepository.findByAuthor(user.getName());
+        List<PostDTO> postByAuthor = this.postRepository.findByAuthor_Username(user.getName());
         return postByAuthor.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
