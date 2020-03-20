@@ -11,7 +11,7 @@ public class PostForm {
 
 
     /**
-     * This method maps return the corresponding Post.
+     * Method to build a post out of the postContent.
      *
      * @param user     The user, that made the post.
      * @param threadId The id of the thread the post is in.
