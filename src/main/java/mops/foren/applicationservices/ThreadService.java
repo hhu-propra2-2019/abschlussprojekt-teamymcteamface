@@ -24,8 +24,8 @@ public class ThreadService {
     }
 
 
-    public void addPostInThread(Thread thread, Post post) {
-        this.threadRepository.addPostInThread(thread, post);
+    public void addPostInThread(ThreadId threadId, Post post) {
+        this.threadRepository.addPostInThread(threadId, post);
     }
 
 

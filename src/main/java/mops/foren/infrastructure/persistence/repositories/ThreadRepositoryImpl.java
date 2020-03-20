@@ -43,8 +43,8 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     }
 
     @Override
-    public void addPostInThread(Thread thread, Post post) {
-        ThreadDTO threadDTO = this.threadRepository.findById(thread.getId().getId()).get();
+    public void addPostInThread(ThreadId threadId, Post post) {
+        ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);

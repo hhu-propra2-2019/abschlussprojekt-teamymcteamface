@@ -1,7 +1,6 @@
 package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.*;
-import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -154,20 +153,20 @@ public class ForenController {
     /**
      * Creating a post and redirecting to the thread page.
      *
-     * @param token    Keyclock token
-     * @param postForm a form to create posts.
-     * @param threadId The id of the thread the post is in.
+     * @param token     Keyclock token
+     * @param postForm  a form to create posts.
+     * @param threadIdL The id of the thread the post is in.
      * @return The template for the thread
      */
     @PostMapping("/post/newPost")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token, @ModelAttribute PostForm postForm,
-                          @RequestParam("threadId") Long threadId) {
+                          @RequestParam("threadId") Long threadIdL) {
+        ThreadId threadId = new ThreadId(threadIdL);
         User user = this.userService.getUserFromDB(token);
-        Post post = postForm.getPost(user, new ThreadId(threadId));
-        Thread thread = this.threadService.getThread(new ThreadId(threadId));
-        this.threadService.addPostInThread(thread, post);
-        return "redirect:/thread?threadId=" + threadId;
+        Post post = postForm.getPost(user, threadId);
+        this.threadService.addPostInThread(threadId, post);
+        return "redirect:/thread?threadId=" + threadIdL;
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")

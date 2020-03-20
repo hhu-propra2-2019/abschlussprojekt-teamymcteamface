@@ -12,5 +12,5 @@ public interface IThreadRepository {
 
     Thread getThreadById(ThreadId threadId);
 
-    void addPostInThread(Thread thread, Post post);
+    void addPostInThread(ThreadId threadId, Post post);
 }
