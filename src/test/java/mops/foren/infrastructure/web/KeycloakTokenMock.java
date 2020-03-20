@@ -13,10 +13,10 @@ import static org.mockito.Mockito.*;
 
 public class KeycloakTokenMock {
     /**
-     * This Method builds a Authetication token to
-     * allow the test to enter secured routes.
+     * This Method builds up an authentication token to
+     * allow the test calling on secured routes.
      *
-     * @param account Object that contains information from Keycloaktoken
+     * @param account Object that contains information from Keycloak token.
      */
     public static void setupTokenMock(Account account) {
         String userName = account.getName();
@@ -25,10 +25,10 @@ public class KeycloakTokenMock {
         KeycloakPrincipal principal = mock(KeycloakPrincipal.class, RETURNS_DEEP_STUBS);
         when(principal.getName()).thenReturn(userName);
         when(principal.getKeycloakSecurityContext().getIdToken().getEmail()).thenReturn(userEmail);
-        SimpleKeycloakAccount keyaccount = new SimpleKeycloakAccount(principal, roles,
+        SimpleKeycloakAccount keycloakAccount = new SimpleKeycloakAccount(principal, roles,
                 mock(RefreshableKeycloakSecurityContext.class));
         KeycloakAuthenticationToken authenticationToken =
-                new KeycloakAuthenticationToken(keyaccount, true);
+                new KeycloakAuthenticationToken(keycloakAccount, true);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authenticationToken);
     }
