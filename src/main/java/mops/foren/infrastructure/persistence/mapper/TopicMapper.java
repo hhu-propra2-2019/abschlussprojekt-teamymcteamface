@@ -3,6 +3,7 @@ package mops.foren.infrastructure.persistence.mapper;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
+import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,22 @@ public abstract class TopicMapper {
                 .title(topicDTO.getTitle())
                 .description(topicDTO.getDescription())
                 .forumId(new ForumId(topicDTO.getForum().getId()))
+                .build();
+    }
+
+    /**
+     * Method to map a Topic on the corresponding TopicDTO.
+     *
+     * @param topic    The topic
+     * @param forumDTO The ForumDTO
+     * @return The TopicDTO
+     */
+    public static TopicDTO mapTopicToTopicDto(Topic topic, ForumDTO forumDTO) {
+        return TopicDTO.builder()
+                .forum(forumDTO)
+                .description(topic.getDescription())
+                .title(topic.getTitle())
+                .moderated(topic.getModerated())
                 .build();
     }
 }

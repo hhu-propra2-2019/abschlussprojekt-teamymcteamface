@@ -195,6 +195,7 @@ public class ForenController {
         return "create-thread";
     }
 
+
     /**
      * Creates a thread and redirects to the topic page.
      *
@@ -214,5 +215,36 @@ public class ForenController {
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
         return "redirect:/my-forums/" + forenIdLong + "/" + topicIdLong;
+    }
+
+    /**
+     * Create a new topic.
+     *
+     * @param forenID The forum id
+     * @param model   The model
+     * @return The template for creating a new topic
+     */
+    @GetMapping("/my-forums/{forenID}/new-topic")
+    public String createNewTopic(@PathVariable String forenID,
+                                 Model model) {
+        model.addAttribute("form", new TopicForm("", "", false));
+        model.addAttribute("forenId", forenID);
+        return "create-topic";
+    }
+
+    /**
+     * Creating a topic and redirecting to the forum page.
+     *
+     * @param topicForm   a form to create topics.
+     * @param forumIdLong The id of the thread the post is in.
+     * @return The template for the thread
+     */
+    @PostMapping("/forum/newTopic")
+    public String newTopic(@ModelAttribute TopicForm topicForm,
+                           @RequestParam("forenId") Long forumIdLong) {
+        ForumId forumId = new ForumId(forumIdLong);
+        Topic topic = topicForm.getTopic(forumId);
+        this.forumService.addTopicInForum(forumId, topic);
+        return "redirect:/my-forums/" + forumIdLong;
     }
 }
