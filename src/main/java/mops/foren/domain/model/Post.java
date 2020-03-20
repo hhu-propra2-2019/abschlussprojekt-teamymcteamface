@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Data
 @Builder
@@ -19,5 +20,9 @@ public class Post {
     private String text;
 
     private Boolean changed;
+
+    public String getFormattedDate() {
+        return this.creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
+    }
 
 }
