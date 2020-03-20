@@ -11,6 +11,13 @@ import java.util.stream.Collectors;
 
 public abstract class PostPageMapper {
 
+    /**
+     * Map the Spring page to our page-type.
+     *
+     * @param dtoPage page of spring
+     * @param page    the number of the page
+     * @return Our PostPage object
+     */
     public static PostPage toPostPage(Page<PostDTO> dtoPage, int page) {
         List<Post> collect = dtoPage.stream()
                 .map(PostMapper::mapPostDtoToPost)
