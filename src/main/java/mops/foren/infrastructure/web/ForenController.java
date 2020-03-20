@@ -6,10 +6,7 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -26,6 +23,7 @@ public class ForenController {
     private ThreadService threadService;
     private PostService postService;
     private ForumForm form = new ForumForm("", "");
+    private PostForm postForm = new PostForm("");
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -137,22 +135,38 @@ public class ForenController {
     /**
      * Mapping to the thread page.
      *
-     * @param forenID  the forum id
-     * @param topicID  the topic id
      * @param threadID the thread id
      * @param model    the model
      * @return The template for the thread
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
-    public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
-                                 @PathVariable String threadID, Model model) {
-
-        ThreadId threadId = new ThreadId(Long.valueOf(threadID));
+    @GetMapping("/thread")
+    public String displayAThread(@RequestParam("threadId") Long threadID, Model model) {
+        ThreadId threadId = new ThreadId(threadID);
         List<Post> posts = this.postService.getPosts(threadId);
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
         model.addAttribute("posts", posts);
+        model.addAttribute("post", this.postForm);
 
         return "thread2";
+    }
+
+    /**
+     * Creating a post and redirecting to the thread page.
+     *
+     * @param token        Keycloak token
+     * @param postForm     a form to create posts.
+     * @param threadIdLong The id of the thread the post is in.
+     * @return The template for the thread
+     */
+    @PostMapping("/post/newPost")
+    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
+    public String newPost(KeycloakAuthenticationToken token, @ModelAttribute PostForm postForm,
+                          @RequestParam("threadId") Long threadIdLong) {
+        ThreadId threadId = new ThreadId(threadIdLong);
+        User user = this.userService.getUserFromDB(token);
+        Post post = postForm.getPost(user, threadId);
+        this.threadService.addPostInThread(threadId, post);
+        return "redirect:/thread?threadId=" + threadIdLong;
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
