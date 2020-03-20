@@ -34,7 +34,7 @@ public abstract class ThreadMapper {
      */
     public static ThreadDTO mapThreadToThreadDto(Thread thread, TopicDTO topicDTO) {
         return ThreadDTO.builder()
-                .author(thread.getAuthor())
+                .author(UserMapper.mapUserToUserDto(thread.getAuthor()))
                 .description(thread.getDescription())
                 .title(thread.getTitle())
                 .topic(topicDTO)

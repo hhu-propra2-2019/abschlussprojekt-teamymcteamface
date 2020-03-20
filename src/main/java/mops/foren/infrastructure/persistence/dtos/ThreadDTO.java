@@ -23,7 +23,8 @@ public class ThreadDTO {
 
     private String description;
 
-    private String author;
+    @ManyToOne
+    private UserDTO author;
 
     @ManyToOne
     private TopicDTO topic;
