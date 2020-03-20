@@ -35,6 +35,12 @@ public class UserRepositoryImplTests {
     private User user1;
     private User user2;
 
+    /**
+     * Constructor for repo injection.
+     *
+     * @param userJpaRepository  injected userRepository
+     * @param userRepositoryImpl injected userRepositoryimpl
+     */
     @Autowired
     public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
                                    UserRepositoryImpl userRepositoryImpl) {
