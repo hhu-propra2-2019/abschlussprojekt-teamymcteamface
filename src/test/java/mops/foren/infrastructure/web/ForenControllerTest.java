@@ -1,4 +1,4 @@
-package mops.foren.infrastructure;
+package mops.foren.infrastructure.web;
 
 import com.c4_soft.springaddons.test.security.context.support.WithMockKeycloackAuth;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,10 +6,15 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import static mops.foren.infrastructure.web.KeycloakTokenMock.setupTokenMock;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -23,6 +28,9 @@ public class ForenControllerTest {
 
     @Autowired
     WebApplicationContext context;
+
+    @MockBean
+    KeycloakService keycloakServiceMock;
 
     /**
      * Building up a security environment for the Test.
@@ -57,8 +65,12 @@ public class ForenControllerTest {
     }
 
     @Test
-    @WithMockKeycloackAuth(roles = "studentin", name = "studentin")
     void testMyForumTemplateAuthenticated() throws Exception {
+        Set<String> roles = new HashSet<>();
+        roles.add("studentin");
+        Account account = new Account("studentin", "User@email.de", "image", roles);
+        setupTokenMock(account);
+
         this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
