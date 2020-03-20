@@ -14,8 +14,7 @@ import java.util.Optional;
 @Repository
 public class UserRepositoryImpl implements IUserRepository {
 
-
-    UserJpaRepository userRepository;
+    private UserJpaRepository userRepository;
 
     public UserRepositoryImpl(UserJpaRepository userRepository) {
         this.userRepository = userRepository;

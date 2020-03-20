@@ -13,7 +13,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ForumRepositoryImpl implements IForumRepository {
-    ForumJpaRepository forumRepository;
+
+    private ForumJpaRepository forumRepository;
 
     public ForumRepositoryImpl(ForumJpaRepository forumRepository) {
         this.forumRepository = forumRepository;
