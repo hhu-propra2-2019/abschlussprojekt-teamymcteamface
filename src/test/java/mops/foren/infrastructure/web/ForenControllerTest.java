@@ -1,6 +1,5 @@
 package mops.foren.infrastructure.web;
 
-import com.c4_soft.springaddons.test.security.context.support.WithMockKeycloackAuth;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,8 +76,12 @@ public class ForenControllerTest {
     }
 
     @Test
-    @WithMockKeycloackAuth(roles = "wrongRole")
     void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
+        Set<String> roles = new HashSet<>();
+        roles.add("wrong role");
+        Account account = new Account("studentin", "User@email.de", "image", roles);
+        setupTokenMock(account);
+
         this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isForbidden());
     }
