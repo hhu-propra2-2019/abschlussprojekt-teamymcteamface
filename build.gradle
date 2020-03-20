@@ -2,7 +2,7 @@ plugins {
     id 'org.springframework.boot' version '2.2.5.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
-    id "com.github.spotbugs" version "4.0.0"
+    id "com.github.spotbugs" version "4.0.4"
     id 'checkstyle'
 }
 
@@ -54,11 +54,15 @@ dependencies {
     implementation 'io.micrometer:micrometer-registry-prometheus'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    compile group: 'org.springframework.security.oauth', name: 'spring-security-oauth2', version: '2.4.0.RELEASE'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-oauth2-client', version: '2.2.5.RELEASE'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'mops:styleguide:2.0.0'
+    implementation 'mops:styleguide:2.1.0'
     implementation 'org.keycloak:keycloak-spring-boot-starter:9.0.0'
     implementation 'org.keycloak.bom:keycloak-adapter-bom:3.3.0.Final'
+    implementation 'com.h2database:h2:1.4.191'
+    testCompile 'com.tngtech.archunit:archunit-junit5:0.13.0'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'mysql:mysql-connector-java'
@@ -68,6 +72,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'com.c4-soft.springaddons:spring-security-test-keycloack-addons:1.2.0'
 }
 
 

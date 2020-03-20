@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren - Profile', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Foren</title>
+  <th:block th:fragment="headcontent">
+    <style>
+      main > div:first-child {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      main > div:first-child img {
+        border-radius: 1rem;
+        border: 1px solid black;
+      }
+
+      main > div:first-child > h2 {
+        position: absolute;
+        bottom: 0;
+        margin: 1rem;
+        color: white;
+        text-shadow: 0 0 3px black;
+      }
+
+      @media (min-width: 992px) {
+        main > div:first-child > h2 {
+          font-size: 2.4rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        main > div:first-child > h2 {
+          font-size: 1.0rem;
+        }
+      }
+    </style>
+  </th:block>
+</head>
+<body>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="">
+        <a href="" th:href="@{./}">Dashboard</a>
+      </li>
+      <li class="">
+        <a href="" th:href="@{./my-forums}">Meine Foren</a>
+      </li>
+      <li class="active">
+        <a href="" th:href="@{./profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main th:fragment="bodycontent">
+<h1>Profil</h1>
+<div class="row">
+  <div class="col form-group">
+    <div>Vorname:</div>
+    <input id="forename" placeholder="Vorname">
+    <div>Nachname:</div>
+    <input id="name" placeholder="Nachname">
+  </div>
+  <div class="col">
+    <img src="https://avatars1.githubusercontent.com/t/3617896?s=280&v=4" width="100px" height="100px">
+    <button class="btn btn-primary" type="button">Bild ändern</button>
+  </div>
+</div>
+<hr>
+<button id="save" onclick="window.history.back()" class="btn btn-primary" type="button">Profil speichern</button>
+</main>
+</body>
+</html>
