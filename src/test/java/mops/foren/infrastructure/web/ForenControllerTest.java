@@ -10,7 +10,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import static mops.foren.infrastructure.web.KeycloakTokenMock.setupTokenMock;
@@ -65,10 +64,10 @@ public class ForenControllerTest {
 
     @Test
     void testMyForumTemplateAuthenticated() throws Exception {
-        Set<String> roles = new HashSet<>();
-        roles.add("studentin");
-        Account account = new Account("studentin", "User@email.de", "image", roles);
-        setupTokenMock(account);
+        setupTokenMock(Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build());
 
         this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isOk())
@@ -77,10 +76,10 @@ public class ForenControllerTest {
 
     @Test
     void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
-        Set<String> roles = new HashSet<>();
-        roles.add("wrong role");
-        Account account = new Account("studentin", "User@email.de", "image", roles);
-        setupTokenMock(account);
+        setupTokenMock(Account.builder()
+                .name("studentin")
+                .roles(Set.of("wrong Role"))
+                .build());
 
         this.mvcMock.perform(get("/my-forums"))
                 .andExpect(status().isForbidden());
