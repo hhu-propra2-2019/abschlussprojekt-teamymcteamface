@@ -17,7 +17,7 @@ Warum?
 === Aufgabenteilung
 
 ====
-Die Aufgabenaufteilung im Team bzw. in Teams von 2 Personen gestaltete sich schwierig.Oft kam es dazu, dass die Vorstellungen der konkreten Implementierungen, trotz der gleichen Idee sehr unterschiedlich waren.
+Die Aufgabenaufteilung im Team bzw. in Teams von 2 Personen gestaltete sich schwierig. Oft kam es dazu, dass die Vorstellungen der konkreten Implementierungen, trotz der gleichen Idee sehr unterschiedlich waren.
 Als das Projekt noch klein war, gab es zudem nicht genug unabhängige Baustellen für jedes Team.
 ====
 
@@ -51,7 +51,7 @@ als Herausforderung. Insbesondere die Implementierung von Keycloak in unsere Inf
 * Die meisten Fragen konnte durch ausprobieren oder in Zusammenarbeit mit den Bereuern gelöst werden. Für das Testen haben wir eine Mock
 Konfiguration gefunden welche den Tests Zugriff auf die nötigen Routen ermöglicht. Da auch die Keycloak Demo erweitert wird bleibt dies aber ein fortlaufender Prozess.
 
-=== wiederkehrende Diskussion über die Architektur
+=== Wiederkehrende Diskussion über die Architektur
 
 ====
 Obwohl wir uns zu Beginn für eine Onion Architektur entschieden haben, traten während der konkreten Umsetzung dieser Architektur und der Datenbankanbindung
