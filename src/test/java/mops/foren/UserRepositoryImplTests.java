@@ -6,6 +6,7 @@ import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserRepositoryImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,26 +25,27 @@ public class UserRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private final UserRepositoryImpl userRepositoryImpl;
+    private UserRepositoryImpl userRepositoryImpl;
 
     /**
      * Jpa user repository that can be assumed to work correctly. Used for database setup before
      * the actual tests.
      */
-    private final UserJpaRepository userJpaRepository;
+    private UserJpaRepository userJpaRepository;
 
-    private final User user1;
-    private final User user2;
+    private User user1;
+    private User user2;
 
     /**
-     * All args constructor with injection. SetsUp the tests.
+     * Set up method with injection. SetsUp the tests.
      *
      * @param userJpaRepository  user jpa repository (assumed to work correctly)
      * @param userRepositoryImpl repository under test
      */
     @Autowired
-    public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
-                                   UserRepositoryImpl userRepositoryImpl) {
+    @BeforeEach
+    public void setUp(UserJpaRepository userJpaRepository,
+                      UserRepositoryImpl userRepositoryImpl) {
         this.userJpaRepository = userJpaRepository;
 
         this.userRepositoryImpl = userRepositoryImpl;

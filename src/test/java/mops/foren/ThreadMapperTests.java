@@ -4,6 +4,7 @@ import mops.foren.domain.model.TopicId;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,12 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class ThreadMapperTests {
 
-    private final ThreadDTO threadDTO;
+    private ThreadDTO threadDTO;
 
     /**
-     * Constructs the test environment for ThreadMapper.
+     * Sets up the test environment for ThreadMapper.
      */
-    public ThreadMapperTests() {
+    @BeforeEach
+    public void setUp() {
         TopicId topicId = new TopicId(2L);
 
         TopicDTO topicDTO = TopicDTO.builder() // only Id is needed

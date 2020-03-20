@@ -5,6 +5,7 @@ import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -18,16 +19,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class UserMapperTests {
 
-    private final UserDTO userDTO;
+    private UserDTO userDTO;
 
-    private final User user;
+    private User user;
 
-    private final List<ForumId> forumIds;
+    private List<ForumId> forumIds;
 
     /**
-     * Constructs a new test environment for UserMapper.
+     * Sets up a new test environment for UserMapper.
      */
-    public UserMapperTests() {
+    @BeforeEach
+    public void setUp() {
         this.user = User.builder()
                 .name("user1")
                 .email("user1@hhu.de")

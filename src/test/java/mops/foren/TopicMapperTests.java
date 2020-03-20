@@ -4,6 +4,7 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,12 +13,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class TopicMapperTests {
 
-    private final TopicDTO topicDTO;
+    private TopicDTO topicDTO;
 
     /**
-     * Constructs the test environment for TopicMapper.
+     * Sets up the test environment for TopicMapper.
      */
-    public TopicMapperTests() {
+    @BeforeEach
+    public void setUp() {
         ForumId forumId = new ForumId(2L);
 
         ForumDTO forumDTO = ForumDTO.builder() // Only Id is needed

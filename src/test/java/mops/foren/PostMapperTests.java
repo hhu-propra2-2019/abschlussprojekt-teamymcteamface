@@ -8,6 +8,7 @@ import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -21,12 +22,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class PostMapperTests {
 
-    private final PostDTO postDTO;
+    private PostDTO postDTO;
 
     /**
-     * Constructs a new test environment for PostMapper.
+     * Sets up a new test environment for PostMapper.
      */
-    public PostMapperTests() {
+    @BeforeEach
+    public void setUp() {
         ThreadId threadId = new ThreadId(2L);
 
         ThreadDTO threadDTO = ThreadDTO.builder() // only Id is needed

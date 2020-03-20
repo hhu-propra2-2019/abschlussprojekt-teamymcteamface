@@ -4,6 +4,7 @@ import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -12,14 +13,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 public class ForumMapperTests {
 
-    private final ForumDTO forumDTO;
+    private ForumDTO forumDTO;
 
-    private final Forum forum;
+    private Forum forum;
 
     /**
-     * Constructs the test environment for ForumMapper.
+     * Sets up the test environment for ForumMapper.
      */
-    public ForumMapperTests() {
+    @BeforeEach
+    public void setUp() {
         this.forum = Forum.builder()
                 .id(new ForumId(1L))
                 .title("forum title")
@@ -34,7 +36,7 @@ public class ForumMapperTests {
     }
 
     @Test
-    public void testTitleIsCorrectlyMappedFormModelToDTO() {
+    public void testTitleIsCorrectlyMappedFromModelToDTO() {
         // Act
         String title = ForumMapper.mapForumToForumDTO(this.forum).getTitle();
 
@@ -43,7 +45,7 @@ public class ForumMapperTests {
     }
 
     @Test
-    public void testDescriptionIsCorrectlyMappedFormModelToDTO() {
+    public void testDescriptionIsCorrectlyMappedFromModelToDTO() {
         // Act
         String description = ForumMapper.mapForumToForumDTO(this.forum).getDescription();
 
@@ -52,7 +54,7 @@ public class ForumMapperTests {
     }
 
     @Test
-    public void testTitleIsCorrectlyMappedFormDTOToModel() {
+    public void testTitleIsCorrectlyMappedFromDTOToModel() {
         // Act
         String title = ForumMapper.mapForumDtoToForum(this.forumDTO).getTitle();
 
@@ -61,7 +63,7 @@ public class ForumMapperTests {
     }
 
     @Test
-    public void testDescriptionIsCorrectlyMappedFormDTOToModel() {
+    public void testDescriptionIsCorrectlyMappedFromDTOToModel() {
         // Act
         String description = ForumMapper.mapForumDtoToForum(this.forumDTO).getDescription();
 
