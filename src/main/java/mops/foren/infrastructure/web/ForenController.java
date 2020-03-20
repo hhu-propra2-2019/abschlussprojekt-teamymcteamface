@@ -24,6 +24,7 @@ public class ForenController {
     private PostService postService;
     private ForumForm form = new ForumForm("", "");
     private PostForm postForm = new PostForm("");
+    private ThreadForm threadForm = new ThreadForm("", "");
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -170,7 +171,14 @@ public class ForenController {
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
-    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
+    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID, Model model) {
+        model.addAttribute("form", this.threadForm);
         return "create-thread";
+    }
+
+    @PostMapping("foren/{forenId}/newThread")
+    public String addNewThread(@PathVariable Long forenId, @RequestParam("topicId") Long topicId) {
+        System.out.println("Yoyoyo");
+        return "redirect:/myforums/" + forenId + "/" + topicId;
     }
 }
