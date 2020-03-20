@@ -22,7 +22,6 @@ public abstract class ForumMapper {
                 .build();
     }
 
-
     /**
      * This method maps a Forum object to a ForumDTO object.
      *

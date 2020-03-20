@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
-    PostJpaRepository postRepository;
+
+    private PostJpaRepository postRepository;
 
     public PostRepositoryImpl(PostJpaRepository postRepository) {
         this.postRepository = postRepository;
