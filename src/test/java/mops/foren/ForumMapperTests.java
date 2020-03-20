@@ -16,6 +16,9 @@ public class ForumMapperTests {
 
     private final Forum forum;
 
+    /**
+     * Constructs the test environment for ForumMapper.
+     */
     public ForumMapperTests() {
         this.forum = Forum.builder()
                 .id(new ForumId(1L))

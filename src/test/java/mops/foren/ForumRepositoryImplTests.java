@@ -31,8 +31,15 @@ public class ForumRepositoryImplTests {
 
     private final List<Forum> user1Forums;
 
+    /**
+     * Constructs the test environment for ForumRepositoryImpl.
+     *
+     * @param userJpaRepository   the userJpaRepository
+     * @param forumRepositoryImpl the forumRepositoryImpl
+     */
     @Autowired
-    public ForumRepositoryImplTests(UserJpaRepository userJpaRepository, ForumRepositoryImpl forumRepositoryImpl) {
+    public ForumRepositoryImplTests(UserJpaRepository userJpaRepository,
+                                    ForumRepositoryImpl forumRepositoryImpl) {
 
         this.forumRepositoryImpl = forumRepositoryImpl;
 

@@ -45,10 +45,7 @@ public class UserRepositoryImplTests {
     public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
                                    UserRepositoryImpl userRepositoryImpl) {
         this.userJpaRepository = userJpaRepository;
-        /**
-         * Jpa forum repositories that can be assumed to work correctly. Used for database setup before
-         * the actual tests.
-         */
+
         this.userRepositoryImpl = userRepositoryImpl;
 
         ForumDTO forum1DTO = ForumDTO.builder()
@@ -125,7 +122,8 @@ public class UserRepositoryImplTests {
         // Act
         this.userRepositoryImpl.addForumToUser(this.user1, forum2);
         // Reload User1
-        User updatedUser1 = UserMapper.mapUserDtoToUser(this.userJpaRepository.findById(this.user1.getName()).get());
+        User updatedUser1 = UserMapper.mapUserDtoToUser(
+        this.userJpaRepository.findById(this.user1.getName()).get());
         // Assert
         assertThat(updatedUser1.getForums()).contains(forum2.getId());
     }

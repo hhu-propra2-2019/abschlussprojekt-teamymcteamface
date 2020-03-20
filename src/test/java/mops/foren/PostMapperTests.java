@@ -23,6 +23,9 @@ public class PostMapperTests {
 
     private final PostDTO postDTO;
 
+    /**
+     * Constructs a new test environment for PostMapper.
+     */
     public PostMapperTests() {
         ThreadId threadId = new ThreadId(2L);
 

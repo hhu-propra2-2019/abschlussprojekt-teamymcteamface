@@ -14,6 +14,9 @@ public class ThreadMapperTests {
 
     private final ThreadDTO threadDTO;
 
+    /**
+     * Constructs the test environment for ThreadMapper.
+     */
     public ThreadMapperTests() {
         TopicId topicId = new TopicId(2L);
 

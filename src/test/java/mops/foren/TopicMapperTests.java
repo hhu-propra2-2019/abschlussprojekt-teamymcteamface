@@ -14,6 +14,9 @@ public class TopicMapperTests {
 
     private final TopicDTO topicDTO;
 
+    /**
+     * Constructs the test environment for TopicMapper.
+     */
     public TopicMapperTests() {
         ForumId forumId = new ForumId(2L);
 

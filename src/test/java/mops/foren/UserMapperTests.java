@@ -24,6 +24,9 @@ public class UserMapperTests {
 
     private final List<ForumId> forumIds;
 
+    /**
+     * Constructs a new test environment for UserMapper.
+     */
     public UserMapperTests() {
         this.user = User.builder()
                 .name("user1")
