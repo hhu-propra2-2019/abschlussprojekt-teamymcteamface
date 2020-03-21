@@ -109,12 +109,12 @@
       <ul class="list-unstyled page-list">
 
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
-          <button class="btn" th:unless="${i == param.page}" type="button"
-                  th:onclick="location.href = '?threadId=' + ${thread.getId().getId()} + '&page=' + [[${i}]]"
+          <button class="btn" th:unless="${i == pagingObject.getCurrentPage()+1}" type="button"
+                  th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
                   th:text="${i}">page#
           </button>
-          <button class="btn btn-primary" th:if="${i == param.page}" type="button"
-                  th:onclick="location.href = '?threadId=' + ${thread.getId().getId()} + '&page=' + ${i}"
+          <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}" type="button"
+                  th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
                   th:text="${i}">page#
           </button>
 
