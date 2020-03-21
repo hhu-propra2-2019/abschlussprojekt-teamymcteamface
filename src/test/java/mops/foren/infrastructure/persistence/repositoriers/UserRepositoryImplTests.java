@@ -1,4 +1,4 @@
-package mops.foren;
+package mops.foren.infrastructure.persistence.repositoriers;
 
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;

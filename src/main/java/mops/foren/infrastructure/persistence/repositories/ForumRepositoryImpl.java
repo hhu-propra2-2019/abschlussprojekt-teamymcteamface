@@ -8,7 +8,7 @@ import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
-import mops.foren.infrastructure.persistence.mapper.TopicMapper;
+import mops.foren.infrastructure.persistence.dtos.TopicMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

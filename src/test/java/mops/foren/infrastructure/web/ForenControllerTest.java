@@ -12,7 +12,6 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Set;
 
-import static mops.foren.infrastructure.web.KeycloakTokenMock.setupTokenMock;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -64,7 +63,7 @@ public class ForenControllerTest {
 
     @Test
     void testMyForumTemplateAuthenticated() throws Exception {
-        setupTokenMock(Account.builder()
+        KeycloakTokenMock.setupTokenMock(Account.builder()
                 .name("studentin")
                 .roles(Set.of("studentin"))
                 .build());
@@ -76,7 +75,7 @@ public class ForenControllerTest {
 
     @Test
     void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
-        setupTokenMock(Account.builder()
+        KeycloakTokenMock.setupTokenMock(Account.builder()
                 .name("studentin")
                 .roles(Set.of("wrong Role"))
                 .build());

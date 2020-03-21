@@ -1,13 +1,12 @@
 package mops.foren;
 
-import com.tngtech.archunit.core.importer.ImportOption;
 import com.tngtech.archunit.junit.AnalyzeClasses;
 import com.tngtech.archunit.junit.ArchTest;
 import com.tngtech.archunit.lang.ArchRule;
 
 import static com.tngtech.archunit.library.Architectures.onionArchitecture;
 
-@AnalyzeClasses(packages = "mops.foren", importOptions = ImportOption.DontIncludeTests.class)
+@AnalyzeClasses(packages = "mops.foren")
 public class OnionArchitectureTest {
     @ArchTest
     public static final ArchRule ONION_ARCHITECTURE = onionArchitecture()
