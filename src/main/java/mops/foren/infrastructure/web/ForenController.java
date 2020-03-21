@@ -1,6 +1,7 @@
 package mops.foren.infrastructure.web;
 
 import mops.foren.applicationservices.*;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -23,6 +24,8 @@ public class ForenController {
     private ThreadService threadService;
     private PostService postService;
     private ForumForm form = new ForumForm("", "");
+    private PostForm postForm = new PostForm("");
+    private ThreadForm threadForm = new ThreadForm("", "");
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -62,7 +65,8 @@ public class ForenController {
      */
     @GetMapping("/my-forums")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
-    public String allForum(KeycloakAuthenticationToken token, Model model) {
+    public String allForum(KeycloakAuthenticationToken token,
+                           Model model) {
         User user = this.userService.getUserFromDB(token);
         model.addAttribute("forums", this.forumService.getForums(user));
         model.addAttribute("forum", this.form);
@@ -81,7 +85,8 @@ public class ForenController {
     @PostMapping("/my-forums/newForum")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newForum(KeycloakAuthenticationToken token,
-                           @ModelAttribute @Valid ForumForm forumForm, Errors errors) {
+                           @ModelAttribute @Valid ForumForm forumForm,
+                           Errors errors) {
 
         User user = this.userService.getUserFromDB(token);
         Forum forum = forumForm.getForum();
@@ -97,7 +102,8 @@ public class ForenController {
      * @return The template for the forum main page
      */
     @GetMapping("/my-forums/{forenID}")
-    public String enterAForum(@PathVariable String forenID, Model model) {
+    public String enterAForum(@PathVariable String forenID,
+                              Model model) {
 
         ForumId forumIdWrapped = new ForumId(Long.valueOf(forenID));
 
@@ -117,13 +123,13 @@ public class ForenController {
      */
     @GetMapping("/my-forums/{forenID}/{topicID}")
     public String enterATopic(@PathVariable String forenID,
-                              @PathVariable String topicID, Model model) {
+                              @PathVariable String topicID,
+                              Model model) {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
-        model.addAttribute("author", "nesu57");
 
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         model.addAttribute("threads", this.threadService.getThreads(topicId));
@@ -134,29 +140,112 @@ public class ForenController {
     /**
      * Mapping to the thread page.
      *
-     * @param forenID  the forum id
-     * @param topicID  the topic id
      * @param threadID the thread id
      * @param model    the model
      * @return The template for the thread
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
-    public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
-                                 @PathVariable String threadID, Model model,
-                                 @RequestParam Integer page) {
-
-        ThreadId threadId = new ThreadId(Long.valueOf(threadID));
-        model.addAttribute("threadTitle", this.threadService.getThread(threadId));
-
+    @GetMapping("/thread")
+    public String displayAThread(@RequestParam("threadId") Long threadID,
+                                 @RequestParam("page") Integer page,
+                                 Model model) {
+        ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
+        model.addAttribute("thread", this.threadService.getThread(threadId));
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
-
+        model.addAttribute("form", this.postForm);
         return "thread";
     }
 
+    /**
+     * Creating a post and redirecting to the thread page.
+     *
+     * @param token        Keycloak token
+     * @param postForm     a form to create posts.
+     * @param threadIdLong The id of the thread the post is in.
+     * @return The template for the thread
+     */
+    @PostMapping("/post/newPost")
+    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
+    public String newPost(KeycloakAuthenticationToken token,
+                          @ModelAttribute PostForm postForm,
+                          @RequestParam("threadId") Long threadIdLong,
+                          @RequestParam("page") Integer page) {
+        ThreadId threadId = new ThreadId(threadIdLong);
+        User user = this.userService.getUserFromDB(token);
+        Post post = postForm.getPost(user, threadId);
+        this.threadService.addPostInThread(threadId, post);
+        return "redirect:/thread?threadId=" + threadIdLong + "&page=" + (page + 1);
+    }
+
+    /**
+     * Brings up the form to create a new thread.
+     *
+     * @param forenID The forum id
+     * @param topicID The topic id
+     * @param model   The model
+     * @return The template to create a new thread
+     */
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
-    public String createNewThread(@PathVariable String forenID, @PathVariable String topicID) {
+    public String createNewThread(@PathVariable Long forenID,
+                                  @PathVariable Long topicID,
+                                  Model model) {
+        model.addAttribute("form", this.threadForm);
+        model.addAttribute("forenId", new ForumId(forenID));
+        model.addAttribute("topicId", new TopicId(topicID));
         return "create-thread";
+    }
+
+
+    /**
+     * Creates a thread and redirects to the topic page.
+     *
+     * @param token       The user token
+     * @param forenIdLong The forum id
+     * @param topicIdLong The topic id
+     * @param threadForm  The form that that includes the new thread
+     * @return The topic page template
+     */
+    @PostMapping("/forum/newThread")
+    public String addNewThread(KeycloakAuthenticationToken token,
+                               @RequestParam("forenId") Long forenIdLong,
+                               @RequestParam("topicId") Long topicIdLong,
+                               @ModelAttribute ThreadForm threadForm) {
+        User user = this.userService.getUserFromDB(token);
+        TopicId topicId = new TopicId(topicIdLong);
+        Thread thread = threadForm.getThread(user, topicId);
+        this.topicService.addThreadInTopic(topicId, thread);
+        return "redirect:/my-forums/" + forenIdLong + "/" + topicIdLong;
+    }
+
+    /**
+     * Create a new topic.
+     *
+     * @param forenID The forum id
+     * @param model   The model
+     * @return The template for creating a new topic
+     */
+    @GetMapping("/my-forums/{forenID}/new-topic")
+    public String createNewTopic(@PathVariable String forenID,
+                                 Model model) {
+        model.addAttribute("form", new TopicForm("", "", false));
+        model.addAttribute("forenId", forenID);
+        return "create-topic";
+    }
+
+    /**
+     * Creating a topic and redirecting to the forum page.
+     *
+     * @param topicForm   a form to create topics.
+     * @param forumIdLong The id of the thread the post is in.
+     * @return The template for the thread
+     */
+    @PostMapping("/forum/newTopic")
+    public String newTopic(@ModelAttribute TopicForm topicForm,
+                           @RequestParam("forenId") Long forumIdLong) {
+        ForumId forumId = new ForumId(forumIdLong);
+        Topic topic = topicForm.getTopic(forumId);
+        this.forumService.addTopicInForum(forumId, topic);
+        return "redirect:/my-forums/" + forumIdLong;
     }
 }

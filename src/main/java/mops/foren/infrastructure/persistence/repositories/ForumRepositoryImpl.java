@@ -2,10 +2,13 @@ package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
+import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
+import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,7 +16,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class ForumRepositoryImpl implements IForumRepository {
-    ForumJpaRepository forumRepository;
+
+    private ForumJpaRepository forumRepository;
 
     public ForumRepositoryImpl(ForumJpaRepository forumRepository) {
         this.forumRepository = forumRepository;
@@ -50,5 +54,13 @@ public class ForumRepositoryImpl implements IForumRepository {
     public Forum getOneForumFromDB(ForumId forumId) {
         ForumDTO forumDTO = this.forumRepository.findById(forumId.getId()).get();
         return ForumMapper.mapForumDtoToForum(forumDTO);
+    }
+
+    @Override
+    public void addTopicInForum(ForumId forumId, Topic topic) {
+        ForumDTO forumDto = this.forumRepository.findById(forumId.getId()).get();
+        TopicDTO topicDTO = TopicMapper.mapTopicToTopicDto(topic, forumDto);
+        forumDto.getTopics().add(topicDTO);
+        this.forumRepository.save(forumDto);
     }
 }

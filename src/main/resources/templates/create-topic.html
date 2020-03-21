@@ -44,38 +44,37 @@
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
       <li class="active">
-        <a href="#welcome" th:href="@{/}">Dashboard</a>
+        <a href="#welcome" th:href="@{./}">Dashboard</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/my-forums}">Meine Foren</a>
+        <a href="#welcome" th:href="@{./my-forums}">Meine Foren</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/profile}">Profil</a>
+        <a href="#welcome" th:href="@{./profile}">Profil</a>
       </li>
     </ul>
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1>Thread erstellen:</h1>
-  <form method="post" th:action="@{/forum/newThread(forenId=${forenId.getId()},topicId=${topicId.getId()})}"
+  <h1>Topic erstellen:</h1>
+  <form method="post" th:action="@{/forum/newTopic(forenId=${forenId})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
-      <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100"
-             name="title"
-             placeholder="Gebe einen Titel ein." th:value="*{title}" type="text">
-      <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
+      <input type="text" maxlength="100" class="form-control" id="title" aria-describedby="emailHelp" name="title"
+             th:value="*{title}" placeholder="Gebe einen Titel ein.">
+      <small id="emailHelp" class="form-text text-muted">Der Titel sollte möglichst präsize sein.</small>
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1">Inhalt:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"
-                th:value="*{content}"></textarea>
+      <label for="exampleFormControlTextarea1">Beschreibung:</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"
+                th:value="*{description}"></textarea>
     </div>
-    <div class="form-group">
-      <label for="media">Lade Medien hoch</label>
-      <input class="form-control-file" id="media" type="file">
+    <label>Moderationsmodus:</label>
+    <input type="checkbox" name="moderated" th:value="*{moderated}">
+    <div>
+      <button type="submit" class="btn btn-primary">erstellen</button>
     </div>
-    <button class="btn btn-primary" type="submit">erstellen</button>
   </form>
 </main>
 </body>

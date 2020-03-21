@@ -1,9 +1,7 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Permission;
-import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
 
 import java.util.List;
@@ -19,6 +17,10 @@ public class TopicService {
 
     public List<Topic> getTopics(ForumId forumId) {
         return this.topicRepository.getTopicsFromDB(forumId);
+    }
+
+    public void addThreadInTopic(TopicId topicId, Thread thread) {
+        this.topicRepository.addThreadInTopic(topicId, thread);
     }
 
     /**

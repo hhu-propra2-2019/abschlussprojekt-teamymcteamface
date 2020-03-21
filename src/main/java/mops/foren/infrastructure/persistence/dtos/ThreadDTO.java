@@ -23,12 +23,13 @@ public class ThreadDTO {
 
     private String description;
 
-    private String author;
+    @ManyToOne
+    private UserDTO author;
 
     @ManyToOne
     private TopicDTO topic;
 
-    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostDTO> posts;
 
 }

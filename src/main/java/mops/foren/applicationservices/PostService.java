@@ -17,6 +17,7 @@ public class PostService {
         return this.postRepository.getPostPageFromDB(threadId, page);
     }
 
+
     /**
      * Method to add a post.
      *

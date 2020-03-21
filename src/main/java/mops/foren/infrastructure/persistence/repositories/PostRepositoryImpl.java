@@ -18,9 +18,10 @@ import java.util.stream.Collectors;
 
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
-    private static final int PAGE_SIZE = 10;
 
-    PostJpaRepository postRepository;
+    private static final int PAGE_SIZE = 10;
+    private PostJpaRepository postRepository;
+
 
     public PostRepositoryImpl(PostJpaRepository postRepository) {
         this.postRepository = postRepository;
@@ -54,7 +55,7 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromUser(User user) {
-        List<PostDTO> postByAuthor = this.postRepository.findByAuthor(user.getName());
+        List<PostDTO> postByAuthor = this.postRepository.findByAuthor_Username(user.getName());
         return postByAuthor.stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());

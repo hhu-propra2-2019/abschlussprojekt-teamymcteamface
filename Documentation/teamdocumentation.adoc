@@ -1,0 +1,106 @@
+= Teamdocumentation
+
+Diese Dokumentation fixiert die während des Entwicklungsprozesses aufgetretenen Probleme und Lösungen, sowie die Entscheidungen die das Team in der Entwicklung getroffen hat.
+
+[NOTE]
+====
+Constrains:
+
+* Was für `Probleme` sind aufgetreten?
+* Welche `Entscheidungen` wurden getroffen oder geändert?
+Warum?
+* Welche `Wochenziele` wurden gesetzt und wurden diese eingehalten.
+====
+
+== Probleme und Lösungen
+
+=== Aufgabenteilung
+
+====
+Die Aufgabenaufteilung im Team bzw. in Teams von 2 Personen gestaltete sich schwierig.
+Oft kam es dazu, dass die Vorstellungen der konkreten Implementierungen, trotz der gleichen Idee sehr unterschiedlich waren.
+Als das Projekt noch klein war, gab es zudem nicht genug unabhängige Baustellen für jedes Team.
+====
+
+* Wir haben stets versucht viel zu kommunizieren (teilweise zu viel), um Missverständnisse auszuräumen, Implementierungen zu fixieren und Aufgaben sinnvoll aufzuteilen.
+
+=== Remote Praktikum
+
+====
+Die Verlegung des Praktikums ins `Home Office` führt zu Problemen in der Kommunikation und Koordination der Teams und somit zu einem Produktivitätsverlust.
+====
+
+* Mithilfe von Hangouts konnten wir einen neuen Workflow in unsere Arbeit integrieren und des Weiteren an getroffenen Reglements festhalten.
+Es hat allerdings Zeit gekostet, bis sich die Teammitglieder auf die neue Arbeitsweise eingestellt haben.
+
+=== Permission System
+
+====
+Es gab inhaltliche und softwaretechnische Diskrepanzen, wie und in welchem Umfang das Permission System implementiert werden soll.
+Deshalb wurde die Software häufig diskutiert und geändert, ohne konkreten Mehrwert zu liefern.
+====
+
+* Wir haben uns entschieden das Permission System so spät wie möglich zu implementieren und dann an die Gegebenheiten des Domainmodel anzupassen.
+Bis zur grundlegenden Implementierung des Domainmodels, gibt es bei uns nur den User `Studentin`.
+
+=== Security/Keycloak
+
+====
+Die Implementierung/Nutzung der Security Frameworks gestaltete sich, vor allem aufgrund der mangelnden Erfahrung diesbezüglich im Team, als Herausforderung.
+Insbesondere die Implementierung von Keycloak in unsere Infrastruktur und Tests war ein größeres Hinderniss.
+====
+
+* Die meisten Fragen konnte durch ausprobieren oder in Zusammenarbeit mit den Bereuern gelöst werden.
+Für das Testen haben wir eine Mock Konfiguration gefunden welche den Tests Zugriff auf die nötigen Routen ermöglicht.
+Da auch die Keycloak Demo erweitert wird bleibt dies aber ein fortlaufender Prozess.
+
+=== Wiederkehrende Diskussion über die Architektur
+
+====
+Obwohl wir uns zu Beginn für eine Onion Architektur entschieden haben, traten während der konkreten Umsetzung dieser Architektur und der Datenbankanbindung immer wieder Diskussionen auf, ob eine Schicht Architektur nicht sinnvoller ist.
+====
+
+* Um eine Analyse Paralyse zu vermeiden haben wir uns nach einer erneuten Abstimmung entgültig dazu entschieden, die Onion Architektur durchzuführen.
+
+=== Pull Request Review
+
+====
+Aufgrund unterschiedlicher Standarts bzgl. der Code Review zu Beginn des Projektes kam es häufiger zu Merges in den Dev Branch, welche nicht den gemeinsam vereinbarten Standards entsprachen.
+====
+
+* Es hat sich etabliert, dass Die Review von Personen/Teams durchgeführt wird, welche nicht direkt an der Erstellung des PRs beteiligt waren.
+Bei größeren PRs setzten sich meist eine "PR-fremde" und eine involvierte Person zusammen, damit inhaltliche Fragen direkt geklärt werden können.
+
+=== Datenbankdiskussion
+
+====
+Bereits vor der ersten Implementierung entstanden viele Diskussionen wie die Daten zu persistieren sind und ob aktuelle Ansatz der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
+====
+
+* Wir haben uns dazu entschieden, Datenbank- und Modellimplementierung konsequent differenziert zu behandeln und umzusetzten.
+
+== Wochenziele
+
+=== Woche 1
+
+==== Ziel
+
+* einheitliche `Konfiguration der IDE` sowie der CI
+* Festlegen von `Regeln und Workflows` für das Team
+* Einigung auf eine `Architektur sowie ein Model`, welches dann anschließend implementiert werden soll.
+* Das Ziel konnte am Ende der Woche termingerecht erreicht werden, Fortschritt wurde in den Masterbranch integriert.
+
+=== Woche 2
+
+==== Ziel
+
+* Integration eines ersten Spikes in das Projekt.
+* Ein erster kleiner Workflow im Gesamtsystem sollte möglich sein.
+* Das Ziel konnte nicht termingerecht erreicht werden.
+Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
+
+=== Woche 3
+
+==== Ziel
+
+* Integration der Anwendungslogik, sodass die ersten link:userStories.adoc[Userstories] durchgeführt werden können.

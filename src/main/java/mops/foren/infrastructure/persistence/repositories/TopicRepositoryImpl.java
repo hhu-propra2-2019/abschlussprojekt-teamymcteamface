@@ -1,10 +1,13 @@
 package mops.foren.infrastructure.persistence.repositories;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
+import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
+import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
@@ -48,5 +51,13 @@ public class TopicRepositoryImpl implements ITopicRepository {
     public Topic getOneTopicFromDB(TopicId topicId) {
         TopicDTO topicDto = this.topicRepository.findById(topicId.getId()).get();
         return TopicMapper.mapTopicDtoToTopic(topicDto);
+    }
+
+    @Override
+    public void addThreadInTopic(TopicId topicId, Thread thread) {
+        TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
+        ThreadDTO threadDTO = ThreadMapper.mapThreadToThreadDto(thread, topicDTO);
+        topicDTO.getThreads().add(threadDTO);
+        this.topicRepository.save(topicDTO);
     }
 }
