@@ -148,7 +148,7 @@ public class ForenController {
         ThreadId threadId = new ThreadId(Long.valueOf(threadID));
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
 
-        PostPage postPage = this.postService.getPosts(threadId, page-1);
+        PostPage postPage = this.postService.getPosts(threadId, page - 1);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
 
