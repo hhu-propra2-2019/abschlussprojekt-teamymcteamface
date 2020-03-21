@@ -70,9 +70,11 @@
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"
                 th:value="*{description}"></textarea>
     </div>
-    <p>Moderationsmodus</p>
+    <label>Moderationsmodus:</label>
     <input type="checkbox" name="moderated" th:value="*{moderated}">
-    <button type="submit" class="btn btn-primary">erstellen</button>
+    <div>
+      <button type="submit" class="btn btn-primary">erstellen</button>
+    </div>
   </form>
 </main>
 </body>

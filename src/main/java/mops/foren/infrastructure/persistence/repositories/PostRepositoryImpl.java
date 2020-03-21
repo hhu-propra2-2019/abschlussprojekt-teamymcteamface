@@ -4,9 +4,13 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
+import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
+import mops.foren.infrastructure.persistence.mapper.PostPageMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,17 +19,20 @@ import java.util.stream.Collectors;
 @Repository
 public class PostRepositoryImpl implements IPostRepository {
 
+    private static final int PAGE_SIZE = 10;
     private PostJpaRepository postRepository;
+
 
     public PostRepositoryImpl(PostJpaRepository postRepository) {
         this.postRepository = postRepository;
     }
 
     @Override
-    public List<Post> getPostsFromDB(ThreadId threadId) {
-        return this.postRepository.findByThread_Id(threadId.getId()).stream()
-                .map(PostMapper::mapPostDtoToPost)
-                .collect(Collectors.toList());
+    public PostPage getPostPageFromDB(ThreadId threadId, Integer page) {
+        Page<PostDTO> dtoPage = this.postRepository
+                .findByThread_Id(threadId.getId(), PageRequest.of(page, PAGE_SIZE));
+
+        return PostPageMapper.toPostPage(dtoPage, page);
     }
 
     /**

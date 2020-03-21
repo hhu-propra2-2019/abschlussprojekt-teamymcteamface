@@ -3,6 +3,7 @@ package mops.foren.infrastructure.web;
 import mops.foren.applicationservices.*;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
+import mops.foren.domain.model.paging.PostPage;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @SessionScope
@@ -146,14 +146,15 @@ public class ForenController {
      */
     @GetMapping("/thread")
     public String displayAThread(@RequestParam("threadId") Long threadID,
+                                 @RequestParam("page") Integer page,
                                  Model model) {
         ThreadId threadId = new ThreadId(threadID);
-        List<Post> posts = this.postService.getPosts(threadId);
-        model.addAttribute("threadTitle", this.threadService.getThread(threadId));
-        model.addAttribute("posts", posts);
-        model.addAttribute("post", this.postForm);
-
-        return "thread2";
+        PostPage postPage = this.postService.getPosts(threadId, page - 1);
+        model.addAttribute("thread", this.threadService.getThread(threadId));
+        model.addAttribute("posts", postPage.getPosts());
+        model.addAttribute("pagingObject", postPage.getPaging());
+        model.addAttribute("form", this.postForm);
+        return "thread";
     }
 
     /**
@@ -168,12 +169,13 @@ public class ForenController {
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token,
                           @ModelAttribute PostForm postForm,
-                          @RequestParam("threadId") Long threadIdLong) {
+                          @RequestParam("threadId") Long threadIdLong,
+                          @RequestParam("page") Integer page) {
         ThreadId threadId = new ThreadId(threadIdLong);
         User user = this.userService.getUserFromDB(token);
         Post post = postForm.getPost(user, threadId);
         this.threadService.addPostInThread(threadId, post);
-        return "redirect:/thread?threadId=" + threadIdLong;
+        return "redirect:/thread?threadId=" + threadIdLong + "&page=" + (page + 1);
     }
 
     /**

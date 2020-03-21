@@ -4,11 +4,12 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
+import mops.foren.domain.model.paging.PostPage;
 
 import java.util.List;
 
 public interface IPostRepository {
-    List<Post> getPostsFromDB(ThreadId threadId);
+    PostPage getPostPageFromDB(ThreadId threadId, Integer page);
 
     Post getPostById(PostId postId);
 
