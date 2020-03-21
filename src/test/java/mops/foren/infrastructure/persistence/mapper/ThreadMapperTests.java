@@ -1,12 +1,10 @@
-package mops.foren;
+package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
-import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

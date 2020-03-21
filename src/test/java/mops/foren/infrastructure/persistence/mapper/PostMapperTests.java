@@ -1,4 +1,4 @@
-package mops.foren;
+package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
@@ -6,8 +6,7 @@ import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
-import mops.foren.infrastructure.persistence.mapper.PostMapper;
-import mops.foren.infrastructure.persistence.mapper.UserMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -83,7 +82,8 @@ public class PostMapperTests {
         User user = PostMapper.mapPostDtoToPost(this.postDTO).getAuthor();
 
         // Assert
-        assertThat(UserMapper.mapUserToUserDto(user)).isEqualTo(this.postDTO.getAuthor());
+        Assertions.assertThat(UserMapper.mapUserToUserDto(user))
+                .isEqualTo(this.postDTO.getAuthor());
     }
 
     @Test

@@ -1,9 +1,8 @@
-package mops.foren;
+package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
