@@ -11,7 +11,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 @AnalyzeClasses(packages = "mops.foren")
 public class ArchUnitTest {
     @ArchTest
-    static final ArchRule controllerCanHandleMultipleUser = classes()
+    static final ArchRule CONTROLLER_CAN_HANDLE_MULTIPLE_USER = classes()
             .that()
             .areAnnotatedWith(Controller.class)
             .should()
