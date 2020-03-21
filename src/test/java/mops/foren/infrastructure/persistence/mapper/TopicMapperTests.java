@@ -1,7 +1,6 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
-import mops.foren.infrastructure.persistence.dtos.TopicMapper;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.junit.jupiter.api.BeforeEach;

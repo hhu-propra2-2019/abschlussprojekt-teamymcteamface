@@ -1,8 +1,10 @@
-package mops.foren.infrastructure.persistence.dtos;
+package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
+import mops.foren.infrastructure.persistence.dtos.ForumDTO;
+import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.springframework.stereotype.Service;
 
 @Service
