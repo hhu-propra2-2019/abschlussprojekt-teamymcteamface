@@ -89,10 +89,13 @@ public class ThreadMapperTests {
 
     @Test
     public void testAuthorIsCorrectlyMappedFromThreadDTOToModel() {
+        // Arrange
+        User userFromArrange = UserMapper.mapUserDtoToUser(this.authorDTO);
+
         // Act
         User author = ThreadMapper.mapThreadDtoToThread(this.threadDTO).getAuthor();
 
         // Assert
-        assertThat(author).isEqualTo(UserMapper.mapUserDtoToUser(this.authorDTO));
+        assertThat(author).isEqualTo(userFromArrange);
     }
 }
