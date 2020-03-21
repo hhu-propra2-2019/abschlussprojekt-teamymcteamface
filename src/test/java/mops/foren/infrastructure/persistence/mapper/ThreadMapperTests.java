@@ -1,11 +1,16 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
+import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.HashSet;
+import java.util.LinkedList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ThreadMapperTests {
 
     private ThreadDTO threadDTO;
+    private UserDTO authorDTO;
 
     /**
      * Sets up the test environment for ThreadMapper.
@@ -25,8 +31,18 @@ public class ThreadMapperTests {
                 .id(topicId.getId())
                 .build();
 
+        this.authorDTO = UserDTO.builder()
+                .username("stuentin")
+                .email("studentin@email.com")
+                .name("Anna")
+                .forums(new HashSet<>())
+                .posts(new LinkedList<>())
+                .threads(new LinkedList<>())
+                .build();
+
         this.threadDTO = ThreadDTO.builder()
                 .id(1L)
+                .author(this.authorDTO)
                 .topic(topicDTO)
                 .title("thread title")
                 .description("thread description")
@@ -67,5 +83,17 @@ public class ThreadMapperTests {
 
         // Assert
         assertThat(topicId.getId()).isEqualTo(this.threadDTO.getTopic().getId());
+    }
+
+    @Test
+    public void testAuthorIsCorrectlyMappedFromThreadDTOToModel() {
+        // Arrange
+        User userFromArrange = UserMapper.mapUserDtoToUser(this.authorDTO);
+
+        // Act
+        User author = ThreadMapper.mapThreadDtoToThread(this.threadDTO).getAuthor();
+
+        // Assert
+        assertThat(author).isEqualTo(userFromArrange);
     }
 }

@@ -130,7 +130,6 @@ public class ForenController {
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
-        model.addAttribute("author", "nesu57");
 
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         model.addAttribute("threads", this.threadService.getThreads(topicId));
