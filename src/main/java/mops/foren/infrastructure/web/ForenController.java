@@ -7,10 +7,7 @@ import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -145,16 +142,17 @@ public class ForenController {
      */
     @GetMapping("/my-forums/{forenID}/{topicID}/{threadID}")
     public String displayAThread(@PathVariable String forenID, @PathVariable String topicID,
-                                 @PathVariable String threadID, Model model) {
+                                 @PathVariable String threadID, Model model,
+                                 @RequestParam Integer page) {
 
         ThreadId threadId = new ThreadId(Long.valueOf(threadID));
         model.addAttribute("threadTitle", this.threadService.getThread(threadId));
 
-        PostPage postPage = this.postService.getPosts(threadId, 0);
+        PostPage postPage = this.postService.getPosts(threadId, page-1);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
 
-        return "thread2";
+        return "thread";
     }
 
     @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
