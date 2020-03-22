@@ -85,6 +85,6 @@ public class TopicController {
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
-        return "redirect:/foren/my-forums/" + forumIdLong;
+        return String.format("redirect:/foren/my-forums/%d", forumIdLong);
     }
 }
