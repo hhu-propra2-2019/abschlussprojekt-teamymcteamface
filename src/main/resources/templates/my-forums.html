@@ -57,13 +57,13 @@
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
         <ul>
           <li class="">
-            <a href="" th:href="@{/}">Dashboard</a>
+            <a href="" th:href="@{/foren}">Dashboard</a>
           </li>
           <li class="active">
-            <a href="" th:href="@{/my-forums}">Meine Foren</a>
+            <a href="" th:href="@{/foren/my-forums}">Meine Foren</a>
           </li>
           <li class="">
-            <a href="" th:href="@{/profile}">Profil</a>
+            <a href="" th:href="@{/foren/profile}">Profil</a>
           </li>
         </ul>
     </nav>
@@ -79,7 +79,7 @@
     </thead>
     <tbody>
     <div th:each="forum : ${forums}">
-      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId()}]]">
+      <tr class="mops-row" th:onclick="location.href = '/foren/my-forums/' + [[${forum.getId().getId()}]]">
           <td th:text="${forum.getTitle()}">AlDat</td>
           <td th:text="${forum.getTitle()}">14:37Uhr</td>
       </tr>

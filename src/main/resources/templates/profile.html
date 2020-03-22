@@ -43,14 +43,14 @@
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
-      <li class="">
-        <a href="" th:href="@{/}">Dashboard</a>
-      </li>
-      <li class="">
-        <a href="" th:href="@{/my-forums}">Meine Foren</a>
-      </li>
       <li class="active">
-        <a href="" th:href="@{/profile}">Profil</a>
+        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>

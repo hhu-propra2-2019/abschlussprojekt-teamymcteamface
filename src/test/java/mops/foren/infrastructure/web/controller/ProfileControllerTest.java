@@ -1,5 +1,8 @@
-package mops.foren.infrastructure.web;
+package mops.foren.infrastructure.web.controller;
 
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
+import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,11 @@ import java.util.Set;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class ForenControllerTest {
-
+public class ProfileControllerTest {
     @Autowired
     MockMvc mvcMock;
 
@@ -41,47 +44,33 @@ public class ForenControllerTest {
     }
 
     @Test
-    void testForumMainpage() throws Exception {
-        this.mvcMock.perform(get("/"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
-    }
+    void testProfileUnauthenticated() throws Exception {
 
-    @Test
-    void testProfileTemplate() throws Exception {
-        this.mvcMock.perform(get("/profile"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("profile"));
-    }
-
-    @Test
-    void testMyForumTemplateNotAuthenticated() throws Exception {
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/profile"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/sso/login"));
     }
 
     @Test
-    void testMyForumTemplateAuthenticated() throws Exception {
+    void testProfileAuthenticated() throws Exception {
         KeycloakTokenMock.setupTokenMock(Account.builder()
                 .name("studentin")
                 .roles(Set.of("studentin"))
                 .build());
 
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/profile"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("my-forums"));
+                .andExpect(view().name("profile"));
     }
 
     @Test
-    void testMyForumTemplateAuthenticatedButUnauthorised() throws Exception {
+    void testProfileWrongUser() throws Exception {
         KeycloakTokenMock.setupTokenMock(Account.builder()
-                .name("studentin")
-                .roles(Set.of("wrong Role"))
+                .name("orga1")
+                .roles(Set.of("wrong role"))
                 .build());
 
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/profile"))
                 .andExpect(status().isForbidden());
     }
-
 }
