@@ -61,14 +61,14 @@
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
-      <li class="">
-        <a href="#welcome" th:href="@{/}">Dashboard</a>
-      </li>
       <li class="active">
-        <a href="#welcome" th:href="@{/my-forums}">Meine Foren</a>
+        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/profile}">Profil</a>
+        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
@@ -76,7 +76,7 @@
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
   <button class="btn btn-primary"
-          th:onclick="location.href = '/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
+          th:onclick="location.href = '/foren/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
     erstellen
   </button>
   <table class="table table-light">
@@ -90,7 +90,7 @@
     <tbody>
     <div th:each="thread : ${threads}">
       <tr class="mops-row"
-          th:onclick="'window.location.href = \'' + @{/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
+          th:onclick="'window.location.href = \'' + @{/foren/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${thread.getAuthor().getName()}"></td>
         <td>14:37Uhr</td>

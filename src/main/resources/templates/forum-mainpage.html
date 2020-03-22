@@ -69,14 +69,14 @@
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
-      <li class="">
-        <a href="#welcome" th:href="@{/}">Dashboard</a>
-      </li>
       <li class="active">
-        <a href="#welcome" th:href="@{/my-forums}">Meine Foren</a>
+        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/profile}">Profil</a>
+        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
@@ -91,7 +91,7 @@
     </div>
     <br>
     <button class="btn btn-primary"
-            th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
+            th:onclick="location.href = '/foren/my-forums/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
       erstellen
     </button>
     <div th:each="topic : ${topics}" class="justify-content-center">
@@ -99,7 +99,7 @@
         <div class="card-body">
           <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
           <button class="btn btn-primary"
-                  th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]] + '/' + [[${topic.getId().getId().toString()}]]"
+                  th:onclick="location.href = '/foren/my-forums/' + [[${forum.getId().getId().toString()}]] + '/' + [[${topic.getId().getId().toString()}]]"
                   type="button">Betreten
           </button>
         </div>

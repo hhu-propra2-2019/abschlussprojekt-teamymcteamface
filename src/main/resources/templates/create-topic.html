@@ -44,20 +44,20 @@
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
       <li class="active">
-        <a href="#welcome" th:href="@{./}">Dashboard</a>
+        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{./my-forums}">Meine Foren</a>
+        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{./profile}">Profil</a>
+        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
 </header>
 <main th:fragment="bodycontent">
   <h1>Topic erstellen:</h1>
-  <form method="post" th:action="@{/forum/newTopic(forenId=${forenId})}"
+  <form method="post" th:action="@{/foren/topic/new-topic(forenId=${forenId})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
