@@ -21,6 +21,12 @@ public class Thread {
 
     private LocalDateTime lastPostTime;
 
+    /**
+     * This method formats the lastPostTime into a nice String representation.
+     * "Es gab noch keinen Beitrag in diesem Thread" will be returned if the Thread has no posts.
+     *
+     * @return a Date formatted in a String.
+     */
     public String getFormattedDate() {
         if (lastPostTime == null) {
             return "Es gab noch keinen Beitrag in diesem Thread";

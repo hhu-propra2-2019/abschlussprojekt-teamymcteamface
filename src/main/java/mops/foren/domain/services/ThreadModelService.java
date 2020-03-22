@@ -2,11 +2,12 @@ package mops.foren.domain.services;
 
 import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @DomainService
 public class ThreadModelService {
@@ -17,33 +18,36 @@ public class ThreadModelService {
         this.postRepository = postRepository;
     }
 
+    /**
+     * This methode updates the latestPostTime in each thread.
+     *
+     * @param threads List of threads, where the last post time should be updated.
+     */
     public void updateLastPostTime(List<Thread> threads) {
         for (Thread thread : threads) {
-            Post post = getLatestPostFromThread(thread);
-            if (post == null) {
-                thread.setLastPostTime(null);
+            Optional<LocalDateTime> maxDate = getLatestDateFromThread(thread);
+            if (maxDate.isPresent()) {
+                thread.setLastPostTime(maxDate.get());
             } else {
-                thread.setLastPostTime(post.getCreationDate());
+                thread.setLastPostTime(null);
             }
         }
     }
 
-    private Post getLatestPostFromThread(Thread thread) {
-        PostPage postPage = getLastPostPage(thread.getId());
-        if (postPage.getPosts().size() == 0) {
-            return null;
-        }
-        int size = postPage.getPosts().size();
-        return postPage.getPosts().get(size - 1);
+    private Optional<LocalDateTime> getLatestDateFromThread(Thread thread) {
+        List<Post> posts = postRepository.getAllPostsByThreadId(thread.getId());
+        List<LocalDateTime> dates = getDatesFromPosts(posts);
+        return getMaxDate(dates);
     }
 
-    private PostPage getLastPostPage(ThreadId id) {
-        PostPage postPage = postRepository.getPostPageFromDB(id, 0);
-        int totalPages = postPage.getPaging().getTotalPages();
-        if (totalPages == 0) {
-            return postPage;
-        }
-        return postRepository.getPostPageFromDB(id, totalPages - 1);
+    private Optional<LocalDateTime> getMaxDate(List<LocalDateTime> dates) {
+        return dates.stream()
+                .max(LocalDateTime::compareTo);
     }
 
+    private List<LocalDateTime> getDatesFromPosts(List<Post> posts) {
+        return posts.stream()
+                .map(Post::getCreationDate)
+                .collect(Collectors.toList());
+    }
 }

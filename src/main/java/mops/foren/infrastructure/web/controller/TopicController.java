@@ -6,7 +6,6 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
-import mops.foren.domain.services.ThreadModelService;
 import mops.foren.infrastructure.web.TopicForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,19 +23,16 @@ public class TopicController {
 
     private ForumService forumService;
     private ThreadService threadService;
-    private ThreadModelService threadModelService;
 
     /**
      * Constructor for TopicController. The parameters are injected.
      *
-     * @param forumService       - injected ForumService (ApplicationService)
-     * @param threadService      - ThreadService (ApplicationService)
-     * @param threadModelService - ThreadModelService (DomainService)
+     * @param forumService  - injected ForumService (ApplicationService)
+     * @param threadService - ThreadService (ApplicationService)
      */
-    public TopicController(ForumService forumService, ThreadService threadService, ThreadModelService threadModelService) {
+    public TopicController(ForumService forumService, ThreadService threadService) {
         this.forumService = forumService;
         this.threadService = threadService;
-        this.threadModelService = threadModelService;
     }
 
     /**
@@ -58,7 +54,6 @@ public class TopicController {
         model.addAttribute("topicId", topicID);
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         List<Thread> threads = this.threadService.getThreads(topicId);
-        threadModelService.updateLastPostTime(threads);
         model.addAttribute("threads", threads);
         return "list-threads";
     }

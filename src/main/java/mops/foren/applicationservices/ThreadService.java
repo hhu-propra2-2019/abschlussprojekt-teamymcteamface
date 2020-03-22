@@ -3,6 +3,7 @@ package mops.foren.applicationservices;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
+import mops.foren.domain.services.ThreadModelService;
 
 import java.util.List;
 
@@ -10,13 +11,24 @@ import java.util.List;
 public class ThreadService {
 
     private IThreadRepository threadRepository;
+    private ThreadModelService threadModelService;
 
-    public ThreadService(IThreadRepository threadRepository) {
+    public ThreadService(IThreadRepository threadRepository,
+                         ThreadModelService threadModelService) {
         this.threadRepository = threadRepository;
+        this.threadModelService = threadModelService;
     }
 
+    /**
+     * This method get all Threads according to a special topicId.
+     *
+     * @param topicId The topicId the threads should be in.
+     * @return the wanted list of threads.
+     */
     public List<Thread> getThreads(TopicId topicId) {
-        return this.threadRepository.getThreadsFromDB(topicId);
+        List<Thread> threadsFromDB = this.threadRepository.getThreadsFromDB(topicId);
+        threadModelService.updateLastPostTime(threadsFromDB);
+        return threadsFromDB;
     }
 
     public Thread getThread(ThreadId threadId) {
