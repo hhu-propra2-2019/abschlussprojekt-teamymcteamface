@@ -7,7 +7,6 @@ import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.ForumForm;
 import mops.foren.infrastructure.web.PostForm;
 import mops.foren.infrastructure.web.ThreadForm;
-import mops.foren.infrastructure.web.TopicForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -188,21 +187,5 @@ public class ForumController {
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
         return "redirect:/my-forums/" + forenIdLong + "/" + topicIdLong;
-    }
-
-    /**
-     * Creating a topic and redirecting to the forum page.
-     *
-     * @param topicForm   a form to create topics.
-     * @param forumIdLong The id of the thread the post is in.
-     * @return The template for the thread
-     */
-    @PostMapping("/forum/newTopic")
-    public String newTopic(@ModelAttribute TopicForm topicForm,
-                           @RequestParam("forenId") Long forumIdLong) {
-        ForumId forumId = new ForumId(forumIdLong);
-        Topic topic = topicForm.getTopic(forumId);
-        this.forumService.addTopicInForum(forumId, topic);
-        return "redirect:/my-forums/" + forumIdLong;
     }
 }
