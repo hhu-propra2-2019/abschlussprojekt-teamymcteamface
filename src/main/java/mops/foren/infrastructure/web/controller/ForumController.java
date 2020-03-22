@@ -2,8 +2,6 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.*;
 import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.ForumForm;
 import mops.foren.infrastructure.web.PostForm;
@@ -11,7 +9,9 @@ import mops.foren.infrastructure.web.ThreadForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -84,26 +84,4 @@ public class ForumController {
 
         return "forum-mainpage";
     }
-
-    /**
-     * Creating a post and redirecting to the thread page.
-     *
-     * @param token        Keycloak token
-     * @param postForm     a form to create posts.
-     * @param threadIdLong The id of the thread the post is in.
-     * @return The template for the thread
-     */
-    @PostMapping("/post/newPost")
-    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
-    public String newPost(KeycloakAuthenticationToken token,
-                          @ModelAttribute PostForm postForm,
-                          @RequestParam("threadId") Long threadIdLong,
-                          @RequestParam("page") Integer page) {
-        ThreadId threadId = new ThreadId(threadIdLong);
-        User user = this.userService.getUserFromDB(token);
-        Post post = postForm.getPost(user, threadId);
-        this.threadService.addPostInThread(threadId, post);
-        return "redirect:/thread?threadId=" + threadIdLong + "&page=" + (page + 1);
-    }
-
 }
