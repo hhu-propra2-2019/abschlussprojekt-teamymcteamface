@@ -19,6 +19,7 @@ import javax.annotation.security.RolesAllowed;
 @Controller
 @SessionScope
 @RequestMapping("/foren/my-forums")
+@RolesAllowed({"ROLE_studentin", "ROLE_orga"})
 public class ForumController {
 
     private UserService userService;
@@ -48,7 +49,6 @@ public class ForumController {
      * @return Get-mapping for my-forums.
      */
     @GetMapping
-    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String allForum(KeycloakAuthenticationToken token,
                            Model model) {
         User user = this.userService.getUserFromDB(token);

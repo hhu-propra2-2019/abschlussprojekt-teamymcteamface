@@ -19,6 +19,7 @@ import javax.annotation.security.RolesAllowed;
 @Controller
 @SessionScope
 @RequestMapping("/foren/post")
+@RolesAllowed({"ROLE_studentin", "ROLE_orga"})
 public class PostController {
 
     private UserService userService;
@@ -44,7 +45,6 @@ public class PostController {
      * @return The template for the thread
      */
     @PostMapping("/new-post")
-    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newPost(KeycloakAuthenticationToken token,
                           @ModelAttribute PostForm postForm,
                           @RequestParam("threadId") Long threadIdLong,

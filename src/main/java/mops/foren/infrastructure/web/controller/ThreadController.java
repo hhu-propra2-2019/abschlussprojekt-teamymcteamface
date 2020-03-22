@@ -18,9 +18,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
+import javax.annotation.security.RolesAllowed;
+
 @Controller
 @SessionScope
 @RequestMapping("/foren/thread")
+@RolesAllowed({"ROLE_studentin", "ROLE_orga"})
 public class ThreadController {
     private ThreadService threadService;
     private PostService postService;
