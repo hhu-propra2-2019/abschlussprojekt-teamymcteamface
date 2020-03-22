@@ -58,7 +58,7 @@ public class ForenController {
      * @param model Content we add to html per thymleaf.
      * @return Get-mapping for my-forums.
      */
-    @GetMapping("/my-forums")
+    @GetMapping
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String allForum(KeycloakAuthenticationToken token,
                            Model model) {
@@ -77,7 +77,7 @@ public class ForenController {
      * @param errors    Errors that occured during the parsing of the ForumForm.
      * @return A redirect to my-forums.
      */
-    @PostMapping("/my-forums/newForum")
+    @PostMapping("/newForum")
     @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
     public String newForum(KeycloakAuthenticationToken token,
                            @ModelAttribute @Valid ForumForm forumForm,
@@ -96,7 +96,7 @@ public class ForenController {
      * @param model   - Model
      * @return The template for the forum main page
      */
-    @GetMapping("/my-forums/{forenID}")
+    @GetMapping("/{forenID}")
     public String enterAForum(@PathVariable String forenID,
                               Model model) {
 
@@ -116,7 +116,7 @@ public class ForenController {
      * @param model   the model
      * @return The template for the threads
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}")
+    @GetMapping("/{forenID}/{topicID}")
     public String enterATopic(@PathVariable String forenID,
                               @PathVariable String topicID,
                               Model model) {
@@ -181,7 +181,7 @@ public class ForenController {
      * @param model   The model
      * @return The template to create a new thread
      */
-    @GetMapping("/my-forums/{forenID}/{topicID}/new-thread")
+    @GetMapping("/{forenID}/{topicID}/new-thread")
     public String createNewThread(@PathVariable Long forenID,
                                   @PathVariable Long topicID,
                                   Model model) {
@@ -220,7 +220,7 @@ public class ForenController {
      * @param model   The model
      * @return The template for creating a new topic
      */
-    @GetMapping("/my-forums/{forenID}/new-topic")
+    @GetMapping("/{forenID}/new-topic")
     public String createNewTopic(@PathVariable String forenID,
                                  Model model) {
         model.addAttribute("form", new TopicForm("", "", false));

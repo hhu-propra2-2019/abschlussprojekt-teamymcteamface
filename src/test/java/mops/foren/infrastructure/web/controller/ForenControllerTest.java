@@ -45,21 +45,21 @@ public class ForenControllerTest {
 
     @Test
     void testForumMainpage() throws Exception {
-        this.mvcMock.perform(get("/"))
+        this.mvcMock.perform(get("/foren"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
     }
 
     @Test
     void testProfileTemplate() throws Exception {
-        this.mvcMock.perform(get("/profile"))
+        this.mvcMock.perform(get("/foren/profile"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"));
     }
 
     @Test
     void testMyForumTemplateNotAuthenticated() throws Exception {
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/my-forums"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/sso/login"));
     }
@@ -71,7 +71,7 @@ public class ForenControllerTest {
                 .roles(Set.of("studentin"))
                 .build());
 
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/my-forums"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
     }
@@ -83,7 +83,7 @@ public class ForenControllerTest {
                 .roles(Set.of("wrong Role"))
                 .build());
 
-        this.mvcMock.perform(get("/my-forums"))
+        this.mvcMock.perform(get("/foren/my-forums"))
                 .andExpect(status().isForbidden());
     }
 
