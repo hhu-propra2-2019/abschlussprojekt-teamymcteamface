@@ -11,17 +11,15 @@ import mops.foren.infrastructure.web.TopicForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
-import javax.validation.Valid;
 
 @Controller
 @SessionScope
 @RequestMapping("/foren/my-forums")
-public class ForenController {
+public class ForumController {
 
     private UserService userService;
     private ForumService forumService;
@@ -40,7 +38,7 @@ public class ForenController {
      * @param topicService  - TopicService (ApplicationService)
      * @param threadService - ThreadService (ApplicationService)
      */
-    public ForenController(UserService userService, ForumService forumService,
+    public ForumController(UserService userService, ForumService forumService,
                            TopicService topicService, ThreadService threadService,
                            PostService postService) {
         this.userService = userService;
@@ -66,27 +64,6 @@ public class ForenController {
         model.addAttribute("forums", this.forumService.getForums(user));
         model.addAttribute("forum", this.form);
         return "my-forums";
-    }
-
-
-    /**
-     * Method creats a new Forum.
-     *
-     * @param token     Keyclock token.
-     * @param forumForm A model attribute from thymleaf.
-     * @param errors    Errors that occured during the parsing of the ForumForm.
-     * @return A redirect to my-forums.
-     */
-    @PostMapping("/newForum")
-    @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
-    public String newForum(KeycloakAuthenticationToken token,
-                           @ModelAttribute @Valid ForumForm forumForm,
-                           Errors errors) {
-
-        User user = this.userService.getUserFromDB(token);
-        Forum forum = forumForm.getForum();
-        this.userService.addForumInUser(user, forum);
-        return "redirect:/my-forums";
     }
 
     /**
@@ -211,21 +188,6 @@ public class ForenController {
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
         return "redirect:/my-forums/" + forenIdLong + "/" + topicIdLong;
-    }
-
-    /**
-     * Create a new topic.
-     *
-     * @param forenID The forum id
-     * @param model   The model
-     * @return The template for creating a new topic
-     */
-    @GetMapping("/{forenID}/new-topic")
-    public String createNewTopic(@PathVariable String forenID,
-                                 Model model) {
-        model.addAttribute("form", new TopicForm("", "", false));
-        model.addAttribute("forenId", forenID);
-        return "create-topic";
     }
 
     /**

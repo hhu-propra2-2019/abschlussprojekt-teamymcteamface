@@ -91,7 +91,7 @@
     </div>
     <br>
     <button class="btn btn-primary"
-            th:onclick="location.href = '/foren/my-forums/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
+            th:onclick="location.href = '/foren/topic/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
       erstellen
     </button>
     <div th:each="topic : ${topics}" class="justify-content-center">
