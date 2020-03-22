@@ -7,10 +7,10 @@ import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
 @SessionScope
-@RequestMapping("foren/profile")
+@RequestMapping("/foren/profile")
 public class ProfileController {
 
-    @GetMapping("/")
+    @GetMapping
     public String profile() {
         return "profile";
     }

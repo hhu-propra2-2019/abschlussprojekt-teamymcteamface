@@ -10,7 +10,7 @@ import org.springframework.web.context.annotation.SessionScope;
 @RequestMapping("/foren")
 public class DashboardController {
 
-    @GetMapping("/")
+    @GetMapping
     public String main() {
         return "index";
     }
