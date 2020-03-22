@@ -1,6 +1,8 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
+import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.Set;
+
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -40,9 +43,33 @@ public class DashboardControllerTest {
     }
 
     @Test
-    void testForumMainpage() throws Exception {
+    void testDashboardUnauthenticated() throws Exception {
+
+        this.mvcMock.perform(get("/foren"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/sso/login"));
+    }
+
+    @Test
+    void testDashboardAuthenticated() throws Exception {
+        KeycloakTokenMock.setupTokenMock(Account.builder()
+                .name("orga1")
+                .roles(Set.of("orga"))
+                .build());
+
         this.mvcMock.perform(get("/foren"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"));
+    }
+
+    @Test
+    void testDashboardWrongUser() throws Exception {
+        KeycloakTokenMock.setupTokenMock(Account.builder()
+                .name("orga1")
+                .roles(Set.of("wrong role"))
+                .build());
+
+        this.mvcMock.perform(get("/foren"))
+                .andExpect(status().isForbidden());
     }
 }
