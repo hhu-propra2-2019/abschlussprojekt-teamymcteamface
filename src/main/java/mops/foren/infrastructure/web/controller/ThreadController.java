@@ -31,7 +31,7 @@ public class ThreadController {
      * Constructor for ThreadController. The parameters are injected.
      *
      * @param threadService - ThreadService (ApplicationService)
-     * @param postService-  injected PostService (ApplicationService)
+     * @param postService   - injected PostService (ApplicationService)
      * @param userService   - injected UserService (ApplicationService)
      * @param topicService  - TopicService (ApplicationService)
      */
