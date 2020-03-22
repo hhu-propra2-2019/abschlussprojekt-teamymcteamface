@@ -50,12 +50,6 @@ public class ForenController {
     }
 
 
-    @GetMapping("/profile")
-    public String profile() {
-        return "profile";
-    }
-
-
     /**
      * Method checks if user is in the DB and gets all his forums.
      *

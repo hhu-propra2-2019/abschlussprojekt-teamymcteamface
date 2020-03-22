@@ -7,11 +7,11 @@ import org.springframework.web.context.annotation.SessionScope;
 
 @Controller
 @SessionScope
-@RequestMapping("/foren")
-public class DashboardController {
+@RequestMapping("foren/profile")
+public class ProfileController {
 
     @GetMapping("/")
-    public String main() {
-        return "index";
+    public String profile() {
+        return "profile";
     }
 }
