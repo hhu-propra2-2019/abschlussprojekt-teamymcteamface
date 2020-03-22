@@ -1,11 +1,11 @@
 package mops.foren.infrastructure.web.controller;
 
-import mops.foren.applicationservices.*;
+import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.TopicService;
+import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.ForumForm;
-import mops.foren.infrastructure.web.PostForm;
-import mops.foren.infrastructure.web.ThreadForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,28 +24,19 @@ public class ForumController {
     private UserService userService;
     private ForumService forumService;
     private TopicService topicService;
-    private ThreadService threadService;
-    private PostService postService;
-    private ForumForm form = new ForumForm("", "");
-    private PostForm postForm = new PostForm("");
-    private ThreadForm threadForm = new ThreadForm("", "");
 
     /**
      * Constructor for ForenController. The parameters are injected.
      *
-     * @param userService   - injected UserService (ApplicationService)
-     * @param forumService  - injected ForumService (ApplicationService)
-     * @param topicService  - TopicService (ApplicationService)
-     * @param threadService - ThreadService (ApplicationService)
+     * @param userService  - injected UserService (ApplicationService)
+     * @param forumService - injected ForumService (ApplicationService)
+     * @param topicService - TopicService (ApplicationService)
      */
     public ForumController(UserService userService, ForumService forumService,
-                           TopicService topicService, ThreadService threadService,
-                           PostService postService) {
+                           TopicService topicService) {
         this.userService = userService;
         this.forumService = forumService;
         this.topicService = topicService;
-        this.threadService = threadService;
-        this.postService = postService;
     }
 
 
@@ -62,7 +53,7 @@ public class ForumController {
                            Model model) {
         User user = this.userService.getUserFromDB(token);
         model.addAttribute("forums", this.forumService.getForums(user));
-        model.addAttribute("forum", this.form);
+        model.addAttribute("forum", new ForumForm("", ""));
         return "my-forums";
     }
 

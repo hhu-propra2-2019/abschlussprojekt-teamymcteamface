@@ -2,7 +2,6 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
-import mops.foren.applicationservices.TopicService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
@@ -16,21 +15,18 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @RequestMapping("/foren/topic")
 public class TopicController {
+
     private ForumService forumService;
-    private TopicService topicService;
     private ThreadService threadService;
 
     /**
      * Constructor for TopicController. The parameters are injected.
      *
      * @param forumService  - injected ForumService (ApplicationService)
-     * @param topicService  - TopicService (ApplicationService)
      * @param threadService - ThreadService (ApplicationService)
      */
-    public TopicController(ForumService forumService,
-                           TopicService topicService, ThreadService threadService) {
+    public TopicController(ForumService forumService, ThreadService threadService) {
         this.forumService = forumService;
-        this.topicService = topicService;
         this.threadService = threadService;
     }
 
