@@ -20,6 +20,7 @@ import javax.validation.Valid;
 
 @Controller
 @SessionScope
+@RequestMapping("/foren/my-forums")
 public class ForenController {
 
     private UserService userService;

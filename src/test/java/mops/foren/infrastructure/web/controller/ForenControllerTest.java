@@ -1,5 +1,8 @@
-package mops.foren.infrastructure.web;
+package mops.foren.infrastructure.web.controller;
 
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
+import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
