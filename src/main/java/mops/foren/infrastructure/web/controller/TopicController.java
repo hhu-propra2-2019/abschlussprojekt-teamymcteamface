@@ -1,9 +1,11 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.TopicId;
 import mops.foren.infrastructure.web.TopicForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,15 +16,47 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 @RequestMapping("/foren/topic")
 public class TopicController {
-
     private ForumService forumService;
     private TopicService topicService;
+    private ThreadService threadService;
 
-    public TopicController(ForumService forumService, TopicService topicService) {
+    /**
+     * Constructor for TopicController. The parameters are injected.
+     *
+     * @param forumService  - injected ForumService (ApplicationService)
+     * @param topicService  - TopicService (ApplicationService)
+     * @param threadService - ThreadService (ApplicationService)
+     */
+    public TopicController(ForumService forumService,
+                           TopicService topicService, ThreadService threadService) {
         this.forumService = forumService;
         this.topicService = topicService;
+        this.threadService = threadService;
     }
 
+    /**
+     * Mapping to the topic page.
+     *
+     * @param forenID the forum id
+     * @param topicID the topic id
+     * @param model   the model
+     * @return The template for the threads
+     */
+    @GetMapping("/{forenID}/{topicID}")
+    public String enterATopic(@PathVariable String forenID,
+                              @PathVariable String topicID,
+                              Model model) {
+
+        ForumId forumId = new ForumId(Long.valueOf(forenID));
+        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+        model.addAttribute("forumId", forenID);
+        model.addAttribute("topicId", topicID);
+
+        TopicId topicId = new TopicId(Long.valueOf(topicID));
+        model.addAttribute("threads", this.threadService.getThreads(topicId));
+
+        return "list-threads";
+    }
 
     /**
      * Create a new topic.

@@ -84,29 +84,6 @@ public class ForumController {
         return "forum-mainpage";
     }
 
-    /**
-     * Mapping to the topic page.
-     *
-     * @param forenID the forum id
-     * @param topicID the topic id
-     * @param model   the model
-     * @return The template for the threads
-     */
-    @GetMapping("/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID,
-                              @PathVariable String topicID,
-                              Model model) {
-
-        ForumId forumId = new ForumId(Long.valueOf(forenID));
-        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-        model.addAttribute("forumId", forenID);
-        model.addAttribute("topicId", topicID);
-
-        TopicId topicId = new TopicId(Long.valueOf(topicID));
-        model.addAttribute("threads", this.threadService.getThreads(topicId));
-
-        return "list-threads";
-    }
 
     /**
      * Mapping to the thread page.
