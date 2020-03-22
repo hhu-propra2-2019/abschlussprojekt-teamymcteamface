@@ -1,9 +1,13 @@
-package mops.foren.infrastructure.web;
+package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.*;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
+import mops.foren.infrastructure.web.ForumForm;
+import mops.foren.infrastructure.web.PostForm;
+import mops.foren.infrastructure.web.ThreadForm;
+import mops.foren.infrastructure.web.TopicForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -45,10 +49,6 @@ public class ForenController {
         this.postService = postService;
     }
 
-    @GetMapping("/")
-    public String main() {
-        return "index";
-    }
 
     @GetMapping("/profile")
     public String profile() {
