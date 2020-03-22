@@ -13,6 +13,8 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
 @SessionScope
@@ -45,8 +47,31 @@ public class ForenController {
         this.postService = postService;
     }
 
+    /**
+     * Adds the account object to each request.
+     * Image and roles have to be added in the future.
+     * @param token - KeycloakAuthenficationToken
+     * @return
+     */
+    @ModelAttribute("account")
+    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
+        if (token == null) {
+            return null;
+        }
+        User user = this.userService.getUserFromDB(token);
+        Set<String> roles = new HashSet<>();
+        roles.add("Student");
+
+        return new Account.AccountBuilder()
+                .email(user.getEmail())
+                .image("")
+                .name(user.getName())
+                .roles(roles)
+                .build();
+    }
+
     @GetMapping("/")
-    public String main() {
+    public String main(Model model) {
         return "index";
     }
 
