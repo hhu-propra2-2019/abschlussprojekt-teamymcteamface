@@ -76,7 +76,7 @@
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
   <button class="btn btn-primary"
-          th:onclick="location.href = '/foren/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
+          th:onclick="location.href = '/foren/thread/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
     erstellen
   </button>
   <table class="table table-light">
