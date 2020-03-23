@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 @SessionScope
@@ -80,7 +81,7 @@ public class TopicController {
      * @return The template for the thread
      */
     @PostMapping("/new-topic")
-    public String newTopic(@ModelAttribute TopicForm topicForm,
+    public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
                            @RequestParam("forenId") Long forumIdLong) {
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);
