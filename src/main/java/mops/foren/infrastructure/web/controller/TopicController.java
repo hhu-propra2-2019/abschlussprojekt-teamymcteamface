@@ -50,7 +50,7 @@ public class TopicController {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
+        ThreadPage threadPage = this.threadService.getThreadPageWithTopicId(topicId, page - 1);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
