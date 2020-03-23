@@ -12,9 +12,9 @@ import java.util.Set;
 @Data
 public class PermissionManager {
 
-    private Set<ForumId> student;
-    private Set<ForumId> moderator;
-    private Set<ForumId> admin;
+    private Set<ForumId> student = new HashSet<>();
+    private Set<ForumId> moderator = new HashSet<>();
+    private Set<ForumId> admin = new HashSet<>();
 
     /**
      * Method checks if the permission requires a certain role and
@@ -64,5 +64,21 @@ public class PermissionManager {
         this.moderator.stream().map(forumIds::add);
         this.admin.stream().map(forumIds::add);
         return new ArrayList<>(forumIds);
+    }
+
+    /**
+     * Add forum to role list of user.
+     *
+     * @param forumId Forum-id, where user has this role
+     * @param role    The role, the user has in the forum.
+     */
+    public void addForumWithPermission(Long forumId, Role role) {
+        if (role.equals(Role.ADMIN)) {
+            this.admin.add(new ForumId(forumId));
+        } else if (role.equals(Role.MODERATOR)) {
+            this.moderator.add(new ForumId(forumId));
+        } else if (role.equals(Role.STUDENT)) {
+            this.student.add(new ForumId(forumId));
+        }
     }
 }

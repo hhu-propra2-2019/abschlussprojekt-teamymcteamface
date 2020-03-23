@@ -1,6 +1,8 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.PermissionManager;
+import mops.foren.domain.model.Role;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.springframework.stereotype.Service;
@@ -32,12 +34,25 @@ public class UserMapper {
      */
     public static User mapUserDtoToUser(UserDTO userDTO) {
         List<ForumId> forumIds = getForumIdFromUserDto(userDTO);
+
+        PermissionManager permissionManager = new PermissionManager();
+
+        userDTO.getRoles().forEach((forumId, role) -> {
+            permissionManager.addForumWithPermission(forumId, role);
+        });
+
+        for (ForumId forumId : forumIds) {
+            permissionManager.addForumWithPermission(forumId.getId(), Role.STUDENT);
+        }
+
         return User.builder()
                 .name(userDTO.getUsername())
                 .email(userDTO.getEmail())
+                .permissionManager(permissionManager)
                 .forums(forumIds)
                 .build();
     }
+
 
     private static List<ForumId> getForumIdFromUserDto(UserDTO userDTO) {
         return userDTO.getForums().stream()

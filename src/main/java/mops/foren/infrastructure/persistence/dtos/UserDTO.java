@@ -1,17 +1,18 @@
 package mops.foren.infrastructure.persistence.dtos;
 
 import lombok.*;
+import mops.foren.domain.model.Role;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 @Data
 @EqualsAndHashCode(exclude = "forums")
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(onlyExplicitlyIncluded = true)
 @Builder
 @Entity
 @Table(name = "user")
@@ -22,7 +23,6 @@ public class UserDTO {
     private String name;
 
     private String email;
-
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -38,11 +38,12 @@ public class UserDTO {
      * Key: ForumId
      * Value: Role(ID)
      */
-    @ElementCollection
+    @ElementCollection(targetClass = Role.class)
     @MapKeyColumn(name = "forumId")
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     @CollectionTable(name = "roles", joinColumns = @JoinColumn(name = "username"))
-    private Map<Long, Long> roles;
+    private Map<Long, Role> roles;
 
     @OneToMany(mappedBy = "author")
     private List<PostDTO> posts;
