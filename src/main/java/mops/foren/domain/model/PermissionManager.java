@@ -1,15 +1,15 @@
 package mops.foren.domain.model;
 
 
-import lombok.Data;
 import lombok.NonNull;
+import lombok.Value;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Value
 public class PermissionManager {
 
     private Set<ForumId> student = new HashSet<>();
@@ -60,9 +60,9 @@ public class PermissionManager {
      */
     public List<ForumId> getAllForums() {
         Set<ForumId> forumIds = new HashSet<>();
-        this.student.stream().map(forumIds::add);
-        this.moderator.stream().map(forumIds::add);
-        this.admin.stream().map(forumIds::add);
+        forumIds.addAll(this.student);
+        forumIds.addAll(this.moderator);
+        forumIds.addAll(this.admin);
         return new ArrayList<>(forumIds);
     }
 

@@ -29,13 +29,21 @@ public class UserMapper {
                 .build();
     }
 
+    /**
+     * Extract the DTO-permission-map from the User-Object.
+     * This does not contain the student rights on purpose !!!!!!
+     *
+     * @param permissionManager The PermissionManager that contains
+     *                          the rights of the user-model-entity.
+     * @return The map as database-specific type.
+     */
     private static Map<Long, Role> getRolesMap(PermissionManager permissionManager) {
         Map<Long, Role> roles = new HashMap<>();
-        permissionManager.getAdmin().stream()
-                .map(forumId -> roles.put(forumId.getId(), Role.ADMIN));
+        permissionManager.getAdmin()
+                .forEach(forumId -> roles.put(forumId.getId(), Role.ADMIN));
 
-        permissionManager.getModerator().stream()
-                .map(forumId -> roles.put(forumId.getId(), Role.MODERATOR));
+        permissionManager.getModerator()
+                .forEach(forumId -> roles.put(forumId.getId(), Role.MODERATOR));
 
         return roles;
     }
