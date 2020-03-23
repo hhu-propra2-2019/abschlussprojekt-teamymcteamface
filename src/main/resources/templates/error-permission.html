@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Foren</title>
+  <th:block th:fragment="headcontent">
+    <style>
+      main > div:first-child {
+        position: relative;
+        margin-bottom: 1rem;
+      }
+
+      main > div:first-child img {
+        border-radius: 1rem;
+        border: 1px solid black;
+      }
+
+      main > div:first-child > h2 {
+        position: absolute;
+        bottom: 0;
+        margin: 1rem;
+        color: white;
+        text-shadow: 0 0 3px black;
+      }
+
+      @media (min-width: 992px) {
+        main > div:first-child > h2 {
+          font-size: 2.4rem;
+        }
+      }
+
+      @media (max-width: 576px) {
+        main > div:first-child > h2 {
+          font-size: 1.0rem;
+        }
+      }
+    </style>
+  </th:block>
+</head>
+<body>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li class="">
+        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main th:fragment="bodycontent" style="text-align: center; margin: auto;">
+  <h2>Sorry Boi, hast das Recht nicht!</h2>
+  <button class="btn btn-primary" onclick="window.history.back()">zurück zu der vorherigen Seite</button>
+</main>
+</body>
+</html>

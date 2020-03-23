@@ -4,6 +4,7 @@ import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.ForumForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -60,16 +61,20 @@ public class ForumController {
     /**
      * Mapping to the main-page of a certain forum.
      *
+     * @param token   - the keycloak token
      * @param forenID - id of the forum
      * @param model   - Model
      * @return The template for the forum main page
      */
     @GetMapping("/{forenID}")
-    public String enterAForum(@PathVariable String forenID,
+    public String enterAForum(KeycloakAuthenticationToken token,
+                              @PathVariable String forenID,
                               Model model) {
-
+        User user = this.userService.getUserFromDB(token);
         ForumId forumIdWrapped = new ForumId(Long.valueOf(forenID));
-
+        if (!user.checkPermission(forumIdWrapped, Permission.READ_FORUM)) {
+            return "error-no-permission";
+        }
         model.addAttribute("topics", this.topicService.getTopics(forumIdWrapped));
         model.addAttribute("forum", this.forumService.getForum(forumIdWrapped));
 
