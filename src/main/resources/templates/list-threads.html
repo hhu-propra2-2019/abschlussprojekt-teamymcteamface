@@ -12,6 +12,14 @@
   <title th:text="${forumTitle}"></title>
   <th:block th:fragment="headcontent">
     <style>
+      .page-list, .page-list > li {
+        float: right;
+      }
+
+      .page-list {
+        margin-bottom: 100px;
+      }
+
       main > div:first-child {
         position: relative;
         margin-bottom: 1rem;
@@ -98,6 +106,20 @@
     </div>
     </tbody>
   </table>
+  <ul class="list-unstyled page-list">
+
+    <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+      <button class="btn" th:unless="${i == pagingObject.getCurrentPage()+1}" type="button"
+              th:onclick="location.href = '?page=' + '[[${i}]]'"
+              th:text="${i}">page#
+      </button>
+      <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}" type="button"
+              th:onclick="location.href = '?page=' + '[[${i}]]'"
+              th:text="${i}">page#
+      </button>
+
+    </li>
+  </ul>
 </main>
 </body>
 </html>

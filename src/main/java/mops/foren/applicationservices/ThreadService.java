@@ -2,9 +2,8 @@ package mops.foren.applicationservices;
 
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
+import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
-
-import java.util.List;
 
 @ApplicationService
 public class ThreadService {
@@ -15,8 +14,8 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Thread> getThreads(TopicId topicId) {
-        return this.threadRepository.getThreadsFromDB(topicId);
+    public ThreadPage getThreads(TopicId topicId, Integer page) {
+        return this.threadRepository.getThreadPageFromDB(topicId, page);
     }
 
     public Thread getThread(ThreadId threadId) {

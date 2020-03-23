@@ -4,11 +4,10 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
-
-import java.util.List;
+import mops.foren.domain.model.paging.ThreadPage;
 
 public interface IThreadRepository {
-    List<Thread> getThreadsFromDB(TopicId topicId);
+    ThreadPage getThreadPageFromDB(TopicId topicId, Integer page);
 
     Thread getThreadById(ThreadId threadId);
 
