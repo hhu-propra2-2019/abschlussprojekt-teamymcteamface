@@ -7,7 +7,9 @@ import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +25,19 @@ public class UserMapper {
         return UserDTO.builder()
                 .username(user.getName())
                 .email(user.getEmail())
+                .roles(getRolesMap(user.getPermissionManager()))
                 .build();
+    }
+
+    private static Map<Long, Role> getRolesMap(PermissionManager permissionManager) {
+        Map<Long, Role> roles = new HashMap<>();
+        permissionManager.getAdmin().stream()
+                .map(forumId -> roles.put(forumId.getId(), Role.ADMIN));
+
+        permissionManager.getModerator().stream()
+                .map(forumId -> roles.put(forumId.getId(), Role.MODERATOR));
+
+        return roles;
     }
 
     /**

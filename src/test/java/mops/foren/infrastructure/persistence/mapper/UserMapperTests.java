@@ -1,12 +1,12 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.PermissionManager;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 import java.util.Set;
@@ -15,7 +15,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class UserMapperTests {
 
     private UserDTO userDTO;
@@ -32,6 +31,7 @@ public class UserMapperTests {
         this.user = User.builder()
                 .name("user1")
                 .email("user1@hhu.de")
+                .permissionManager(new PermissionManager())
                 .build();
 
         this.forumIds = Stream.of(1L, 2L, 3L)

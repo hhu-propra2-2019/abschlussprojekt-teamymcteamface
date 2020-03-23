@@ -9,7 +9,6 @@ import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -18,7 +17,6 @@ import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class PostMapperTests {
 
     private PostDTO postDTO;
