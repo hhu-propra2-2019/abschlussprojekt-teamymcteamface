@@ -2,7 +2,9 @@ package mops.foren.domain.services;
 
 import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
+import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,29 +15,31 @@ import java.util.stream.Collectors;
 public class ThreadModelService {
 
     private IPostRepository postRepository;
+    private IThreadRepository threadRepository;
 
-    public ThreadModelService(IPostRepository postRepository) {
+    public ThreadModelService(IPostRepository postRepository, IThreadRepository threadRepository) {
         this.postRepository = postRepository;
+        this.threadRepository = threadRepository;
     }
 
     /**
-     * This methode updates the latestPostTime in each thread.
+     * This methode updates the latestPostTime in the thread.
      *
-     * @param threads List of threads, where the last post time should be updated.
+     * @param threadId the thread, where the last post time should be updated.
      */
-    public void updateLastPostTime(List<Thread> threads) {
-        for (Thread thread : threads) {
-            Optional<LocalDateTime> maxDate = getLatestDateFromThread(thread);
-            if (maxDate.isPresent()) {
-                thread.setLastPostTime(maxDate.get());
-            } else {
-                thread.setLastPostTime(null);
-            }
+    public void updateLastPostTime(ThreadId threadId) {
+        Thread thread = threadRepository.getThreadById(threadId);
+        List<Post> posts = postRepository.getAllPostsByThreadId(threadId);
+        Optional<LocalDateTime> maxDate = getLatestDateFromThread(posts);
+        if (maxDate.isPresent()) {
+            thread.setLastPostTime(maxDate.get());
+        } else {
+            thread.setLastPostTime(null);
         }
     }
 
-    private Optional<LocalDateTime> getLatestDateFromThread(Thread thread) {
-        List<Post> posts = postRepository.getAllPostsByThreadId(thread.getId());
+
+    private Optional<LocalDateTime> getLatestDateFromThread(List<Post> posts) {
         List<LocalDateTime> dates = getDatesFromPosts(posts);
         return getMaxDate(dates);
     }

@@ -11,6 +11,7 @@ import mops.foren.infrastructure.persistence.mapper.PostMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void addPostInThread(ThreadId threadId, Post post) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
+        threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }

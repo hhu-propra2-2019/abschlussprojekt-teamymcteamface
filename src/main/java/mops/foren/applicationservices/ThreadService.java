@@ -26,9 +26,7 @@ public class ThreadService {
      * @return the wanted list of threads.
      */
     public List<Thread> getThreads(TopicId topicId) {
-        List<Thread> threadsFromDB = this.threadRepository.getThreadsFromDB(topicId);
-        threadModelService.updateLastPostTime(threadsFromDB);
-        return threadsFromDB;
+        return this.threadRepository.getThreadsFromDB(topicId);
     }
 
     public Thread getThread(ThreadId threadId) {
