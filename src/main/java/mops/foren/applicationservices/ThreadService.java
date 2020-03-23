@@ -3,7 +3,6 @@ package mops.foren.applicationservices;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
-import mops.foren.domain.services.ThreadModelService;
 
 import java.util.List;
 
@@ -11,12 +10,9 @@ import java.util.List;
 public class ThreadService {
 
     private IThreadRepository threadRepository;
-    private ThreadModelService threadModelService;
 
-    public ThreadService(IThreadRepository threadRepository,
-                         ThreadModelService threadModelService) {
+    public ThreadService(IThreadRepository threadRepository) {
         this.threadRepository = threadRepository;
-        this.threadModelService = threadModelService;
     }
 
     /**

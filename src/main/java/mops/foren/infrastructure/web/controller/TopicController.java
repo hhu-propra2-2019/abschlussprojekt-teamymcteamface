@@ -3,7 +3,6 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
 import mops.foren.infrastructure.web.TopicForm;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.List;
 
 @Controller
 @SessionScope
@@ -53,8 +51,7 @@ public class TopicController {
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        List<Thread> threads = this.threadService.getThreads(topicId);
-        model.addAttribute("threads", threads);
+        model.addAttribute("threads", this.threadService.getThreads(topicId));
         return "list-threads";
     }
 
