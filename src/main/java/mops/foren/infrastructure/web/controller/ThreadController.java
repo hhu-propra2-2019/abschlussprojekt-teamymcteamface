@@ -102,6 +102,6 @@ public class ThreadController {
         TopicId topicId = new TopicId(topicIdLong);
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
-        return String.format("redirect:/foren/topic/%d/%d", forenIdLong, topicIdLong);
+        return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
     }
 }
