@@ -4,9 +4,7 @@ import lombok.*;
 import mops.foren.domain.model.Role;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @EqualsAndHashCode(exclude = "forums")
@@ -50,4 +48,8 @@ public class UserDTO {
 
     @OneToMany(mappedBy = "author")
     private List<ThreadDTO> threads;
+
+    public Map<Long, Role> getRoles() {
+        return Objects.requireNonNullElseGet(this.roles, HashMap::new);
+    }
 }
