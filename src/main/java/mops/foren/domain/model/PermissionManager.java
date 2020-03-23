@@ -1,12 +1,15 @@
 package mops.foren.domain.model;
 
 
+import lombok.Data;
 import lombok.NonNull;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
+@Data
 public class PermissionManager {
 
     private Set<ForumId> student;
@@ -22,14 +25,14 @@ public class PermissionManager {
      * @return Boolean
      */
     public Boolean checkPermission(ForumId id, Permission permission) {
-        if (Student.hasPermission(permission)) {
-            return this.student.contains(id);
+        if (this.admin.contains(id)) {
+            return Admin.hasPermission(permission);
         }
-        if (Moderator.hasPermission(permission)) {
-            return this.moderator.contains(id);
+        if (this.moderator.contains(id)) {
+            return Moderator.hasPermission(permission);
         }
-        if (Admin.hasPermission(permission)) {
-            return this.admin.contains(id);
+        if (this.student.contains(id)) {
+            return Student.hasPermission(permission);
         }
         return false;
     }
@@ -50,8 +53,16 @@ public class PermissionManager {
         return user.equals(author) || checkPermission(id, permission);
     }
 
+    /**
+     * Return all forumIds that the user is in.
+     *
+     * @return List of forum-ids.
+     */
     public List<ForumId> getAllForums() {
-        return this.student.stream().collect(Collectors.toList());
+        Set<ForumId> forumIds = new HashSet<>();
+        this.student.stream().map(forumIds::add);
+        this.moderator.stream().map(forumIds::add);
+        this.admin.stream().map(forumIds::add);
+        return new ArrayList<>(forumIds);
     }
-
 }
