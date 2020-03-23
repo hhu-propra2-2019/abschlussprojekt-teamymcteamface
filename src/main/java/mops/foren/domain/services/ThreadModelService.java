@@ -40,6 +40,9 @@ public class ThreadModelService {
 
 
     private Optional<LocalDateTime> getLatestDateFromThread(List<Post> posts) {
+        if (posts.isEmpty()) {
+            return Optional.empty();
+        }
         List<LocalDateTime> dates = getDatesFromPosts(posts);
         return getMaxDate(dates);
     }

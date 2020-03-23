@@ -1,5 +1,6 @@
 package mops.foren.infrastructure.persistence.mapper;
 
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -19,6 +21,7 @@ public class ThreadMapperTests {
 
     private ThreadDTO threadDTO;
     private UserDTO authorDTO;
+    private LocalDateTime lastChage;
 
     /**
      * Sets up the test environment for ThreadMapper.
@@ -26,6 +29,7 @@ public class ThreadMapperTests {
     @BeforeEach
     public void setUp() {
         TopicId topicId = new TopicId(2L);
+        lastChage = LocalDateTime.now();
 
         TopicDTO topicDTO = TopicDTO.builder() // only Id is needed
                 .id(topicId.getId())
@@ -43,6 +47,7 @@ public class ThreadMapperTests {
         this.threadDTO = ThreadDTO.builder()
                 .id(1L)
                 .author(this.authorDTO)
+                .lastChangedTime(lastChage)
                 .topic(topicDTO)
                 .title("thread title")
                 .description("thread description")
@@ -95,5 +100,15 @@ public class ThreadMapperTests {
 
         // Assert
         assertThat(author).isEqualTo(userFromArrange);
+    }
+
+    @Test
+    public void testLastChangedTimeIsCorrectlyMappedFromThreadDTOToModel() {
+        // Act
+        Thread thread = ThreadMapper.mapThreadDtoToThread(this.threadDTO);
+        LocalDateTime lastPostTime = thread.getLastPostTime();
+
+        // Assert
+        assertThat(lastPostTime).isEqualTo(this.lastChage);
     }
 }
