@@ -57,7 +57,6 @@ public class TopicController {
         model.addAttribute("pagingObject", threadPage.getPaging());
         model.addAttribute("threads", threadPage.getThreads());
 
-        //return String.format("redirect:/foren/topic/", Long.valueOf(forenID), "/", topicId, page + 1);
         return "list-threads";
     }
 

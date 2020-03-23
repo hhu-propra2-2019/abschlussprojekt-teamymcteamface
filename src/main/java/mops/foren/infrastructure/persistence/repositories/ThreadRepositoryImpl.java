@@ -4,21 +4,16 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
-import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
-import mops.foren.infrastructure.persistence.mapper.PostPageMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadPageMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Repository
 public class ThreadRepositoryImpl implements IThreadRepository {

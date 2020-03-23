@@ -6,8 +6,6 @@ import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.paging.ThreadPage;
 
-import java.util.List;
-
 public interface IThreadRepository {
     ThreadPage getThreadPageFromDB(TopicId topicId, Integer page);
 

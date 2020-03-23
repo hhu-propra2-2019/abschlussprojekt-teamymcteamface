@@ -2,7 +2,6 @@ package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.paging.Paging;
-import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import org.springframework.data.domain.Page;

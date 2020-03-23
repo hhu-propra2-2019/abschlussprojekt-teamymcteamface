@@ -5,8 +5,6 @@ import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
-import java.util.List;
-
 @ApplicationService
 public class ThreadService {
 
