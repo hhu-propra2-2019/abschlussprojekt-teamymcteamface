@@ -11,6 +11,6 @@ public class Moderator {
     );
 
     public static boolean hasPermission(Permission permission) {
-        return PERMISSIONS.contains(permission);
+        return PERMISSIONS.contains(permission) || Student.hasPermission(permission);
     }
 }
