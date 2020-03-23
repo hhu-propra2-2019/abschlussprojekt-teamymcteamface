@@ -19,7 +19,7 @@ public abstract class ThreadPageMapper {
      * @return Our PostPage object
      */
     public static ThreadPage toThreadPage(Page<ThreadDTO> dtoPage, int page) {
-        List<Thread> collect = dtoPage.stream()
+        List<Thread> collect = dtoPage.getContent().stream()
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
 

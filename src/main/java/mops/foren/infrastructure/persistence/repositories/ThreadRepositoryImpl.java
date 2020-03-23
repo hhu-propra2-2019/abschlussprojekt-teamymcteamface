@@ -29,7 +29,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     @Override
     public ThreadPage getThreadPageFromDB(TopicId topicId, Integer page) {
         Page<ThreadDTO> dtoPage = this.threadRepository
-                .findByTopic_Id(topicId.getId(), PageRequest.of(page, PAGE_SIZE));
+                .findThreadPageByTopic_Id(topicId.getId(), PageRequest.of(page, PAGE_SIZE));
 
         return ThreadPageMapper.toThreadPage(dtoPage, page);
     }
