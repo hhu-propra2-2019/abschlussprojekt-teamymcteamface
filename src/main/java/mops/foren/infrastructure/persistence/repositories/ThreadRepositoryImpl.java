@@ -4,11 +4,17 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.paging.PostPage;
+import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
+import mops.foren.infrastructure.persistence.mapper.PostPageMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
+import mops.foren.infrastructure.persistence.mapper.ThreadPageMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +23,8 @@ import java.util.stream.Collectors;
 @Repository
 public class ThreadRepositoryImpl implements IThreadRepository {
 
+    private static final int PAGE_SIZE = 10;
+
     private ThreadJpaRepository threadRepository;
 
     public ThreadRepositoryImpl(ThreadJpaRepository threadRepository) {
@@ -24,10 +32,11 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     }
 
     @Override
-    public List<Thread> getThreadsFromDB(TopicId topicId) {
-        return this.threadRepository.findByTopic_Id(topicId.getId()).stream()
-                .map(ThreadMapper::mapThreadDtoToThread)
-                .collect(Collectors.toList());
+    public ThreadPage getThreadPageFromDB(TopicId topicId, Integer page) {
+        Page<ThreadDTO> dtoPage = this.threadRepository
+                .findByTopic_Id(topicId.getId(), PageRequest.of(page, PAGE_SIZE));
+
+        return ThreadPageMapper.toThreadPage(dtoPage, page);
     }
 
     /**
