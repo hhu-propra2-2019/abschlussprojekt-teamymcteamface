@@ -19,7 +19,7 @@ public class ThreadService {
      * This method get all Threads according to a special topicId.
      *
      * @param topicId The topicId the threads should be in.
-     * @param page The page we need.
+     * @param page    The page we need.
      * @return the wanted list of threads.
      */
     public ThreadPage getThreads(TopicId topicId, Integer page) {

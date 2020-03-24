@@ -19,7 +19,7 @@ public abstract class PostPageMapper {
      * @return Our PostPage object
      */
     public static PostPage toPostPage(Page<PostDTO> dtoPage, int page) {
-        List<Post> collect = dtoPage.stream()
+        List<Post> collect = dtoPage.getContent().stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
 
