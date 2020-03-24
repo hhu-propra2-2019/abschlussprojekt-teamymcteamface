@@ -9,6 +9,7 @@ public class TopicForm {
     private final String title;
     private final String description;
     private final Boolean moderated;
+    private final Boolean anonymous;
 
 
     /**
@@ -20,6 +21,7 @@ public class TopicForm {
     public Topic getTopic(ForumId forumId) {
         return Topic.builder()
                 .title(this.title)
+                .anonymous(this.anonymous)
                 .description(this.description)
                 .moderated(this.moderated)
                 .forumId(forumId)

@@ -23,6 +23,10 @@ public class ThreadDTO {
 
     private String description;
 
+    private Boolean incognito;
+
+    private Boolean anonymous;
+
     @ManyToOne
     private UserDTO author;
 

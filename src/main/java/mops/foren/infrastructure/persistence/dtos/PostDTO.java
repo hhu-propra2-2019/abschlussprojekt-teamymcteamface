@@ -30,4 +30,6 @@ public class PostDTO {
     private UserDTO author;
 
     private String text;
+
+    private Boolean anonymous;
 }

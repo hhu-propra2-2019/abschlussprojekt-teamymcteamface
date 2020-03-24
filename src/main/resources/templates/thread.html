@@ -3,20 +3,20 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+  <script crossorigin="anonymous"
           integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-          crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+          src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  <script crossorigin="anonymous"
           integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-          crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+          src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <script crossorigin="anonymous"
           integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-          crossorigin="anonymous"></script>
+          src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Foren - Posts</title>
 
 </head>
@@ -91,10 +91,11 @@
             <div th:class="preview-pic">
 
             </div>
-            <div th:class="author" th:text="${post.getAuthor().getName()}" style="float: left;">
+            <div style="float: left;" th:class="author"
+                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonymus'">
               Jens Bendisposto
             </div>
-            <div th:class="created-date" th:text="${post.getFormattedDate()}" style="float: right;">
+            <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
               12.03.2020
             </div>
           </div>
@@ -109,19 +110,22 @@
       <ul class="list-unstyled page-list">
 
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
-          <button class="btn" th:unless="${i == pagingObject.getCurrentPage()+1}" type="button"
+          <button class="btn"
                   th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
-                  th:text="${i}">page#
+                  th:text="${i}"
+                  th:unless="${i == pagingObject.getCurrentPage()+1}"
+                  type="button">page#
           </button>
-          <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}" type="button"
+          <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
                   th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
-                  th:text="${i}">page#
+                  th:text="${i}"
+                  type="button">page#
           </button>
 
         </li>
       </ul>
       <br><br>
-      <div th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}" class="row write-answer">
+      <div class="row write-answer">
         <div class="card">
           <div class="card-header">
             <div class="author" style="float: left; clear: left;">

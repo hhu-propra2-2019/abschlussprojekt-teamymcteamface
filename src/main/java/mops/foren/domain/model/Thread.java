@@ -16,4 +16,6 @@ public class Thread {
 
     private User author;
 
+    private Boolean anonymous;
+
 }

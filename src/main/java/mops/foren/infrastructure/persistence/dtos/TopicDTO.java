@@ -25,6 +25,7 @@ public class TopicDTO {
 
     private Boolean moderated;
 
+    private Boolean anonymous;
 
     @ManyToOne
     private ForumDTO forum;

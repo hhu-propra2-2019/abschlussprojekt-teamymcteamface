@@ -61,19 +61,24 @@
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
-      <input type="text" maxlength="100" class="form-control" id="title" aria-describedby="emailHelp" name="title"
-             th:value="*{title}" placeholder="Gebe einen Titel ein.">
-      <small id="emailHelp" class="form-text text-muted">Der Titel sollte möglichst präsize sein.</small>
+      <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100" name="title"
+             placeholder="Gebe einen Titel ein."
+             th:value="*{title}" type="text">
+      <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Beschreibung:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="description"
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"
                 th:value="*{description}"></textarea>
     </div>
     <label>Moderationsmodus:</label>
-    <input type="checkbox" name="moderated" th:value="*{moderated}">
+    <input name="moderated" th:checked="*{moderated}" type="checkbox">
+
+    <label>Sollen Beiträge in diesem Topic annonym sein:</label>
+    <input checked="true" name="anonymous" th:checked="*{anonymous}" type="checkbox">
+
     <div>
-      <button type="submit" class="btn btn-primary">erstellen</button>
+      <button class="btn btn-primary" type="submit">erstellen</button>
     </div>
   </form>
 </main>

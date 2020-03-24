@@ -25,6 +25,7 @@ public abstract class PostMapper {
         User author = UserMapper.mapUserDtoToUser(authorDto);
         return Post.builder()
                 .id(new PostId(postDTO.getId()))
+                .anonymous(postDTO.getAnonymous())
                 .threadId(new ThreadId(postDTO.getThread().getId()))
                 .author(author)
                 .text(postDTO.getText())
@@ -42,6 +43,7 @@ public abstract class PostMapper {
     public static PostDTO mapPostToPostDto(Post post, ThreadDTO threadDTO) {
         return PostDTO.builder()
                 .author(UserMapper.mapUserToUserDto(post.getAuthor()))
+                .anonymous(threadDTO.getAnonymous())
                 .thread(threadDTO)
                 .text(post.getText())
                 .build();

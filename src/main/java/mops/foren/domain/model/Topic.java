@@ -15,4 +15,6 @@ public class Topic {
     private String description;
 
     private Boolean moderated;
+
+    private Boolean anonymous;
 }
