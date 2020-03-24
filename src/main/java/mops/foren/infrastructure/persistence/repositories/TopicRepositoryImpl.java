@@ -22,6 +22,13 @@ public class TopicRepositoryImpl implements ITopicRepository {
     private ThreadJpaRepository threadRepository;
     private IThreadRepository threadRepositoryImpl;
 
+    /**
+     * Public constructor.
+     *
+     * @param topicRepository      injected topicJpaRepository
+     * @param threadRepository     injected threadJpaRepository
+     * @param threadRepositoryImpl injected threadRepositoryImpl through interface
+     */
     public TopicRepositoryImpl(TopicJpaRepository topicRepository,
                                ThreadJpaRepository threadRepository,
                                IThreadRepository threadRepositoryImpl) {
