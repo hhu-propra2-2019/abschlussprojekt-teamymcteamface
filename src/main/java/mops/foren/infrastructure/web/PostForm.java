@@ -5,10 +5,14 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 
+import javax.validation.constraints.NotBlank;
+
 @Value
 public class PostForm {
-    private final String postContent;
 
+    // For now only check for Null until there is a content class
+    @NotBlank(message = "Post content cannot be blank.")
+    private final String postContent;
 
     /**
      * Method to build a post out of the postContent.
