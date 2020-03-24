@@ -2,7 +2,9 @@ package mops.foren.infrastructure.web;
 
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
+import org.springframework.stereotype.Service;
 
+@Service
 public class KeycloakService {
     /**
      * Nimmt das Authentifizierungstoken von Keycloak und erzeugt ein AccountDTO für die Views.

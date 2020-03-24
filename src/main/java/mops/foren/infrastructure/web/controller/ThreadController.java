@@ -7,6 +7,8 @@ import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.PostForm;
 import mops.foren.infrastructure.web.ThreadForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -27,21 +29,25 @@ public class ThreadController {
     private PostService postService;
     private UserService userService;
     private TopicService topicService;
+    private KeycloakService keycloakService;
 
     /**
      * Constructor for ThreadController. The parameters are injected.
      *
-     * @param threadService - ThreadService (ApplicationService)
-     * @param postService   - injected PostService (ApplicationService)
-     * @param userService   - injected UserService (ApplicationService)
-     * @param topicService  - TopicService (ApplicationService)
+     * @param threadService   - ThreadService (ApplicationService)
+     * @param postService     - injected PostService (ApplicationService)
+     * @param userService     - injected UserService (ApplicationService)
+     * @param topicService    - TopicService (ApplicationService)
+     * @param keycloakService - KeycloakService (Infrastructure Service)
      */
     public ThreadController(ThreadService threadService, PostService postService,
-                            UserService userService, TopicService topicService) {
+                            UserService userService, TopicService topicService,
+                            KeycloakService keycloakService) {
         this.threadService = threadService;
         this.postService = postService;
         this.userService = userService;
         this.topicService = topicService;
+        this.keycloakService = keycloakService;
     }
 
     /**
@@ -101,5 +107,21 @@ public class ThreadController {
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
         return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
+    }
+
+    /**
+     * Adds the account object to each request.
+     * Image and roles have to be added in the future.
+     *
+     * @param token - KeycloakAuthenficationToken
+     * @return
+     */
+    @ModelAttribute("account")
+    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
+        if (token == null) {
+            return null;
+        }
+
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }
