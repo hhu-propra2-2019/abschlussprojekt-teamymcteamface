@@ -5,6 +5,8 @@ import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Post;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.PostForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
@@ -24,16 +26,20 @@ public class PostController {
 
     private UserService userService;
     private ThreadService threadService;
+    private KeycloakService keycloakService;
 
     /**
      * Constructor for ForenController. The parameters are injected.
      *
-     * @param userService   - injected UserService (ApplicationService)
-     * @param threadService - ThreadService (ApplicationService)
+     * @param userService     - injected UserService (ApplicationService)
+     * @param threadService   - ThreadService (ApplicationService)
+     * @param keycloakService - KeycloakService (Infrastructure Service)
      */
-    public PostController(UserService userService, ThreadService threadService) {
+    public PostController(UserService userService, ThreadService threadService,
+                          KeycloakService keycloakService) {
         this.userService = userService;
         this.threadService = threadService;
+        this.keycloakService = keycloakService;
     }
 
     /**
@@ -54,6 +60,22 @@ public class PostController {
         Post post = postForm.getPost(user, threadId);
         this.threadService.addPostInThread(threadId, post);
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+    }
+
+    /**
+     * Adds the account object to each request.
+     * Image and roles have to be added in the future.
+     * @param token - KeycloakAuthenficationToken
+     * @return
+     */
+    @ModelAttribute("account")
+    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
+        if (token == null) {
+            return null;
+        }
+        User user = this.userService.getUserFromDB(token);
+
+        return this.keycloakService.createAccountFromUser(user);
     }
 
 }

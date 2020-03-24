@@ -2,11 +2,16 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
+import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.ThreadPage;
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.TopicForm;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -22,16 +27,23 @@ public class TopicController {
 
     private ForumService forumService;
     private ThreadService threadService;
+    private UserService userService;
+    private KeycloakService keycloakService;
 
     /**
      * Constructor for TopicController. The parameters are injected.
      *
-     * @param forumService  - injected ForumService (ApplicationService)
-     * @param threadService - ThreadService (ApplicationService)
+     * @param forumService    - injected ForumService (ApplicationService)
+     * @param threadService   - ThreadService (ApplicationService)
+     * @param userService     - UserService (ApplicationService)
+     * @param keycloakService - KeycloakService (Infrastructure Service)
      */
-    public TopicController(ForumService forumService, ThreadService threadService) {
+    public TopicController(ForumService forumService, ThreadService threadService,
+                           UserService userService, KeycloakService keycloakService) {
         this.forumService = forumService;
         this.threadService = threadService;
+        this.userService = userService;
+        this.keycloakService = keycloakService;
     }
 
     /**
@@ -89,5 +101,21 @@ public class TopicController {
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
         return String.format("redirect:/foren/my-forums/%d", forumIdLong);
+    }
+
+    /**
+     * Adds the account object to each request.
+     * Image and roles have to be added in the future.
+     * @param token - KeycloakAuthenficationToken
+     * @return
+     */
+    @ModelAttribute("account")
+    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
+        if (token == null) {
+            return null;
+        }
+        User user = this.userService.getUserFromDB(token);
+
+        return this.keycloakService.createAccountFromUser(user);
     }
 }
