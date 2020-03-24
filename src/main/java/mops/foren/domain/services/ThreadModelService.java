@@ -23,7 +23,7 @@ public class ThreadModelService {
     }
 
     /**
-     * This methode updates the latestPostTime in the thread.
+     * This method updates the latestPostTime in the thread.
      *
      * @param threadId the thread, where the last post time should be updated.
      */

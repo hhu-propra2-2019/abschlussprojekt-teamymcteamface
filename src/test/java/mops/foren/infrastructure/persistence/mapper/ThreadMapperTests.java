@@ -21,7 +21,7 @@ public class ThreadMapperTests {
 
     private ThreadDTO threadDTO;
     private UserDTO authorDTO;
-    private LocalDateTime lastChage;
+    private LocalDateTime lastChange;
 
     /**
      * Sets up the test environment for ThreadMapper.
@@ -29,7 +29,7 @@ public class ThreadMapperTests {
     @BeforeEach
     public void setUp() {
         TopicId topicId = new TopicId(2L);
-        lastChage = LocalDateTime.now();
+        lastChange = LocalDateTime.now();
 
         TopicDTO topicDTO = TopicDTO.builder() // only Id is needed
                 .id(topicId.getId())
@@ -47,7 +47,7 @@ public class ThreadMapperTests {
         this.threadDTO = ThreadDTO.builder()
                 .id(1L)
                 .author(this.authorDTO)
-                .lastChangedTime(lastChage)
+                .lastChangedTime(lastChange)
                 .topic(topicDTO)
                 .title("thread title")
                 .description("thread description")
@@ -109,6 +109,6 @@ public class ThreadMapperTests {
         LocalDateTime lastPostTime = thread.getLastPostTime();
 
         // Assert
-        assertThat(lastPostTime).isEqualTo(this.lastChage);
+        assertThat(lastPostTime).isEqualTo(this.lastChange);
     }
 }
