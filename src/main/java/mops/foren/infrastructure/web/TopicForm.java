@@ -6,11 +6,25 @@ import mops.foren.domain.model.Topic;
 
 @Value
 public class TopicForm {
-    private final String title;
-    private final String description;
-    private final Boolean moderated;
-    private final Boolean anonymous;
+    private String title;
+    private String description;
+    private Boolean moderated;
+    private Boolean anonymous;
 
+    /**
+     * This is a constructor.
+     *
+     * @param title       of the topic.
+     * @param description of the topic.
+     * @param moderated   moderation mode of the topic.
+     * @param anonymous   anonymous mode of the topic.
+     */
+    public TopicForm(String title, String description, Boolean moderated, Boolean anonymous) {
+        this.title = title;
+        this.description = description;
+        this.moderated = moderated;
+        this.anonymous = anonymous != null;
+    }
 
     /**
      * Method to build a post out of the postContent.

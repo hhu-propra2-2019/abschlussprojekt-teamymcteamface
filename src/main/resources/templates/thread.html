@@ -92,7 +92,7 @@
 
             </div>
             <div style="float: left;" th:class="author"
-                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonymus'">
+                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
               Jens Bendisposto
             </div>
             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
@@ -125,25 +125,27 @@
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer">
-        <div class="card">
-          <div class="card-header">
-            <div class="author" style="float: left; clear: left;">
-              Antwort erstellen
+      <div class="row write-answer" th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}">
+        <div class="row write-answer">
+          <div class="card">
+            <div class="card-header">
+              <div class="author" style="float: left; clear: left;">
+                Antwort erstellen
+              </div>
             </div>
-          </div>
-          <form method="post"
-                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                th:object="${form}">
-            <div class="card-body">
-              <div class="form-group">
+            <form method="post"
+                  th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                  th:object="${form}">
+              <div class="card-body">
+                <div class="form-group">
                 <textarea class="form-control" id="my-textarea" name="postContent"
                           rows="3" th:value="*{postContent}"></textarea>
 
+                </div>
               </div>
-            </div>
-            <button class="btn btn-primary" type="submit">abschicken</button>
-          </form>
+              <button class="btn btn-primary" type="submit">abschicken</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
