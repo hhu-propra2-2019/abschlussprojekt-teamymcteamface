@@ -1,9 +1,8 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
+import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
@@ -13,16 +12,22 @@ import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class TopicRepositoryImpl implements ITopicRepository {
     private TopicJpaRepository topicRepository;
+    private ThreadJpaRepository threadRepository;
+    private IThreadRepository threadRepositoryImpl;
 
-    public TopicRepositoryImpl(TopicJpaRepository topicRepository) {
+    public TopicRepositoryImpl(TopicJpaRepository topicRepository,
+                               ThreadJpaRepository threadRepository,
+                               IThreadRepository threadRepositoryImpl) {
         this.topicRepository = topicRepository;
+        this.threadRepository = threadRepository;
+        this.threadRepositoryImpl = threadRepositoryImpl;
     }
 
     /**
@@ -66,29 +71,19 @@ public class TopicRepositoryImpl implements ITopicRepository {
     @Override
     public void addThreadInTopic(TopicId topicId, Thread thread) {
         TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
-        ThreadDTO threadDTO = addPostDTOToThreadDTO(
-                ThreadMapper.mapThreadToThreadDto(thread, topicDTO));
-        topicDTO.getThreads().add(threadDTO);
-        this.topicRepository.save(topicDTO);
-    }
+        ThreadDTO threadDTO = ThreadMapper.mapThreadToThreadDto(thread, topicDTO);
+        threadDTO.setPosts(new ArrayList<PostDTO>());
 
-    /**
-     * Private helper function which generates a new postDTO from the given topicDTO's
-     * description and adds it to the threadDTO.
-     *
-     * @param threadDTO the threadDTO to which the new postDTO will be added
-     * @return the threadDTO with the new postDTO added to its posts list
-     */
-    private ThreadDTO addPostDTOToThreadDTO(ThreadDTO threadDTO) {
-        PostDTO postDTO = PostDTO.builder()
-                .text(threadDTO.getDescription())
-                .author(threadDTO.getAuthor())
-                .dateTime(LocalDateTime.now())
-                .thread(threadDTO)
+        // Needs to be saved to get Id
+        ThreadDTO savedThread = this.threadRepository.save(threadDTO);
+
+        Post firstPost = Post.builder()
+                .author(thread.getAuthor())
+                .text(thread.getDescription())
+                .creationDate(LocalDateTime.now())
+                .changed(false)
                 .build();
 
-        threadDTO.setPosts(Arrays.asList(postDTO));
-
-        return threadDTO;
+        this.threadRepositoryImpl.addPostInThread(new ThreadId(savedThread.getId()), firstPost);
     }
 }
