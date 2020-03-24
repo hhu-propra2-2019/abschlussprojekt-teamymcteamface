@@ -1,7 +1,6 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -35,6 +34,7 @@ public class DashboardController {
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
+     *
      * @param token - KeycloakAuthenficationToken
      * @return
      */
@@ -43,8 +43,7 @@ public class DashboardController {
         if (token == null) {
             return null;
         }
-        User user = this.userService.getUserFromDB(token);
 
-        return this.keycloakService.createAccountFromUser(user);
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }

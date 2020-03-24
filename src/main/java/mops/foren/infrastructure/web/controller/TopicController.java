@@ -6,7 +6,6 @@ import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
-import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -106,6 +105,7 @@ public class TopicController {
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
+     *
      * @param token - KeycloakAuthenficationToken
      * @return
      */
@@ -114,8 +114,7 @@ public class TopicController {
         if (token == null) {
             return null;
         }
-        User user = this.userService.getUserFromDB(token);
 
-        return this.keycloakService.createAccountFromUser(user);
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }

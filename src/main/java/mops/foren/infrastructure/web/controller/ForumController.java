@@ -85,6 +85,7 @@ public class ForumController {
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
+     *
      * @param token - KeycloakAuthenficationToken
      * @return
      */
@@ -93,8 +94,7 @@ public class ForumController {
         if (token == null) {
             return null;
         }
-        User user = this.userService.getUserFromDB(token);
 
-        return this.keycloakService.createAccountFromUser(user);
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }

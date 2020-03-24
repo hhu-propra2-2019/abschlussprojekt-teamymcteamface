@@ -1,12 +1,8 @@
 package mops.foren.infrastructure.web;
 
-import mops.foren.domain.model.User;
 import org.keycloak.KeycloakPrincipal;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Service
 public class KeycloakService {
@@ -23,22 +19,5 @@ public class KeycloakService {
                 principal.getKeycloakSecurityContext().getIdToken().getEmail(),
                 null,
                 token.getAccount().getRoles());
-    }
-
-    /**
-     * Creates an Account from a given User.
-     * @param user - User which sent the request
-     * @return
-     */
-    public Account createAccountFromUser(User user) {
-        Set<String> roles = new HashSet<>();
-        roles.add("Student");
-
-        return new Account.AccountBuilder()
-                .email(user.getEmail())
-                .image("")
-                .name(user.getName())
-                .roles(roles)
-                .build();
     }
 }

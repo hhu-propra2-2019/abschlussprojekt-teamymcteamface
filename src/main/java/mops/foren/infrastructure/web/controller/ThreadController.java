@@ -4,11 +4,8 @@ import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.TopicId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -114,6 +111,7 @@ public class ThreadController {
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
+     *
      * @param token - KeycloakAuthenficationToken
      * @return
      */
@@ -122,8 +120,7 @@ public class ThreadController {
         if (token == null) {
             return null;
         }
-        User user = this.userService.getUserFromDB(token);
 
-        return this.keycloakService.createAccountFromUser(user);
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }

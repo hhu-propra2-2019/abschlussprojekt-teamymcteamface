@@ -1,7 +1,6 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -24,8 +23,9 @@ public class ProfileController {
 
     /**
      * Constructor for the ProfileController.
-     * @param userService      - UserService (ApplicationService)
-     * @param keycloakService  - KeycloakService (Infrastructure Service)
+     *
+     * @param userService     - UserService (ApplicationService)
+     * @param keycloakService - KeycloakService (Infrastructure Service)
      */
     public ProfileController(UserService userService, KeycloakService keycloakService) {
         this.userService = userService;
@@ -40,6 +40,7 @@ public class ProfileController {
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
+     *
      * @param token - KeycloakAuthenficationToken
      * @return
      */
@@ -48,8 +49,7 @@ public class ProfileController {
         if (token == null) {
             return null;
         }
-        User user = this.userService.getUserFromDB(token);
 
-        return this.keycloakService.createAccountFromUser(user);
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 }
