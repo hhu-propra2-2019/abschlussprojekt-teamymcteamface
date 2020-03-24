@@ -40,6 +40,9 @@ public class ThreadDTO {
     @ManyToOne
     private TopicDTO topic;
 
+    @ManyToOne
+    private ForumDTO forum;
+
     @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostDTO> posts;
 

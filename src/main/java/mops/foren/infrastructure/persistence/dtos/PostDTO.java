@@ -34,4 +34,7 @@ public class PostDTO {
     private Boolean anonymous;
 
     private Boolean visible;
+
+    @ManyToOne
+    private ForumDTO forum;
 }
