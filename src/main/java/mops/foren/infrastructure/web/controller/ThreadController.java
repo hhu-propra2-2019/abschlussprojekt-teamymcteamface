@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 @SessionScope
@@ -94,7 +95,7 @@ public class ThreadController {
     public String addNewThread(KeycloakAuthenticationToken token,
                                @RequestParam("forenId") Long forenIdLong,
                                @RequestParam("topicId") Long topicIdLong,
-                               @ModelAttribute ThreadForm threadForm) {
+                               @Valid @ModelAttribute ThreadForm threadForm) {
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         Thread thread = threadForm.getThread(user, topicId);

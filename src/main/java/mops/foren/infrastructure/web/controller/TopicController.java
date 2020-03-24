@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 @SessionScope
@@ -50,7 +51,8 @@ public class TopicController {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        ThreadPage threadPage = this.threadService.getThreadPageWithTopicId(topicId, page - 1);
+        ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
+
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
@@ -83,7 +85,7 @@ public class TopicController {
      * @return The template for the thread
      */
     @PostMapping("/new-topic")
-    public String newTopic(@ModelAttribute TopicForm topicForm,
+    public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
                            @RequestParam("forenId") Long forumIdLong) {
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);

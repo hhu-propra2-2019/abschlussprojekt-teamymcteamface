@@ -9,8 +9,6 @@ import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public abstract class PostMapper {
 
@@ -28,7 +26,7 @@ public abstract class PostMapper {
                 .threadId(new ThreadId(postDTO.getThread().getId()))
                 .author(author)
                 .text(postDTO.getText())
-                .creationDate(LocalDateTime.parse(postDTO.getDateTime().toString()))
+                .creationDate(postDTO.getDateTime())
                 .build();
     }
 

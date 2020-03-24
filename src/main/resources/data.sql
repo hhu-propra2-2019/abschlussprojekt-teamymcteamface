@@ -48,17 +48,17 @@ VALUES (1, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündi
        (12, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 4);
 
 INSERT
-INTO thread (id, author_username, title, topic_id)
-VALUES (1, 'orga1', 'Klausurtermine', 1),
-       (2, 'studentin1', 'Praktikum: Informationen', 1),
-       (3, 'orga2', 'Organisation / Austausch', 1),
-       (4, 'studentin', 'Tutorenjobs im WS 2020', 1),
-       (5, 'orga1', 'Kommt zum Hackathon !', 1),
-       (6, 'studentin', 'Ich brauche Hilfe bei Aufgabe 4a', 2),
-       (7, 'orga2', 'Was ist eine IDE ?', 2),
-       (8, 'studentin3', 'Docker Compose funktioniert nicht :(', 2),
-       (9, 'orga', 'Ich will lieber Germanistik studieren', 2),
-       (10, 'orga', 'Was ist Hibernate ?', 2);
+INTO thread (id, last_changed_time, author_username, title, topic_id)
+VALUES (1,'2020-03-12 16:05:50', 'orga1', 'Klausurtermine', 1),
+       (2,'2020-03-12 14:05:50' ,'studentin1', 'Praktikum: Informationen', 1),
+       (3, '2020-03-10 14:01:50','orga2', 'Organisation / Austausch', 1),
+       (4, '2020-03-12 18:05:50','studentin', 'Tutorenjobs im WS 2020', 1),
+       (5, '2019-03-12 08:05:50','orga1', 'Kommt zum Hackathon !', 1),
+       (6, '2020-03-12 16:05:50','studentin', 'Ich brauche Hilfe bei Aufgabe 4a', 2),
+       (7, '2020-01-31 13:05:50','orga2', 'Was ist eine IDE ?', 2),
+       (8, '2020-02-18 13:31:50','studentin3', 'Docker Compose funktioniert nicht :(', 2),
+       (9, '2020-03-12 16:05:50','orga', 'Ich will lieber Germanistik studieren', 2),
+       (10, '2020-03-20 18:56:50','orga', 'Was ist Hibernate ?', 2);
 
 INSERT
 INTO post (id, author_username, date_time, thread_id, text)

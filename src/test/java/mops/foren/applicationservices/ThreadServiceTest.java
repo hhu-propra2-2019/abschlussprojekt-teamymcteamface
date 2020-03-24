@@ -28,7 +28,7 @@ public class ThreadServiceTest {
         Integer page = 0;
 
         // Act
-        this.threadService.getThreadPageWithTopicId(topicId, page);
+        this.threadService.getThreads(topicId, page);
 
         //Assert
         verify(this.threadRepository).getThreadPageFromDB(topicId, page);
