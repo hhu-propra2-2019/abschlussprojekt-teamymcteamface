@@ -44,7 +44,8 @@
       .card {
         box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.12);
         text-align: center;
-        width: 200px;
+        width: 300px;
+        height: 120px;
         padding-left: 20px;
         padding-right: 20px;
         margin: 10px;
@@ -94,14 +95,16 @@
             th:onclick="location.href = '/foren/topic/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
       erstellen
     </button>
-    <div th:each="topic : ${topics}" class="justify-content-center">
-      <div class="card">
-        <div class="card-body">
-          <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
-          <button class="btn btn-primary"
-                  th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
-                  type="button">Betreten
-          </button>
+    <div class="card-deck">
+      <div th:each="topic : ${topics}">
+        <div class="card">
+          <div class="card-body">
+            <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
+            <button class="btn btn-primary"
+                    th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
+                    type="button">Betreten
+            </button>
+          </div>
         </div>
       </div>
     </div>
