@@ -27,6 +27,10 @@ public class ThreadDTO {
 
     private Boolean anonymous;
 
+    private Boolean moderated;
+
+    private Boolean visible;
+
     @UpdateTimestamp
     private LocalDateTime lastChangedTime;
 

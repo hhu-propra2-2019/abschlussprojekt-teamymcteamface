@@ -83,7 +83,7 @@
 </header>
 <main th:fragment="bodycontent">
   <div class="container">
-    <div class="content">
+    <d class="content">
       <h2 style="text-align: left;" th:text="${thread.getTitle()}">Title</h2>
       <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
         <div class="card col p-0">
@@ -125,30 +125,29 @@
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer" th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}">
-        <div class="row write-answer">
-          <div class="card">
-            <div class="card-header">
-              <div class="author" style="float: left; clear: left;">
-                Antwort erstellen
-              </div>
+      <div class="row write-answer">
+        <div class="card">
+          <div class="card-header">
+            <div class="author" style="float: left; clear: left;">
+              Antwort erstellen
             </div>
-            <form method="post"
-                  th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                  th:object="${form}">
-              <div class="card-body">
-                <div class="form-group">
+          </div>
+          <form method="post"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                th:object="${form}">
+            <div class="card-body">
+              <div class="form-group">
                 <textarea class="form-control" id="my-textarea" name="postContent"
                           rows="3" th:value="*{postContent}"></textarea>
 
-                </div>
               </div>
-              <button class="btn btn-primary" type="submit">abschicken</button>
-            </form>
-          </div>
+            </div>
+            <button class="btn btn-primary" type="submit">abschicken</button>
+          </form>
         </div>
       </div>
-    </div>
+    </d>
+  </div>
   </div>
 </main>
 </body>

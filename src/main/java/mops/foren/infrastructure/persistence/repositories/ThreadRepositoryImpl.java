@@ -59,6 +59,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void addPostInThread(ThreadId threadId, Post post) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         post.setAnonymous(threadDTO.getAnonymous());
+        post.setVisible(!threadDTO.getModerated());
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
         threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);

@@ -23,6 +23,8 @@ public class Post {
 
     private Boolean anonymous;
 
+    private Boolean visible;
+
     public String getFormattedDate() {
         return this.creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }

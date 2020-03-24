@@ -6,10 +6,11 @@ import mops.foren.domain.model.Topic;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.Objects;
 
 @Value
 public class TopicForm {
-  
+
     private static final int MAX_DESCRIPTION_LENGTH = 100;
     private static final int MAX_TITLE_LENGTH = 40;
 
@@ -33,7 +34,7 @@ public class TopicForm {
     // @NotNull(message = "Moderated cannot be null.")
     // Not yet supported
     private final Boolean moderated;
-  
+
     private final Boolean anonymous;
 
 
@@ -48,8 +49,8 @@ public class TopicForm {
     public TopicForm(String title, String description, Boolean moderated, Boolean anonymous) {
         this.title = title;
         this.description = description;
-        this.moderated = moderated;
-        this.anonymous = anonymous != null;
+        this.moderated = Objects.requireNonNullElse(moderated, false);
+        this.anonymous = Objects.requireNonNullElse(anonymous, false);
     }
 
     /**
@@ -62,6 +63,7 @@ public class TopicForm {
         return Topic.builder()
                 .title(this.title)
                 .anonymous(this.anonymous)
+                .moderated(this.moderated)
                 .description(this.description)
                 .moderated(this.moderated)
                 .forumId(forumId)
