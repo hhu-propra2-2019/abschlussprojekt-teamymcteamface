@@ -61,4 +61,11 @@ public class PostRepositoryImpl implements IPostRepository {
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Post> getAllPostsByThreadId(ThreadId id) {
+        return postRepository.findPostDTOByThread_Id(id.getId()).stream()
+                .map(PostMapper::mapPostDtoToPost)
+                .collect(Collectors.toList());
+    }
 }

@@ -3,14 +3,17 @@ package mops.foren.applicationservices;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
+import mops.foren.domain.services.ThreadModelService;
 
 @ApplicationService
 public class PostService {
 
     private IPostRepository postRepository;
+    private ThreadModelService threadModelService;
 
-    public PostService(IPostRepository postRepository) {
+    public PostService(IPostRepository postRepository, ThreadModelService threadModelService) {
         this.postRepository = postRepository;
+        this.threadModelService = threadModelService;
     }
 
     public PostPage getPosts(ThreadId threadId, Integer page) {
@@ -30,6 +33,18 @@ public class PostService {
             // ADD
         }
 
+    }
+
+    /**
+     * This method should delete a post.
+     * This method also updates the lastPostTime changed in Threads.
+     *
+     * @param post The post that should be deleted.
+     */
+    public void deletePost(Post post) {
+        threadModelService.updateLastPostTime(post.getThreadId());
+        //TO-DO
+        throw new UnsupportedOperationException();
     }
 
 }

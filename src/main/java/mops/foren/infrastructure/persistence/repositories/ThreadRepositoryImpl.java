@@ -15,6 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
+
 @Repository
 public class ThreadRepositoryImpl implements IThreadRepository {
 
@@ -56,6 +59,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void addPostInThread(ThreadId threadId, Post post) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
+        threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }

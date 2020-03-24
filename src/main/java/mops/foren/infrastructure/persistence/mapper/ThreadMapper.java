@@ -20,6 +20,7 @@ public abstract class ThreadMapper {
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
+                .lastPostTime(threadDTO.getLastChangedTime())
                 .author(UserMapper.mapUserDtoToUser(threadDTO.getAuthor()))
                 .title(threadDTO.getTitle())
                 .description(threadDTO.getDescription())
