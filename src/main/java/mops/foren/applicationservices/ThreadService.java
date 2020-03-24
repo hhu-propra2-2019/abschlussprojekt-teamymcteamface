@@ -26,7 +26,7 @@ public class ThreadService {
         return this.threadRepository.getThreadPageFromDB(topicId, page);
     }
 
-    public Thread getThread(ThreadId threadId) {
+    public Thread getThreadById(ThreadId threadId) {
         return this.threadRepository.getThreadById(threadId);
     }
 
