@@ -28,10 +28,10 @@ public class ThreadServiceTest {
         Integer page = 0;
 
         // Act
-        threadService.getThreadPageWithTopicId(topicId, page);
+        this.threadService.getThreadPageWithTopicId(topicId, page);
 
         //Assert
-        verify(threadRepository).getThreadPageFromDB(topicId, page);
+        verify(this.threadRepository).getThreadPageFromDB(topicId, page);
     }
 
     @Test
@@ -40,10 +40,10 @@ public class ThreadServiceTest {
         ThreadId threadId = new ThreadId(0L);
 
         // Act
-        threadService.getThreadById(threadId);
+        this.threadService.getThreadById(threadId);
 
         //Assert
-        verify(threadRepository).getThreadById(threadId);
+        verify(this.threadRepository).getThreadById(threadId);
     }
 
 
@@ -54,9 +54,9 @@ public class ThreadServiceTest {
         Post post = Post.builder().build();
 
         // Act
-        threadService.addPostInThread(threadId, post);
+        this.threadService.addPostInThread(threadId, post);
 
         //Assert
-        verify(threadRepository).addPostInThread(threadId, post);
+        verify(this.threadRepository).addPostInThread(threadId, post);
     }
 }

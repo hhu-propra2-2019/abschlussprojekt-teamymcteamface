@@ -27,10 +27,10 @@ public class ForumServiceTest {
                 .build();
 
         // Act
-        forumService.getForums(testUser);
+        this.forumService.getForums(testUser);
 
         //Assert
-        verify(forumRepository).getForumsFromDB(testUser);
+        verify(this.forumRepository).getForumsFromDB(testUser);
     }
 
     @Test
@@ -39,22 +39,23 @@ public class ForumServiceTest {
         ForumId forumId = new ForumId(0L);
 
         // Act
-        forumService.getForum(forumId);
+        this.forumService.getForum(forumId);
 
         //Assert
-        verify(forumRepository).getOneForumFromDB(forumId);
+        verify(this.forumRepository).getOneForumFromDB(forumId);
     }
 
     @Test
     public void testAddTopicInForumDirectsTheCallCorrectly() {
         // Arrange
         ForumId forumId = new ForumId(0L);
-        Topic topic = Topic.builder().build();
+        Topic topic = Topic.builder()
+                .build();
 
         // Act
-        forumService.addTopicInForum(forumId, topic);
+        this.forumService.addTopicInForum(forumId, topic);
 
         //Assert
-        verify(forumRepository).addTopicInForum(forumId, topic);
+        verify(this.forumRepository).addTopicInForum(forumId, topic);
     }
 }

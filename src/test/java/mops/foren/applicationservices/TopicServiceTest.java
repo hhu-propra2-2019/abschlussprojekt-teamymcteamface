@@ -28,10 +28,10 @@ public class TopicServiceTest {
         ForumId forumId = new ForumId(0L);
 
         // Act
-        topicService.getTopics(forumId);
+        this.topicService.getTopics(forumId);
 
         //Assert
-        verify(topicRepository).getTopicsFromDB(forumId);
+        verify(this.topicRepository).getTopicsFromDB(forumId);
     }
 
     @Test
@@ -41,10 +41,10 @@ public class TopicServiceTest {
         Thread thread = Thread.builder().build();
 
         // Act
-        topicService.addThreadInTopic(topicId, thread);
+        this.topicService.addThreadInTopic(topicId, thread);
 
         //Assert
-        verify(topicRepository).addThreadInTopic(topicId, thread);
+        verify(this.topicRepository).addThreadInTopic(topicId, thread);
     }
 
 }
