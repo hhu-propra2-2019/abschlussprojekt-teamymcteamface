@@ -121,7 +121,7 @@
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer">
+      <div th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}" class="row write-answer">
         <div class="card">
           <div class="card-header">
             <div class="author" style="float: left; clear: left;">

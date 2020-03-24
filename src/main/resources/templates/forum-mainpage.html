@@ -101,7 +101,7 @@
           <div class="card-body">
             <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
             <button class="btn btn-primary"
-                    th:onclick="location.href = '/foren/topic/' + [[${forum.getId().getId().toString()}]] + '/' + [[${topic.getId().getId().toString()}]]"
+                    th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
                     type="button">Betreten
             </button>
           </div>

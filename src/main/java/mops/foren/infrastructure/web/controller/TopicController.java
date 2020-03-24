@@ -5,6 +5,7 @@ import mops.foren.applicationservices.ThreadService;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.TopicForm;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,15 +45,17 @@ public class TopicController {
     @GetMapping("/{forenID}/{topicID}")
     public String enterATopic(@PathVariable String forenID,
                               @PathVariable String topicID,
+                              @RequestParam("page") Integer page,
                               Model model) {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
+        TopicId topicId = new TopicId(Long.valueOf(topicID));
+        ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
-
-        TopicId topicId = new TopicId(Long.valueOf(topicID));
-        model.addAttribute("threads", this.threadService.getThreads(topicId));
+        model.addAttribute("pagingObject", threadPage.getPaging());
+        model.addAttribute("threads", threadPage.getThreads());
 
         return "list-threads";
     }
