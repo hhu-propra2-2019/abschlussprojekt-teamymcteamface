@@ -83,7 +83,7 @@ public class TopicController {
     @GetMapping("/{forenID}/new-topic")
     public String createNewTopic(@PathVariable String forenID,
                                  Model model) {
-        model.addAttribute("form", new TopicForm("", "", false));
+        model.addAttribute("form", new TopicForm("", "", false, false));
         model.addAttribute("forenId", forenID);
         return "create-topic";
     }

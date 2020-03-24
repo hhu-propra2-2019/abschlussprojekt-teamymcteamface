@@ -19,6 +19,7 @@ public abstract class ThreadMapper {
     public static Thread mapThreadDtoToThread(ThreadDTO threadDTO) {
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
+                .anonymous(threadDTO.getAnonymous())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
                 .lastPostTime(threadDTO.getLastChangedTime())
                 .author(UserMapper.mapUserDtoToUser(threadDTO.getAuthor()))
@@ -37,6 +38,7 @@ public abstract class ThreadMapper {
     public static ThreadDTO mapThreadToThreadDto(Thread thread, TopicDTO topicDTO) {
         return ThreadDTO.builder()
                 .author(UserMapper.mapUserToUserDto(thread.getAuthor()))
+                .anonymous(topicDTO.getAnonymous())
                 .description(thread.getDescription())
                 .title(thread.getTitle())
                 .topic(topicDTO)

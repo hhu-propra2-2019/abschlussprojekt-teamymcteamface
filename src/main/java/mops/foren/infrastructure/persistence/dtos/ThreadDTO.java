@@ -25,6 +25,8 @@ public class ThreadDTO {
 
     private String description;
 
+    private Boolean anonymous;
+
     @UpdateTimestamp
     private LocalDateTime lastChangedTime;
 

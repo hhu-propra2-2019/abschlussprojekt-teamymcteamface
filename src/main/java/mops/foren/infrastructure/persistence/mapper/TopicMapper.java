@@ -19,6 +19,7 @@ public abstract class TopicMapper {
     public static Topic mapTopicDtoToTopic(TopicDTO topicDTO) {
         return Topic.builder()
                 .id(new TopicId(topicDTO.getId()))
+                .anonymous(topicDTO.getAnonymous())
                 .title(topicDTO.getTitle())
                 .description(topicDTO.getDescription())
                 .forumId(new ForumId(topicDTO.getForum().getId()))
@@ -35,6 +36,7 @@ public abstract class TopicMapper {
     public static TopicDTO mapTopicToTopicDto(Topic topic, ForumDTO forumDTO) {
         return TopicDTO.builder()
                 .forum(forumDTO)
+                .anonymous(topic.getAnonymous())
                 .description(topic.getDescription())
                 .title(topic.getTitle())
                 .moderated(topic.getModerated())

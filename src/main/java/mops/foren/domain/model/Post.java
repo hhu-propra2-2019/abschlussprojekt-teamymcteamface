@@ -21,6 +21,8 @@ public class Post {
 
     private Boolean changed;
 
+    private Boolean anonymous;
+
     public String getFormattedDate() {
         return this.creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }

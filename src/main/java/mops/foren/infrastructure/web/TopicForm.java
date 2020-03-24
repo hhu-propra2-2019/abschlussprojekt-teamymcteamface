@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Value
 public class TopicForm {
-
+  
     private static final int MAX_DESCRIPTION_LENGTH = 100;
     private static final int MAX_TITLE_LENGTH = 40;
 
@@ -33,7 +33,24 @@ public class TopicForm {
     // @NotNull(message = "Moderated cannot be null.")
     // Not yet supported
     private final Boolean moderated;
+  
+    private final Boolean anonymous;
 
+
+    /**
+     * This is a constructor.
+     *
+     * @param title       of the topic.
+     * @param description of the topic.
+     * @param moderated   moderation mode of the topic.
+     * @param anonymous   anonymous mode of the topic.
+     */
+    public TopicForm(String title, String description, Boolean moderated, Boolean anonymous) {
+        this.title = title;
+        this.description = description;
+        this.moderated = moderated;
+        this.anonymous = anonymous != null;
+    }
 
     /**
      * Method to build a post out of the postContent.
@@ -44,6 +61,7 @@ public class TopicForm {
     public Topic getTopic(ForumId forumId) {
         return Topic.builder()
                 .title(this.title)
+                .anonymous(this.anonymous)
                 .description(this.description)
                 .moderated(this.moderated)
                 .forumId(forumId)

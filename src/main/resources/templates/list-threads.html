@@ -100,7 +100,7 @@
       <tr class="mops-row"
           th:onclick="'window.location.href = \'' + @{/foren/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
         <td th:text="${thread.getTitle()}">lorem</td>
-        <td th:text="${thread.getAuthor().getName()}"></td>
+        <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
       </tr>
     </div>
@@ -109,13 +109,14 @@
   <ul class="list-unstyled page-list">
 
     <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
-      <button class="btn" th:unless="${i == pagingObject.getCurrentPage()+1}" type="button"
-              th:onclick="location.href = '?page=' + '[[${i}]]'"
-              th:text="${i}">page#
+      <button class="btn" th:onclick="location.href = '?page=' + '[[${i}]]'" th:text="${i}"
+              th:unless="${i == pagingObject.getCurrentPage()+1}"
+              type="button">page#
       </button>
-      <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}" type="button"
+      <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
               th:onclick="location.href = '?page=' + '[[${i}]]'"
-              th:text="${i}">page#
+              th:text="${i}"
+              type="button">page#
       </button>
 
     </li>
