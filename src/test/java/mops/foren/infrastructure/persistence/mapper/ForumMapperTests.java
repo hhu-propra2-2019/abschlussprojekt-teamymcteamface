@@ -5,11 +5,9 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
 public class ForumMapperTests {
 
     private ForumDTO forumDTO;

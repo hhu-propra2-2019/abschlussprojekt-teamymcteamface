@@ -96,6 +96,11 @@ VALUES ('studentin', 1),
        ('orga2', 3),
        ('actuator', 1),
        ('actuator', 2),
-       ('actuator', 3),
        ('actuator', 4),
        ('actuator', 5);
+
+INSERT
+INTO roles(username, role, forum_id)
+VALUES ('studentin', 'STUDENT', 1),
+       ('actuator', 'ADMIN', 1),
+       ('actuator', 'ADMIN', 2);
