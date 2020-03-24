@@ -4,11 +4,8 @@ import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.TopicId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.PostForm;
 import mops.foren.infrastructure.web.ThreadForm;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 @SessionScope
@@ -59,7 +57,7 @@ public class ThreadController {
                                  Model model) {
         ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
-        model.addAttribute("thread", this.threadService.getThread(threadId));
+        model.addAttribute("thread", this.threadService.getThreadById(threadId));
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
@@ -97,7 +95,7 @@ public class ThreadController {
     public String addNewThread(KeycloakAuthenticationToken token,
                                @RequestParam("forenId") Long forenIdLong,
                                @RequestParam("topicId") Long topicIdLong,
-                               @ModelAttribute ThreadForm threadForm) {
+                               @Valid @ModelAttribute ThreadForm threadForm) {
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         Thread thread = threadForm.getThread(user, topicId);

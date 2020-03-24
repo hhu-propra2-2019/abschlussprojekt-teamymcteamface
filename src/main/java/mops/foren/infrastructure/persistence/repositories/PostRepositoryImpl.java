@@ -30,7 +30,7 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public PostPage getPostPageFromDB(ThreadId threadId, Integer page) {
         Page<PostDTO> dtoPage = this.postRepository
-                .findByThread_Id(threadId.getId(), PageRequest.of(page, PAGE_SIZE));
+                .findPostPageByThread_Id(threadId.getId(), PageRequest.of(page, PAGE_SIZE));
 
         return PostPageMapper.toPostPage(dtoPage, page);
     }
@@ -55,8 +55,16 @@ public class PostRepositoryImpl implements IPostRepository {
      */
     @Override
     public List<Post> getPostsFromUser(User user) {
-        List<PostDTO> postByAuthor = this.postRepository.findByAuthor_Username(user.getName());
+        List<PostDTO> postByAuthor = this.postRepository
+                .findPostListByAuthor_Username(user.getName());
         return postByAuthor.stream()
+                .map(PostMapper::mapPostDtoToPost)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Post> getAllPostsByThreadId(ThreadId id) {
+        return postRepository.findPostDTOByThread_Id(id.getId()).stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
     }

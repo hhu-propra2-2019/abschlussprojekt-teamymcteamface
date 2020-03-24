@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import javax.validation.Valid;
 
 @Controller
 @SessionScope
@@ -46,7 +47,7 @@ public class PostController {
      */
     @PostMapping("/new-post")
     public String newPost(KeycloakAuthenticationToken token,
-                          @ModelAttribute PostForm postForm,
+                          @Valid @ModelAttribute PostForm postForm,
                           @RequestParam("threadId") Long threadIdLong,
                           @RequestParam("page") Integer page) {
         ThreadId threadId = new ThreadId(threadIdLong);

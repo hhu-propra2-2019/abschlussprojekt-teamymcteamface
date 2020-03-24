@@ -21,6 +21,7 @@ public abstract class ThreadMapper {
                 .id(new ThreadId(threadDTO.getId()))
                 .anonymous(threadDTO.getAnonymous())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
+                .lastPostTime(threadDTO.getLastChangedTime())
                 .author(UserMapper.mapUserDtoToUser(threadDTO.getAuthor()))
                 .title(threadDTO.getTitle())
                 .description(threadDTO.getDescription())

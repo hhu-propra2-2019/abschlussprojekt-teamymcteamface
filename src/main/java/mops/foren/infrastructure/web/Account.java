@@ -14,5 +14,4 @@ public class Account {
     private final String email;
     private final String image;
     private final Set<String> roles;
-
 }

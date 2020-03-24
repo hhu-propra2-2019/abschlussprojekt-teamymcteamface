@@ -14,11 +14,19 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
+
+    /**
+     * This method get all Threads according to a special topicId.
+     *
+     * @param topicId The topicId the threads should be in.
+     * @param page    The page we need.
+     * @return the wanted list of threads.
+     */
     public ThreadPage getThreads(TopicId topicId, Integer page) {
         return this.threadRepository.getThreadPageFromDB(topicId, page);
     }
 
-    public Thread getThread(ThreadId threadId) {
+    public Thread getThreadById(ThreadId threadId) {
         return this.threadRepository.getThreadById(threadId);
     }
 

@@ -14,4 +14,6 @@ public interface IPostRepository {
     Post getPostById(PostId postId);
 
     List<Post> getPostsFromUser(User user);
+
+    List<Post> getAllPostsByThreadId(ThreadId id);
 }
