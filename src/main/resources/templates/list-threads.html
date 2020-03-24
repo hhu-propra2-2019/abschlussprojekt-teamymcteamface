@@ -101,7 +101,7 @@
           th:onclick="'window.location.href = \'' + @{/foren/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${thread.getAuthor().getName()}"></td>
-        <td>14:37Uhr</td>
+        <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>

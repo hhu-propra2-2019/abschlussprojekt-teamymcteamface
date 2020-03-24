@@ -13,5 +13,7 @@ import java.util.List;
 public interface PostJpaRepository extends PagingAndSortingRepository<PostDTO, Long> {
     Page<PostDTO> findByThread_Id(Long id, Pageable pageable);
 
+    List<PostDTO> findPostDTOByThread_Id(Long id);
+
     List<PostDTO> findByAuthor_Username(String name);
 }
