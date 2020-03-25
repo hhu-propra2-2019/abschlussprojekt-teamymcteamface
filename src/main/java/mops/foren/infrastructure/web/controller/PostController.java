@@ -36,10 +36,11 @@ public class PostController {
      * @param threadService   - ThreadService (ApplicationService)
      * @param keycloakService - KeycloakService (Infrastructure Service)
      */
-    public PostController(UserService userService, ThreadService threadService,
+    public PostController(UserService userService, ThreadService threadService, PostService postService,
                           KeycloakService keycloakService) {
         this.userService = userService;
         this.threadService = threadService;
+        this.postService = postService;
         this.keycloakService = keycloakService;
     }
 

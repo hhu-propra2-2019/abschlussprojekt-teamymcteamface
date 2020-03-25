@@ -7,7 +7,8 @@ VALUES ('studentin', 'stud0@gmail.com', 'Bernhard Zimmermann'),
        ('orga', 'orga0@gmail.com', 'Peter Organisatorus'),
        ('orga1', 'orga1@gmail.com', 'Meike Brummer'),
        ('orga2', 'orga2@gmail.com', 'Marianne Baum'),
-       ('actuator', 'actuator@gmail.com', 'Christian Meter');
+       ('actuator', 'actuator@gmail.com', 'Christian Meter'),
+       ('Unbekannt', '', 'Default');
 
 INSERT
 INTO forum (id, description, title)

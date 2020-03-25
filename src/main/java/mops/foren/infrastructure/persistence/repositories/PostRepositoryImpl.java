@@ -22,10 +22,12 @@ public class PostRepositoryImpl implements IPostRepository {
 
     private static final int PAGE_SIZE = 10;
     private PostJpaRepository postRepository;
+    private UserJpaRepository userRepository;
 
 
-    public PostRepositoryImpl(PostJpaRepository postRepository) {
+    public PostRepositoryImpl(PostJpaRepository postRepository, UserJpaRepository userRepository) {
         this.postRepository = postRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -74,7 +76,7 @@ public class PostRepositoryImpl implements IPostRepository {
     @Override
     public void deletePostById(PostId postId) {
         PostDTO postDTO = this.postRepository.findPostById(postId.getId());
-        UserDTO defaultDeletedUserDTO = UserDTO.builder().username("Unbekannt").build();
+        UserDTO defaultDeletedUserDTO = this.userRepository.findById("Unbekannt").get();
 
         postDTO.setAuthor(defaultDeletedUserDTO);
         postDTO.setText("Dieser Beitrag wurde entfernt.");
