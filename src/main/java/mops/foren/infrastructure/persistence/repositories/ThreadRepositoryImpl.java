@@ -64,4 +64,10 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }
+
+    @Override
+    public void deleteThread(ThreadId threadId) {
+        ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
+        this.threadRepository.delete(threadDTO);
+    }
 }
