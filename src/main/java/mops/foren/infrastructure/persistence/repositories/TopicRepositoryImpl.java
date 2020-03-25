@@ -1,25 +1,40 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
+import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
+import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Repository
 public class TopicRepositoryImpl implements ITopicRepository {
     private TopicJpaRepository topicRepository;
+    private ThreadJpaRepository threadRepository;
+    private IThreadRepository threadRepositoryImpl;
 
-    public TopicRepositoryImpl(TopicJpaRepository topicRepository) {
+    /**
+     * Public constructor.
+     *
+     * @param topicRepository      injected topicJpaRepository
+     * @param threadRepository     injected threadJpaRepository
+     * @param threadRepositoryImpl injected threadRepositoryImpl through interface
+     */
+    public TopicRepositoryImpl(TopicJpaRepository topicRepository,
+                               ThreadJpaRepository threadRepository,
+                               IThreadRepository threadRepositoryImpl) {
         this.topicRepository = topicRepository;
+        this.threadRepository = threadRepository;
+        this.threadRepositoryImpl = threadRepositoryImpl;
     }
 
     /**
@@ -53,6 +68,13 @@ public class TopicRepositoryImpl implements ITopicRepository {
         return TopicMapper.mapTopicDtoToTopic(topicDto);
     }
 
+    /**
+     * This method adds the given thread to the given topic and uses its description
+     * to generate the first post.
+     *
+     * @param topicId the topic in which the new thread should be added
+     * @param thread  the thread to add
+     */
     @Override
     public void addThreadInTopic(TopicId topicId, Thread thread) {
         TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
@@ -61,7 +83,18 @@ public class TopicRepositoryImpl implements ITopicRepository {
         thread.setVisible(!topicDTO.getModerated());
         thread.setForumId(new ForumId(topicDTO.getForum().getId()));
         ThreadDTO threadDTO = ThreadMapper.mapThreadToThreadDto(thread, topicDTO);
-        topicDTO.getThreads().add(threadDTO);
-        this.topicRepository.save(topicDTO);
+        threadDTO.setPosts(new ArrayList<PostDTO>());
+
+        // Needs to be saved to get Id
+        ThreadDTO savedThread = this.threadRepository.save(threadDTO);
+
+        Post firstPost = Post.builder()
+                .author(thread.getAuthor())
+                .text(thread.getDescription())
+                .creationDate(LocalDateTime.now())
+                .changed(false)
+                .build();
+
+        this.threadRepositoryImpl.addPostInThread(new ThreadId(savedThread.getId()), firstPost);
     }
 }
