@@ -1,5 +1,6 @@
 package mops.foren.infrastructure.persistence.mapper;
 
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
@@ -47,12 +48,19 @@ public class PostMapperTests {
                 .forums(forumDTOs)
                 .build();
 
+        ForumDTO forumDTO = ForumDTO.builder()
+                .id(10L)
+                .build();
+
         this.postDTO = PostDTO.builder()
                 .id(1L)
                 .thread(threadDTO)
                 .dateTime(LocalDateTime.now())
                 .author(userDTO)
+                .forum(forumDTO)
                 .text("text")
+                .anonymous(true)
+                .visible(false)
                 .build();
     }
 
@@ -91,5 +99,32 @@ public class PostMapperTests {
 
         // Assert
         assertThat(text).isEqualTo(this.postDTO.getText());
+    }
+
+    @Test
+    public void testAnonymIsCorrectlyMappedFromPostDTOToModel() {
+        // Act
+        Boolean anonymous = PostMapper.mapPostDtoToPost(this.postDTO).getAnonymous();
+
+        // Assert
+        assertThat(anonymous).isTrue();
+    }
+
+    @Test
+    public void testVisibleIsCorrectlyMappedFromPostDTOToModel() {
+        // Act
+        Boolean visible = PostMapper.mapPostDtoToPost(this.postDTO).getVisible();
+
+        // Assert
+        assertThat(visible).isFalse();
+    }
+
+    @Test
+    public void testForumIdIsCorrectlyMappedFromPostDTOToModel() {
+        // Act
+        ForumId forumId = PostMapper.mapPostDtoToPost(this.postDTO).getForumId();
+
+        // Assert
+        assertThat(forumId.getId()).isEqualTo(10L);
     }
 }
