@@ -66,9 +66,11 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     }
 
     @Override
-    public ThreadPage getUnvisableThreadPageFromDB(TopicId topicId, int page) {
+    public ThreadPage getThreadPageFromDbByVisibility(TopicId topicId,
+                                                      int page, boolean visibility) {
         Page<ThreadDTO> dtoPage = this.threadRepository
-                .findThreadPageByTopic_IdAndVisible(topicId.getId(), false, PageRequest.of(page, PAGE_SIZE));
+                .findThreadPageByTopic_IdAndVisible(topicId.getId(),
+                        visibility, PageRequest.of(page, PAGE_SIZE));
 
         return ThreadPageMapper.toThreadPage(dtoPage, page);
     }
@@ -79,5 +81,10 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         byId.setVisible(true);
         this.threadRepository.save(byId);
 
+    }
+
+    @Override
+    public int countNotVisibleThreads(TopicId topicId) {
+        return this.threadRepository.countThreadDTOByVisibleAndTopic_Id(false, topicId.getId());
     }
 }

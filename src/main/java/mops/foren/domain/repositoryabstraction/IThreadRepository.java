@@ -13,7 +13,9 @@ public interface IThreadRepository {
 
     void addPostInThread(ThreadId threadId, Post post);
 
-    ThreadPage getUnvisableThreadPageFromDB(TopicId topicId, int i);
+    ThreadPage getThreadPageFromDbByVisibility(TopicId topicId, int i, boolean visibility);
 
     void setThreadVisable(Long threadIdLong);
+
+    int countNotVisibleThreads(TopicId topicId);
 }

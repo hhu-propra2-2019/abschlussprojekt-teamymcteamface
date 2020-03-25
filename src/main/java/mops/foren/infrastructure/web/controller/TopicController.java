@@ -62,15 +62,14 @@ public class TopicController {
 
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
-        ThreadPage unvisabelethreadPage = this.threadService.getUnvisableThreads(topicId, page - 1);
+        ThreadPage visibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
+        int unvisibleCount = this.threadService.countUnvisableThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
-        model.addAttribute("pagingObject", threadPage.getPaging());
-        model.addAttribute("threads", threadPage.getThreads());
-        model.addAttribute("unvisableThreads", unvisabelethreadPage.getThreads());
-        model.addAttribute("unvisablePagingObject", unvisabelethreadPage.getPaging());
+        model.addAttribute("pagingObject", visibleThreadPage.getPaging());
+        model.addAttribute("threads", visibleThreadPage.getThreads());
+        model.addAttribute("unvisibleCount", unvisibleCount);
         return "list-threads";
     }
 
@@ -119,6 +118,22 @@ public class TopicController {
         }
 
         return this.keycloakService.createAccountFromPrincipal(token);
+    }
+
+    @GetMapping("/{forenID}/{topicID}/moderationview")
+    public String enterATopicAsModerator(@PathVariable String forenID,
+                                         @PathVariable String topicID,
+                                         @RequestParam("page") Integer page,
+                                         Model model) {
+        ForumId forumId = new ForumId(Long.valueOf(forenID));
+        TopicId topicId = new TopicId(Long.valueOf(topicID));
+        ThreadPage unvisibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
+        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+        model.addAttribute("forumId", forenID);
+        model.addAttribute("topicId", topicID);
+        model.addAttribute("pagingObject", unvisibleThreadPage.getPaging());
+        model.addAttribute("threads", unvisibleThreadPage.getThreads());
+        return "list-threads-moderator";
     }
 
     @PostMapping("approveThread")

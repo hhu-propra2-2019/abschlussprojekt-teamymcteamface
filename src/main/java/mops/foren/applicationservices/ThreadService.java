@@ -49,11 +49,15 @@ public class ThreadService {
         }
     }
 
-    public ThreadPage getUnvisableThreads(TopicId topicId, int i) {
-        return this.threadRepository.getUnvisableThreadPageFromDB(topicId, i);
+    public ThreadPage getThreadPageByVisibility(TopicId topicId, int i, boolean visibility) {
+        return this.threadRepository.getThreadPageFromDbByVisibility(topicId, i, visibility);
     }
 
     public void setThreadVisable(Long threadIdLong) {
         this.threadRepository.setThreadVisable(threadIdLong);
+    }
+
+    public int countUnvisableThreads(TopicId topicId) {
+        return this.threadRepository.countNotVisibleThreads(topicId);
     }
 }
