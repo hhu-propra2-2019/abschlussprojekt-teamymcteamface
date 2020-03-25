@@ -104,6 +104,14 @@
                     th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
                     type="button">Betreten
             </button>
+            <div>
+              <form method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
+                                  topicId=${topic.getId().getId()})}">
+                <button class="btn btn-danger" type="submit">
+                  löschen
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>

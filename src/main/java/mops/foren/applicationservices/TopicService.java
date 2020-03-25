@@ -21,6 +21,10 @@ public class TopicService {
         return this.topicRepository.getTopicsFromDB(forumId);
     }
 
+    public Topic getTopic(TopicId topicId) {
+        return this.topicRepository.getOneTopicFromDB(topicId);
+    }
+
     public void addThreadInTopic(TopicId topicId, Thread thread) {
         this.topicRepository.addThreadInTopic(topicId, thread);
     }
