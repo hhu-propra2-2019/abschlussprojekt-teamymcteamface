@@ -126,7 +126,6 @@ public class ForumController {
      * @return
      */
     @ModelAttribute("account")
-
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
         if (token == null) {
             return null;

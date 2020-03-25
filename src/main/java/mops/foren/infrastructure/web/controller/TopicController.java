@@ -3,7 +3,10 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.*;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.Topic;
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -62,22 +65,18 @@ public class TopicController {
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
-        Boolean checkPermission = isUserAModerator(token, forumId);
-        int unvisibleCount = this.threadService.countUnvisableThreads(topicId);
+        Boolean checkPermission = this.userService.isUserAModerator(token, forumId);
+        int countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forumId);
         model.addAttribute("topicId", topicId);
         model.addAttribute("pagingObject", visibleThreadPage.getPaging());
         model.addAttribute("threads", visibleThreadPage.getThreads());
-        model.addAttribute("unvisibleCount", unvisibleCount);
+        model.addAttribute("countInvisibleThreads", countInvisibleThreads);
         model.addAttribute("permission", checkPermission);
         return "list-threads";
     }
 
-    private Boolean isUserAModerator(KeycloakAuthenticationToken token, ForumId id) {
-        User userFromDB = this.userService.getUserFromDB(token);
-        return userFromDB.checkPermission(id, Permission.MODERATE_THREAD);
-    }
 
     /**
      * Create a new topic.
@@ -166,12 +165,13 @@ public class TopicController {
                                 @RequestParam("topicId") Long topicIdLong,
                                 @RequestParam("threadId") Long threadIdLong,
                                 KeycloakAuthenticationToken token) {
-        User user = this.userService.getUserFromDB(token);
+
         ForumId forumIdWrapped = new ForumId(Long.valueOf(forumIdLong));
-        if (!user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD)) {
+        if (!this.userService.isUserAModerator(token, forumIdWrapped)) {
             return "error-no-permission";
         }
-        this.threadService.setThreadVisable(threadIdLong);
+        ThreadId threadId = new ThreadId(threadIdLong);
+        this.threadService.setThreadVisible(threadId);
         return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
     }
 

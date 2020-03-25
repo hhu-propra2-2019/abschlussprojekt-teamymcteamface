@@ -1,6 +1,8 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IUserRepository;
 import org.keycloak.KeycloakPrincipal;
@@ -57,4 +59,8 @@ public class UserService {
         return user;
     }
 
+    public Boolean isUserAModerator(KeycloakAuthenticationToken token, ForumId forumId) {
+        User userFromDB = getUserFromDB(token);
+        return userFromDB.checkPermission(forumId, Permission.MODERATE_THREAD);
+    }
 }

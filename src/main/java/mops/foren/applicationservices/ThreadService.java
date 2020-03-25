@@ -49,15 +49,15 @@ public class ThreadService {
         }
     }
 
-    public ThreadPage getThreadPageByVisibility(TopicId topicId, int i, boolean visibility) {
-        return this.threadRepository.getThreadPageFromDbByVisibility(topicId, i, visibility);
+    public ThreadPage getThreadPageByVisibility(TopicId topicId, int page, boolean visibility) {
+        return this.threadRepository.getThreadPageFromDbByVisibility(topicId, page, visibility);
     }
 
-    public void setThreadVisable(Long threadIdLong) {
-        this.threadRepository.setThreadVisable(threadIdLong);
+    public void setThreadVisible(ThreadId threadId) {
+        this.threadRepository.setThreadVisible(threadId);
     }
 
-    public int countUnvisableThreads(TopicId topicId) {
-        return this.threadRepository.countNotVisibleThreads(topicId);
+    public int countInvisibleThreads(TopicId topicId) {
+        return this.threadRepository.countInvisibleThreads(topicId);
     }
 }

@@ -67,7 +67,6 @@ public class ThreadController {
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
-
         return "thread";
     }
 
@@ -115,7 +114,7 @@ public class ThreadController {
      * Image and roles have to be added in the future.
      *
      * @param token - KeycloakAuthenficationToken
-     * @return
+     * @return Keycloak Account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
@@ -125,6 +124,4 @@ public class ThreadController {
 
         return this.keycloakService.createAccountFromPrincipal(token);
     }
-
-
 }
