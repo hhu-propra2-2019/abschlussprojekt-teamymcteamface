@@ -84,7 +84,9 @@
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
   <span>
-  <form method="get" th:action="@{/foren/topic/moderated}" th:unless="${unvisibleCount==0}">
+  <form method="post"
+        th:action="@{/foren/topic/moderationview(forumId=${forumId.getId()},topicId=${topicId.getId()},page=1)}"
+        th:unless="${unvisibleCount==0}">
     <button class="btn btn-warning" th:if="${unvisibleCount==1}"
             th:text="${unvisibleCount} + ' Thread muss noch freigegeben werden'"
             type="submit">
@@ -95,10 +97,12 @@
     </button>
   </form>
   </span>
-  <button class="btn btn-primary"
-          th:onclick="location.href = '/foren/thread/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
-    erstellen
-  </button>
+  <span>
+    <form method="get" th:action="@{'/foren/thread/' + ${forumId.getId()} + '/' + ${topicId.getId()} + '/new-thread'}">
+    <button class="btn btn-primary" type="submit"> Thread erstellen
+      </button>
+    </form>
+  </span>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>

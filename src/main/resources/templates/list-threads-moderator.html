@@ -9,7 +9,7 @@
           integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
           th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"></script>
   <meta charset="utf-8">
-  <title th:text="${forumTitle}"></title>
+  <title th:text="${forumTitle} Moderationsmodus"></title>
   <th:block th:fragment="headcontent">
     <style>
       .page-list, .page-list > li {
@@ -83,16 +83,13 @@
 </header>
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge die noch freigegeben werden müssen:'">Threads</h1>
-  <button class="btn btn-primary"
-          th:onclick="location.href = '/foren/thread/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
-    erstellen
-  </button>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
+      <th>Freigeben</th>
     </tr>
     </thead>
     <tbody>
@@ -102,6 +99,14 @@
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
+        <td>
+          <form method="post"
+                th:action="@{/foren/topic/approveThread(forenId=${forumId.getId()},topicId=${topicId.getId()},threadId=${thread.getId().getId()})}">
+            <button class="btn btn-primary" type="submit">
+              Freigeben
+            </button>
+          </form>
+        </td>
       </tr>
     </div>
     </tbody>

@@ -65,8 +65,8 @@ public class TopicController {
         ThreadPage visibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         int unvisibleCount = this.threadService.countUnvisableThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-        model.addAttribute("forumId", forenID);
-        model.addAttribute("topicId", topicID);
+        model.addAttribute("forumId", forumId);
+        model.addAttribute("topicId", topicId);
         model.addAttribute("pagingObject", visibleThreadPage.getPaging());
         model.addAttribute("threads", visibleThreadPage.getThreads());
         model.addAttribute("unvisibleCount", unvisibleCount);
@@ -120,17 +120,17 @@ public class TopicController {
         return this.keycloakService.createAccountFromPrincipal(token);
     }
 
-    @GetMapping("/{forenID}/{topicID}/moderationview")
-    public String enterATopicAsModerator(@PathVariable String forenID,
-                                         @PathVariable String topicID,
+    @PostMapping("moderationview")
+    public String enterATopicAsModerator(@RequestParam("forumId") Long forenID,
+                                         @RequestParam("topicId") Long topicID,
                                          @RequestParam("page") Integer page,
                                          Model model) {
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage unvisibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-        model.addAttribute("forumId", forenID);
-        model.addAttribute("topicId", topicID);
+        model.addAttribute("forumId", forumId);
+        model.addAttribute("topicId", topicId);
         model.addAttribute("pagingObject", unvisibleThreadPage.getPaging());
         model.addAttribute("threads", unvisibleThreadPage.getThreads());
         return "list-threads-moderator";
