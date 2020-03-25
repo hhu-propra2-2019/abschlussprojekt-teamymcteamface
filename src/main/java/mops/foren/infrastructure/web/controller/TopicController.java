@@ -3,9 +3,7 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -58,11 +56,12 @@ public class TopicController {
     public String enterATopic(@PathVariable String forenID,
                               @PathVariable String topicID,
                               @RequestParam("page") Integer page,
-                              Model model) {
-
+                              Model model,
+                              KeycloakAuthenticationToken token) {
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage visibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
+        Boolean checkPermission = isUserAModerator(token, forumId);
         int unvisibleCount = this.threadService.countUnvisableThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forumId);
@@ -70,7 +69,13 @@ public class TopicController {
         model.addAttribute("pagingObject", visibleThreadPage.getPaging());
         model.addAttribute("threads", visibleThreadPage.getThreads());
         model.addAttribute("unvisibleCount", unvisibleCount);
+        model.addAttribute("permission", checkPermission);
         return "list-threads";
+    }
+
+    private Boolean isUserAModerator(KeycloakAuthenticationToken token, ForumId id) {
+        User userFromDB = this.userService.getUserFromDB(token);
+        return userFromDB.checkPermission(id, Permission.MODERATE_THREAD);
     }
 
     /**
@@ -139,7 +144,13 @@ public class TopicController {
     @PostMapping("approveThread")
     public String approveThread(@RequestParam("forenId") Long forumIdLong,
                                 @RequestParam("topicId") Long topicIdLong,
-                                @RequestParam("threadId") Long threadIdLong) {
+                                @RequestParam("threadId") Long threadIdLong,
+                                KeycloakAuthenticationToken token) {
+        User user = this.userService.getUserFromDB(token);
+        ForumId forumIdWrapped = new ForumId(Long.valueOf(forumIdLong));
+        if (!user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD)) {
+            return "error-no-permission";
+        }
         this.threadService.setThreadVisable(threadIdLong);
         return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
     }

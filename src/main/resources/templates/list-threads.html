@@ -83,7 +83,7 @@
 </header>
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
-  <span>
+  <span th:if="${permission == true}">
   <form method="post"
         th:action="@{/foren/topic/moderationview(forumId=${forumId.getId()},topicId=${topicId.getId()},page=1)}"
         th:unless="${unvisibleCount==0}">
