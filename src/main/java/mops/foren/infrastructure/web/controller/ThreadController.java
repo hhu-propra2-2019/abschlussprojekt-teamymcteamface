@@ -67,6 +67,7 @@ public class ThreadController {
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
+
         return "thread";
     }
 
@@ -124,4 +125,6 @@ public class ThreadController {
 
         return this.keycloakService.createAccountFromPrincipal(token);
     }
+
+
 }

@@ -48,4 +48,12 @@ public class ThreadService {
             // ADD
         }
     }
+
+    public ThreadPage getUnvisableThreads(TopicId topicId, int i) {
+        return this.threadRepository.getUnvisableThreadPageFromDB(topicId, i);
+    }
+
+    public void setThreadVisable(Long threadIdLong) {
+        this.threadRepository.setThreadVisable(threadIdLong);
+    }
 }

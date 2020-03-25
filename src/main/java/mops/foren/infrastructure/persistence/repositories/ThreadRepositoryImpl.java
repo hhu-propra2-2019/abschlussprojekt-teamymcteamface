@@ -65,4 +65,20 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }
+
+    @Override
+    public ThreadPage getUnvisableThreadPageFromDB(TopicId topicId, int page) {
+        Page<ThreadDTO> dtoPage = this.threadRepository
+                .findThreadPageByTopic_IdAndVisible(topicId.getId(), false, PageRequest.of(page, PAGE_SIZE));
+
+        return ThreadPageMapper.toThreadPage(dtoPage, page);
+    }
+
+    @Override
+    public void setThreadVisable(Long threadIdLong) {
+        ThreadDTO byId = this.threadRepository.findById(threadIdLong).get();
+        byId.setVisible(true);
+        this.threadRepository.save(byId);
+
+    }
 }

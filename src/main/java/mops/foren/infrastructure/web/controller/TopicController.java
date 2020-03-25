@@ -63,13 +63,14 @@ public class TopicController {
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
-
+        ThreadPage unvisabelethreadPage = this.threadService.getUnvisableThreads(topicId, page - 1);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forenID);
         model.addAttribute("topicId", topicID);
         model.addAttribute("pagingObject", threadPage.getPaging());
         model.addAttribute("threads", threadPage.getThreads());
-
+        model.addAttribute("unvisableThreads", unvisabelethreadPage.getThreads());
+        model.addAttribute("unvisablePagingObject", unvisabelethreadPage.getPaging());
         return "list-threads";
     }
 
@@ -119,4 +120,13 @@ public class TopicController {
 
         return this.keycloakService.createAccountFromPrincipal(token);
     }
+
+    @PostMapping("approveThread")
+    public String approveThread(@RequestParam("forenId") Long forumIdLong,
+                                @RequestParam("topicId") Long topicIdLong,
+                                @RequestParam("threadId") Long threadIdLong) {
+        this.threadService.setThreadVisable(threadIdLong);
+        return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
+    }
+
 }

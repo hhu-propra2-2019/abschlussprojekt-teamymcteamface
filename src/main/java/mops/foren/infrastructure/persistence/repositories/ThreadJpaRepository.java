@@ -9,4 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThreadJpaRepository extends PagingAndSortingRepository<ThreadDTO, Long> {
     Page<ThreadDTO> findThreadPageByTopic_Id(Long id, Pageable pageable);
+
+    Page<ThreadDTO> findThreadPageByTopic_IdAndVisible(Long id, Boolean Visable, Pageable pageable);
 }
