@@ -16,4 +16,6 @@ public interface PostJpaRepository extends PagingAndSortingRepository<PostDTO, L
     List<PostDTO> findPostListByAuthor_Username(String name);
 
     List<PostDTO> findPostDTOByThread_Id(Long id);
+
+    PostDTO findPostById(Long id);
 }

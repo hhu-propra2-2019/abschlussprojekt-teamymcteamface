@@ -7,6 +7,7 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
+import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
 import mops.foren.infrastructure.persistence.mapper.PostPageMapper;
 import org.springframework.data.domain.Page;
@@ -64,8 +65,20 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public List<Post> getAllPostsByThreadId(ThreadId id) {
-        return postRepository.findPostDTOByThread_Id(id.getId()).stream()
+        return this.postRepository.findPostDTOByThread_Id(id.getId()).stream()
                 .map(PostMapper::mapPostDtoToPost)
                 .collect(Collectors.toList());
+    }
+
+
+    @Override
+    public void deletePostById(PostId postId) {
+        PostDTO postDTO = this.postRepository.findPostById(postId.getId());
+        UserDTO defaultDeletedUserDTO = UserDTO.builder().username("Unbekannt").build();
+
+        postDTO.setAuthor(defaultDeletedUserDTO);
+        postDTO.setText("Dieser Beitrag wurde entfernt.");
+
+        this.postRepository.save(postDTO);
     }
 }

@@ -1,10 +1,9 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.PostForm;
@@ -28,6 +27,7 @@ public class PostController {
     private UserService userService;
     private ThreadService threadService;
     private KeycloakService keycloakService;
+    private PostService postService;
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -63,6 +63,24 @@ public class PostController {
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
     }
 
+    @PostMapping("/delete-post")
+    public String deletePost(KeycloakAuthenticationToken token,
+                             @RequestParam("threadId") Long threadIdLong,
+                             @RequestParam("postId") Long postId,
+                             @RequestParam("page") Integer page) {
+
+        User user = this.userService.getUserFromDB(token);
+        Post post = this.postService.getPost(new PostId(postId));
+
+        // TODO forum id aus post
+        if (user.checkPermission(new ForumId(1L), Permission.DELETE_POST, post.getAuthor())) {
+            this.postService.deletePost(post);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+        }
+        return "error-no-permission";
+    }
+
+
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
@@ -78,5 +96,6 @@ public class PostController {
 
         return this.keycloakService.createAccountFromPrincipal(token);
     }
+
 
 }
