@@ -101,7 +101,7 @@
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
         <td>
           <form method="post"
-                th:action="@{/foren/topic/approveThread(forenId=${forumId.getId()},topicId=${topicId.getId()},threadId=${thread.getId().getId()})}">
+                th:action="@{/foren/topic/approveThread(forumId=${forumId.getId()},topicId=${topicId.getId()},threadId=${thread.getId().getId()})}">
             <button class="btn btn-primary" type="submit">
               Freigeben
             </button>

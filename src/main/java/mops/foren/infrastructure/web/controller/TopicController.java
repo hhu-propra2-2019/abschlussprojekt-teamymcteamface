@@ -60,7 +60,8 @@ public class TopicController {
                               KeycloakAuthenticationToken token) {
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
-        ThreadPage visibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
+        ThreadPage visibleThreadPage =
+                this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         Boolean checkPermission = isUserAModerator(token, forumId);
         int unvisibleCount = this.threadService.countUnvisableThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
@@ -125,24 +126,43 @@ public class TopicController {
         return this.keycloakService.createAccountFromPrincipal(token);
     }
 
+    /**
+     * Mapping to the topic page for moderation.
+     *
+     * @param forumIdLong the forum id
+     * @param topicIdLong the topic id
+     * @param page        The thread page
+     * @param model       the model
+     * @return The template for the threads
+     */
     @PostMapping("moderationview")
-    public String enterATopicAsModerator(@RequestParam("forumId") Long forenID,
-                                         @RequestParam("topicId") Long topicID,
+    public String enterATopicAsModerator(@RequestParam("forumId") Long forumIdLong,
+                                         @RequestParam("topicId") Long topicIdLong,
                                          @RequestParam("page") Integer page,
                                          Model model) {
-        ForumId forumId = new ForumId(Long.valueOf(forenID));
-        TopicId topicId = new TopicId(Long.valueOf(topicID));
-        ThreadPage unvisibleThreadPage = this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
+        ForumId forumId = new ForumId(Long.valueOf(forumIdLong));
+        TopicId topicId = new TopicId(Long.valueOf(topicIdLong));
+        ThreadPage invisibleThreadPage =
+                this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forumId);
         model.addAttribute("topicId", topicId);
-        model.addAttribute("pagingObject", unvisibleThreadPage.getPaging());
-        model.addAttribute("threads", unvisibleThreadPage.getThreads());
+        model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
+        model.addAttribute("threads", invisibleThreadPage.getThreads());
         return "list-threads-moderator";
     }
 
+    /**
+     * Approving thread by moderator.
+     *
+     * @param forumIdLong  the forum id
+     * @param topicIdLong  the topic id
+     * @param threadIdLong the thread that should be approved
+     * @param token        token from Keycloak
+     * @return The template for the threads
+     */
     @PostMapping("approveThread")
-    public String approveThread(@RequestParam("forenId") Long forumIdLong,
+    public String approveThread(@RequestParam("forumId") Long forumIdLong,
                                 @RequestParam("topicId") Long topicIdLong,
                                 @RequestParam("threadId") Long threadIdLong,
                                 KeycloakAuthenticationToken token) {
