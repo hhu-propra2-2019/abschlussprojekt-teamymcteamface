@@ -14,4 +14,6 @@ public interface ITopicRepository {
     Topic getOneTopicFromDB(TopicId topicId);
 
     void addThreadInTopic(TopicId topicId, Thread thread);
+
+    void deleteTopic(TopicId topicId);
 }
