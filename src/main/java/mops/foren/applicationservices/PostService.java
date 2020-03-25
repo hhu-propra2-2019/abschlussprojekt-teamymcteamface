@@ -42,9 +42,12 @@ public class PostService {
      * @param post The post that should be deleted.
      */
     public void deletePost(Post post) {
-        threadModelService.updateLastPostTime(post.getThreadId());
+        this.threadModelService.updateLastPostTime(post.getThreadId());
         //TO-DO
         throw new UnsupportedOperationException();
     }
 
+    public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {
+        return this.postRepository.searchWholeForumForContent(forumId, content, page);
+    }
 }
