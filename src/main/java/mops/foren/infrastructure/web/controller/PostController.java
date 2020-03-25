@@ -1,8 +1,10 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Post;
+import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
@@ -28,6 +30,8 @@ public class PostController {
     private UserService userService;
     private ThreadService threadService;
     private KeycloakService keycloakService;
+    private PostService postService;
+
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -35,12 +39,14 @@ public class PostController {
      * @param userService     - injected UserService (ApplicationService)
      * @param threadService   - ThreadService (ApplicationService)
      * @param keycloakService - KeycloakService (Infrastructure Service)
+     * @param postService     - PostService (PostService)
      */
     public PostController(UserService userService, ThreadService threadService,
-                          KeycloakService keycloakService) {
+                          KeycloakService keycloakService, PostService postService) {
         this.userService = userService;
         this.threadService = threadService;
         this.keycloakService = keycloakService;
+        this.postService = postService;
     }
 
     /**
@@ -61,6 +67,13 @@ public class PostController {
         Post post = postForm.getPost(user, threadId);
         this.threadService.addPostInThread(threadId, post);
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+    }
+
+    @PostMapping("/approvePost")
+    public String approvePost(@RequestParam("postId") Long postIdLong,
+                              @RequestParam("threadId") Long threadIdLong) {
+        this.postService.setPostVisible(new PostId(postIdLong));
+        return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
     }
 
     /**

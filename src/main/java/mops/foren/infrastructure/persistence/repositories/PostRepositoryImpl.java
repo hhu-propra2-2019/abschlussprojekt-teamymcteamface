@@ -79,5 +79,12 @@ public class PostRepositoryImpl implements IPostRepository {
         return PostPageMapper.toPostPage(postDtoPage, page);
     }
 
+    @Override
+    public void setPostVisible(PostId postId) {
+        PostDTO byId = this.postRepository.findById(postId.getId()).get();
+        byId.setVisible(true);
+        this.postRepository.save(byId);
+    }
+
 
 }

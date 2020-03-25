@@ -50,4 +50,8 @@ public class PostService {
     public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {
         return this.postRepository.searchWholeForumForContent(forumId, content, page);
     }
+
+    public void setPostVisible(PostId postId) {
+        this.postRepository.setPostVisible(postId);
+    }
 }

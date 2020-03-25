@@ -83,28 +83,57 @@
 </header>
 <main th:fragment="bodycontent">
   <div class="container">
-    <d class="content">
+    <div class="content">
       <h2 style="text-align: left;" th:text="${thread.getTitle()}">Title</h2>
       <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
-        <div class="card col p-0">
-          <div th:class="card-header">
-            <div th:class="preview-pic">
+       <span th:if="${post.getVisible()==true}">
+         <div class="card col p-0">
+           <div th:class="card-header">
+             <div th:class="preview-pic">
 
-            </div>
-            <div style="float: left;" th:class="author"
-                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
-              Jens Bendisposto
-            </div>
-            <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
-              12.03.2020
-            </div>
-          </div>
-          <div th:class="card-body">
-            <p th:class="card-text" th:text="${post.getText()}"></p>
-          </div>
-        </div>
+             </div>
+             <div style="float: left;" th:class="author"
+                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+               Jens Bendisposto
+             </div>
+             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
+               12.03.2020
+             </div>
+           </div>
+           <div th:class="card-body">
+             <p th:class="card-text" th:text="${post.getText()}"></p>
+           </div>
+         </div>
+       </span>
+        <span th:if="${post.getVisible()==false && moderator==true}">
+         <div class="card border-warning p-0">
+           <div th:class="card-header">
+             <div th:class="preview-pic">
+
+             </div>
+             <div style="float: left;" th:class="author"
+                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+               Jens Bendisposto
+             </div>
+             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
+               12.03.2020
+             </div>
+           </div>
+           <div th:class="card-body">
+             <p th:class="card-text" th:text="${post.getText()}"></p>
+           </div>
+           <div class="card-footer bg-transparent border-success">
+           <form method="post"
+                 th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+             <button class="btn btn-warning" type="submit">
+               Post freigeben
+             </button>
+           </form>
+           </div>
+
+         </div>
+       </span>
       </div>
-
       <hr class="content-divider" style="width: auto;">
 
       <ul class="list-unstyled page-list">
@@ -146,8 +175,7 @@
           </form>
         </div>
       </div>
-    </d>
-  </div>
+    </div>
   </div>
 </main>
 </body>

@@ -15,4 +15,6 @@ public interface IPostRepository {
     List<Post> getAllPostsByThreadId(ThreadId id);
 
     PostPage searchWholeForumForContent(ForumId forumId, String content, Integer page);
+
+    void setPostVisible(PostId postId);
 }
