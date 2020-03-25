@@ -59,6 +59,7 @@ public class TopicRepositoryImpl implements ITopicRepository {
         thread.setAnonymous(topicDTO.getAnonymous());
         thread.setModerated(topicDTO.getModerated());
         thread.setVisible(!topicDTO.getModerated());
+        thread.setForumId(new ForumId(topicDTO.getForum().getId()));
         ThreadDTO threadDTO = ThreadMapper.mapThreadToThreadDto(thread, topicDTO);
         topicDTO.getThreads().add(threadDTO);
         this.topicRepository.save(topicDTO);
