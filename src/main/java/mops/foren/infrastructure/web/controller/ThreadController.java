@@ -109,6 +109,25 @@ public class ThreadController {
         return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
     }
 
+    @PostMapping("/delete-thread")
+    public String deleteThread(KeycloakAuthenticationToken token,
+                               @RequestParam("forenId") Long forenIdLong,
+                               @RequestParam("topicId") Long topicIdLong,
+                               @RequestParam("threadId") Long threadIdLong) {
+        User user = this.userService.getUserFromDB(token);
+        ForumId forumId = new ForumId(forenIdLong);
+        ThreadId threadId = new ThreadId(threadIdLong);
+        Thread thread = threadService.getThreadById(threadId);
+
+        if (user.checkPermission(forumId, Permission.DELETE_THREAD, thread.getAuthor())) {
+            threadService.deleteThread(threadId);
+            return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
+        }
+
+        return "error-no-permission";
+    }
+
+
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.

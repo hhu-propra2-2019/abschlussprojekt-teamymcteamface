@@ -105,9 +105,9 @@
           <div>
             <form method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
-                                  page=${pagingObject.getCurrentPage()})}">>
-              <button class="btn btn-primary" type="submit"
-                      Post löschen
+                                  page=${pagingObject.getCurrentPage()})}">
+              <button class="btn btn-primary" type="submit">
+                Post löschen
               </button>
             </form>
           </div>
