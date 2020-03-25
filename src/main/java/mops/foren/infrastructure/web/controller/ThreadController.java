@@ -109,6 +109,15 @@ public class ThreadController {
         return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
     }
 
+    /**
+     * Delete a thread.
+     *
+     * @param token        The keycloak token
+     * @param forenIdLong  The forum id
+     * @param topicIdLong  The topic id
+     * @param threadIdLong The thread id
+     * @return Redirect to list-thread or to error page
+     */
     @PostMapping("/delete-thread")
     public String deleteThread(KeycloakAuthenticationToken token,
                                @RequestParam("forenId") Long forenIdLong,
@@ -117,11 +126,12 @@ public class ThreadController {
         User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forenIdLong);
         ThreadId threadId = new ThreadId(threadIdLong);
-        Thread thread = threadService.getThreadById(threadId);
+        Thread thread = this.threadService.getThreadById(threadId);
 
         if (user.checkPermission(forumId, Permission.DELETE_THREAD, thread.getAuthor())) {
-            threadService.deleteThread(threadId);
-            return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
+            this.threadService.deleteThread(threadId);
+            return String.format("redirect:/foren/topic/%d/%d/%s",
+                    forenIdLong, topicIdLong, "?page=1");
         }
 
         return "error-no-permission";

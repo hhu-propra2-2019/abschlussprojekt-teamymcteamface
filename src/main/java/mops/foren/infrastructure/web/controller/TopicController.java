@@ -106,6 +106,14 @@ public class TopicController {
         return String.format("redirect:/foren/my-forums/%d", forumIdLong);
     }
 
+    /**
+     * Delete a topic.
+     *
+     * @param token       The keycloak token
+     * @param forumIdLong The forum Id
+     * @param topicIdLong The topic Id
+     * @return Redirect to forum mainpage or to error page
+     */
     @PostMapping("/delete-topic")
     public String deleteTopic(KeycloakAuthenticationToken token,
                               @RequestParam("forenId") Long forumIdLong,
