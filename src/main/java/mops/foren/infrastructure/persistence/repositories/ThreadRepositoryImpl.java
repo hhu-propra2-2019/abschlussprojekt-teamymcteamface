@@ -1,9 +1,7 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
@@ -60,6 +58,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         post.setAnonymous(threadDTO.getAnonymous());
         post.setVisible(!threadDTO.getModerated());
+        post.setForumId(new ForumId(threadDTO.getForum().getId()));
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
         threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);

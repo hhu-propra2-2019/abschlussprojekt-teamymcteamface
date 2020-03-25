@@ -27,6 +27,9 @@ public class Thread {
 
     private LocalDateTime lastPostTime;
 
+    private ForumId forumId;
+
+
     /**
      * This method formats the lastPostTime into a nice String representation.
      * "Es gab noch keinen Beitrag in diesem Thread" will be returned if the Thread has no posts.
