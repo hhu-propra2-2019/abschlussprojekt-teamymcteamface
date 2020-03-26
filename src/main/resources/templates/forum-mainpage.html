@@ -105,7 +105,8 @@
                     type="button">Betreten
             </button>
             <div>
-              <form method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
+              <form th:if="${permission}"
+                    method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
                                   topicId=${topic.getId().getId()})}">
                 <button class="btn btn-danger" type="submit">
                   löschen
