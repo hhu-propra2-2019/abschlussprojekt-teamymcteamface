@@ -16,7 +16,11 @@ public class ForumModelService {
         this.threadRepository = threadRepository;
     }
 
-
+    /**
+     * This method updates the last time something was changed in the forum.
+     *
+     * @param forum the forum.
+     */
     public void updateLastChangedTime(Forum forum) {
         List<Thread> threadByForumId = this.threadRepository.getThreadByForumId(forum.getId());
         Optional<LocalDateTime> max = threadByForumId.stream()

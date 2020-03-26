@@ -99,8 +99,9 @@ public class ThreadRepositoryImpl implements IThreadRepository {
 
     @Override
     public List<Thread> getThreadByForumId(ForumId forumId) {
-        List<ThreadDTO> threadDTOsByForum_id = this.threadRepository.findThreadDTOByForum_Id(forumId.getId());
-        return threadDTOsByForum_id.stream()
+        List<ThreadDTO> threadDTOsByForumId =
+                this.threadRepository.findThreadDTOByForum_Id(forumId.getId());
+        return threadDTOsByForumId.stream()
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
     }
