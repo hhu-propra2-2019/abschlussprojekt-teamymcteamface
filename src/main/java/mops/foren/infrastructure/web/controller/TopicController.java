@@ -94,16 +94,10 @@ public class TopicController {
      */
     @GetMapping("/create-topic")
     public String createNewTopic(@RequestParam("forumId") Long forumIdLong,
-                                 KeycloakAuthenticationToken token,
                                  Model model) {
-        User user = userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(forumIdLong);
-        if (user.checkPermission(forumId, Permission.CREATE_TOPIC)) {
-            model.addAttribute("form", new TopicForm("", "", false, false));
-            model.addAttribute("forumId", forumIdLong);
-            return "create-topic";
-        }
-        return "error-no-permission";
+        model.addAttribute("form", new TopicForm("", "", false, false));
+        model.addAttribute("forumId", forumIdLong);
+        return "create-topic";
     }
 
     /**
@@ -115,11 +109,18 @@ public class TopicController {
      */
     @PostMapping("/add-topic")
     public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
-                           @RequestParam("forumId") Long forumIdLong) {
+                           @RequestParam("forumId") Long forumIdLong,
+                           KeycloakAuthenticationToken token) {
+
+        User user = userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forumIdLong);
-        Topic topic = topicForm.getTopic(forumId);
-        this.forumService.addTopicInForum(forumId, topic);
-        return String.format("redirect:/foren/my-forums/enter?forumId=%d", forumIdLong);
+
+        if (user.checkPermission(forumId, Permission.CREATE_TOPIC)) {
+            Topic topic = topicForm.getTopic(forumId);
+            this.forumService.addTopicInForum(forumId, topic);
+            return String.format("redirect:/foren/my-forums/enter?forumId=%d", forumIdLong);
+        }
+        return "error-no-permission";
     }
 
     /**
