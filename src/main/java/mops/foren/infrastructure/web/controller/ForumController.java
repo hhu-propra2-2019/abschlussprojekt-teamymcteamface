@@ -69,25 +69,26 @@ public class ForumController {
     /**
      * Mapping to the main-page of a certain forum.
      *
-     * @param token   - the keycloak token
-     * @param forenID - id of the forum
-     * @param model   - Model
+     * @param token       - the keycloak token
+     * @param forumIdLong - id of the forum
+     * @param model       - Model
      * @return The template for the forum main page
      */
-    @GetMapping("/{forenID}")
+    @GetMapping("/")
     public String enterAForum(KeycloakAuthenticationToken token,
-                              @PathVariable String forenID,
+                              @RequestParam Long forumIdLong,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumIdWrapped = new ForumId(Long.valueOf(forenID));
-        if (!user.checkPermission(forumIdWrapped, Permission.READ_FORUM)) {
-            return "error-no-permission";
+        ForumId forumId = new ForumId(forumIdLong);
+        if (user.checkPermission(forumId, Permission.READ_FORUM)) {
+            model.addAttribute("topics", this.topicService.getTopics(forumId));
+            model.addAttribute("forum", this.forumService.getForum(forumId));
+            model.addAttribute("permission", user.checkPermission(
+                    forumId, Permission.DELETE_TOPIC));
+            return "forum-mainpage";
         }
-        model.addAttribute("topics", this.topicService.getTopics(forumIdWrapped));
-        model.addAttribute("forum", this.forumService.getForum(forumIdWrapped));
-        model.addAttribute("permission", user.checkPermission(
-                forumIdWrapped, Permission.DELETE_TOPIC));
-        return "forum-mainpage";
+        return "error-no-permission";
+
     }
 
     /**
