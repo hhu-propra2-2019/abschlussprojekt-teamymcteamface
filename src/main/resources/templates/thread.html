@@ -138,9 +138,13 @@
                   th:object="${form}">
               <div class="card-body">
                 <div class="form-group">
-                <textarea class="form-control" id="my-textarea" name="postContent"
-                          rows="3" th:value="*{postContent}"></textarea>
-
+                  <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"
+                       th:text="${error}">
+                    error message goes here (or not)
+                  </div>
+                  <textarea class="form-control" id="my-textarea" name="postContent"
+                            rows="3" th:value="*{postContent}"
+                            th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}" required></textarea>
                 </div>
               </div>
               <button class="btn btn-primary" type="submit">abschicken</button>

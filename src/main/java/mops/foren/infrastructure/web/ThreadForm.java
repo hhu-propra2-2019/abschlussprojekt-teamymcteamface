@@ -6,15 +6,14 @@ import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import static mops.foren.infrastructure.web.ValidationService.*;
 
 @Value
 @AllArgsConstructor
 public class ThreadForm {
-    private static final int MAX_TITLE_LENGTH = 40;
-    private static final int MIN_TITLE_LENGTH = 3;
 
     @NotNull(message = "Thread title cannot be null.")
     @Size(min = MIN_TITLE_LENGTH, max = MAX_TITLE_LENGTH,
@@ -23,8 +22,11 @@ public class ThreadForm {
                     + MAX_TITLE_LENGTH + " characters.")
     private final String title;
 
-    // For now only check for Null until there is a content class
-    @NotBlank(message = "Content cannot be blank.")
+    @NotNull(message = "Thread title cannot be null.")
+    @Size(min = MIN_CONTENT_LENGTH, max = MAX_CONTENT_LENGTH,
+            message = "Thread content must be between "
+                    + MIN_CONTENT_LENGTH + " and "
+                    + MAX_CONTENT_LENGTH + " characters.")
     private String content;
 
 
