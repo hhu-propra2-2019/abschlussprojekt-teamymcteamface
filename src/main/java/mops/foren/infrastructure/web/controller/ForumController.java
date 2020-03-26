@@ -99,6 +99,7 @@ public class ForumController {
      * @param token         keycloak token
      * @param forumIdLong   the ID of the forum you want to search all posts
      * @param searchContent the text the user searches for
+     * @param page          number of page in the paging system
      * @param model         model
      * @return The template.
      */
