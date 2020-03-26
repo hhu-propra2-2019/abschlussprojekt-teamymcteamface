@@ -96,17 +96,17 @@ public class ForumController {
     /**
      * Search all posts in one forum by a text search.
      *
-     * @param token       keycloak token
-     * @param forumIdLong the ID of the forum you want to search all posts
-     * @param content     the text the user searches for
-     * @param page        number of page in the paging system
-     * @param model       model
+     * @param token         keycloak token
+     * @param forumIdLong   the ID of the forum you want to search all posts
+     * @param searchContent the text the user searches for
+     * @param page          number of page in the paging system
+     * @param model         model
      * @return The template.
      */
     @GetMapping("/search")
     public String searchForum(KeycloakAuthenticationToken token,
                               @RequestParam("forumId") Long forumIdLong,
-                              @RequestParam("content") String content,
+                              @RequestParam("searchContent") String searchContent,
                               @RequestParam("page") Integer page,
                               Model model) {
 
@@ -114,12 +114,12 @@ public class ForumController {
         ForumId forumId = new ForumId(forumIdLong);
 
         if (user.checkPermission(forumId, Permission.READ_FORUM)) {
-            PostPage postPage = this.postService.searchWholeForum(forumId, content,
-                    page - 1);
+            PostPage postPage = this.postService.searchWholeForum(forumId, searchContent, page - 1);
 
             model.addAttribute("pagingObject", postPage.getPaging());
             model.addAttribute("posts", postPage.getPosts());
-            model.addAttribute("content", content);
+            model.addAttribute("content", searchContent);
+            model.addAttribute("forumId", forumId.getId());
             return "search-result-posts";
         }
         return "error-no-permission";
