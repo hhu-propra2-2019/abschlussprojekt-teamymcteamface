@@ -4,10 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -30,9 +28,6 @@ public class ThreadDTO {
     private Boolean moderated;
 
     private Boolean visible;
-
-    @UpdateTimestamp
-    private LocalDateTime lastChangedTime;
 
     @ManyToOne
     private UserDTO author;

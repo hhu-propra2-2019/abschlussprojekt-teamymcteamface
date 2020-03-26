@@ -6,6 +6,7 @@ import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @DomainService
@@ -22,9 +23,10 @@ public class ForumModelService {
      * @param forum the forum.
      */
     public void updateLastChangedTime(Forum forum) {
-        List<Thread> threadByForumId = this.threadRepository.getThreadByForumId(forum.getId());
+        List<Thread> threadByForumId = this.threadRepository.getThreadByForumIdAndVisible(forum.getId(), true);
         Optional<LocalDateTime> max = threadByForumId.stream()
                 .map(Thread::getLastPostTime)
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo);
         if (max.isPresent()) {
             forum.setLastChange(max.get());

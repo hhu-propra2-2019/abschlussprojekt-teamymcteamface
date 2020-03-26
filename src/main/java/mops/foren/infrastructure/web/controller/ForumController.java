@@ -68,7 +68,6 @@ public class ForumController {
         List<Forum> forums = this.forumService.getForums(user);
         forums.forEach(f -> this.forumService.updateLastTimeChanged(f));
         model.addAttribute("forums", forums);
-        model.addAttribute("forums", this.forumService.getForums(user));
         return "my-forums";
     }
 

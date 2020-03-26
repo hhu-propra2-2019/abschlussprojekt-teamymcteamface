@@ -21,5 +21,5 @@ public interface IThreadRepository {
 
     void deleteThread(ThreadId threadId);
 
-    List<Thread> getThreadByForumId(ForumId forumId);
+    List<Thread> getThreadByForumIdAndVisible(ForumId id, Boolean visible);
 }

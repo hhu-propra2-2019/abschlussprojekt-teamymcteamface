@@ -3,7 +3,6 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <<<<<<< HEAD
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
   <script crossorigin="anonymous"
@@ -12,64 +11,10 @@
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
-
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
-
-      .mops-row {
-        transition-duration: 0.3s;
-      }
-
-      .mops-row > *:hover {
-        cursor: pointer;
-      }
-
-      .mops-row:hover {
-        background: #a9d0f5;
-        transition-duration: 0.3s;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
-    =======
-    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
-    <script crossorigin="anonymous"
-            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-            th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"></script>
-    <meta charset="utf-8">
-    <title>Foren</title>
-    <th:block th:fragment="headcontent">
-      <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
-      <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
-      >>>>>>> dev
-    </th:block>
-    </head>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
+  </th:block>
+</head>
 <body>
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">

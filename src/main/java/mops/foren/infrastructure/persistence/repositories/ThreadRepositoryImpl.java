@@ -13,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -62,7 +61,6 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         post.setVisible(!threadDTO.getModerated());
         post.setForumId(new ForumId(threadDTO.getForum().getId()));
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
-        threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }
@@ -98,9 +96,9 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     }
 
     @Override
-    public List<Thread> getThreadByForumId(ForumId forumId) {
+    public List<Thread> getThreadByForumIdAndVisible(ForumId forumId, Boolean visible) {
         List<ThreadDTO> threadDTOsByForumId =
-                this.threadRepository.findThreadDTOByForum_Id(forumId.getId());
+                this.threadRepository.findThreadDTOByForum_IdAndVisible(forumId.getId(), visible);
         return threadDTOsByForumId.stream()
                 .map(ThreadMapper::mapThreadDtoToThread)
                 .collect(Collectors.toList());
