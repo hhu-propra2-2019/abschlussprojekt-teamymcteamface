@@ -169,7 +169,8 @@ public class TopicController {
             model.addAttribute("topicId", topicId);
             model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
             model.addAttribute("threads", invisibleThreadPage.getThreads());
-            model.addAttribute("deletePermission", user.checkPermission(forumId, Permission.DELETE_THREAD));
+            model.addAttribute("deletePermission",
+                    user.checkPermission(forumId, Permission.DELETE_THREAD));
             return "list-threads-moderator";
         }
 
