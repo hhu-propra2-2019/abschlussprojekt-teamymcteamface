@@ -6,37 +6,8 @@
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
-
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
+    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
@@ -59,9 +30,9 @@
   <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
     error message goes here (or not)
   </div>
-  <h1>Thread erstellen:</h1>
-  <form method="post" th:action="@{/foren/thread/new-thread(forenId=${forenId.getId()},topicId=${topicId.getId()})}"
-        th:object="${form}">
+  <h1>Beitrag erstellen:</h1>
+  <form method="post" th:object="${form}"
+        th:action="@{/foren/thread/add-thread(topicId=${topicId})}">
     <div class="form-group">
       <label for="title">Titel:</label>
       <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100"
@@ -71,15 +42,11 @@
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Inhalt:</label>
-      <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="8"
                 th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}"
                 th:value="*{content}" required></textarea>
     </div>
-    <div class="form-group">
-      <label for="media">Lade Medien hoch</label>
-      <input class="form-control-file" id="media" type="file">
-    </div>
-    <button class="btn btn-primary" type="submit">erstellen</button>
+    <button class="btn btn-primary" type="submit">Erstellen</button>
   </form>
 </main>
 </body>

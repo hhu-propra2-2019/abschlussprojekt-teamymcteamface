@@ -32,7 +32,7 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1 th:text="${forumTitle} + ' - Beiträge die noch freigegeben werden müssen:'">Threads</h1>
+  <h1 th:text="${forumTitle} + ' - Beiträge die noch freigegeben werden müssen:'">Beiträge</h1>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
@@ -46,22 +46,21 @@
     <tbody>
     <div th:each="thread : ${threads}">
       <tr class="mops-row"
-          th:onclick="'window.location.href = \'' + @{/foren/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
+          th:onclick="location.href ='/foren/thread?threadId=[[${thread.getId().getId()}]]&page=1'">
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
         <td>
           <form method="post"
-                th:action="@{/foren/topic/approveThread(forumId=${forumId.getId()},topicId=${topicId.getId()},threadId=${thread.getId().getId()})}">
+                th:action="@{/foren/thread/approve-thread(threadId=${thread.getId().getId()})}">
             <button class="btn btn-primary" type="submit">
               Freigeben
             </button>
           </form>
         </td>
         <td>
-          <form th:if="${deletePermission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId.getId()},
-                                  topicId=${topicId.getId()},
-                                  threadId=${thread.getId().getId()})}">
+          <form th:if="${deletePermission}" method="post"
+                th:action="@{/foren/thread/delete-thread(threadId=${thread.getId().getId()})}">
             <button class="delete-button btn-danger" type="submit">
               <i class="far fa-trash-alt"></i>
             </button>
@@ -72,18 +71,17 @@
     </tbody>
   </table>
   <ul class="list-unstyled page-list">
-
     <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
-      <button class="btn" th:onclick="location.href = '?page=' + '[[${i}]]'" th:text="${i}"
+      <button class="btn" th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
+              th:text="${i}"
               th:unless="${i == pagingObject.getCurrentPage()+1}"
               type="button">page#
       </button>
       <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
-              th:onclick="location.href = '?page=' + '[[${i}]]'"
+              th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
               th:text="${i}"
               type="button">page#
       </button>
-
     </li>
   </ul>
 </main>

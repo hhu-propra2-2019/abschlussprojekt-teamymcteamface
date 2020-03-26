@@ -17,7 +17,6 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Foren - Posts</title>
-
 </head>
 <th:block th:fragment="headcontent">
   <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
@@ -62,9 +61,7 @@
           <div th:if="${user.checkPermission(post.getForumId(), PermissionDelete, post.getAuthor())
                          && (post.getAuthor().getName() != 'Unbekannt')}">
             <form class="delete-post-form" method="post"
-                  th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
-                                  postId=${post.getId().getId()},
-                                  page=${pagingObject.getCurrentPage()})}">
+                  th:action="@{/foren/post/delete-post(postId=${post.getId().getId()},page=${pagingObject.getCurrentPage()})}">
               <button class="delete-button btn-danger" type="submit">
                 <i class="far fa-trash-alt"></i>
               </button>
@@ -91,9 +88,7 @@
                 th:if="${user.checkPermission(post.getForumId().getId(), PermissionDelete, post.getAuthor())
                            && (post.getAuthor().getName() != 'Unbekannt')}">
               <form method="post" class="delete-post-form"
-                    th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
-                                  postId=${post.getId().getId()},
-                                  page=${pagingObject.getCurrentPage()})}">
+                    th:action="@{/foren/post/delete-post(postId=${post.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
                 <button class="delete-button btn-danger" type="submit">
                   <i class="far fa-trash-alt"></i>
                 </button>
@@ -101,7 +96,7 @@
             </li>
             <li class="moderate-button">
               <form method="post" class="delete-post-form"
-                    th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+                    th:action="@{/foren/post/approve-post(postId=${post.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
                 <button class="delete-button btn-warning" type="submit">
                   Freigeben
                 </button>
@@ -110,20 +105,17 @@
           </ul>
         </div>
       </div>
-
       <hr class="content-divider">
-
       <ul class="list-unstyled page-list">
-
         <li th:if="${posts.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
-                  th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
+                  th:onclick="location.href = '?threadId=[[${thread.getId().getId()}]]&page=[[${i}]]'"
                   th:text="${i}"
                   th:unless="${i == pagingObject.getCurrentPage()+1}"
                   type="button">page#
           </button>
           <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
-                  th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
+                  th:onclick="location.href = '?threadId=[[${thread.getId().getId()}]]&page=[[${i}]]'"
                   th:text="${i}"
                   type="button">page#
           </button>
@@ -137,9 +129,8 @@
               Antwort erstellen
             </div>
           </div>
-          <form method="post"
-                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                th:object="${form}">
+          <form method="post" th:object="${form}"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
             <div class="card-body">
               <div class="form-group">
                 <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"

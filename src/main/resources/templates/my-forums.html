@@ -3,8 +3,11 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"
+          integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+          crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
@@ -14,19 +17,19 @@
 </head>
 <body>
 <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-        <ul>
-          <li>
-            <a th:href="@{/foren}">Dashboard</a>
-          </li>
-          <li class="active">
-            <a th:href="@{/foren/my-forums}">Meine Foren</a>
-          </li>
-          <li>
-            <a th:href="@{/foren/profile}">Profil</a>
-          </li>
-        </ul>
-    </nav>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li>
+        <a th:href="@{/foren}">Dashboard</a>
+      </li>
+      <li class="active">
+        <a th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
 </header>
 <main th:fragment="bodycontent">
   <h1>Meine Foren:</h1>
@@ -39,9 +42,9 @@
     </thead>
     <tbody>
     <div th:each="forum : ${forums}">
-      <tr class="mops-row" th:onclick="location.href = '/foren/my-forums/' + [[${forum.getId().getId()}]]">
-          <td th:text="${forum.getTitle()}">AlDat</td>
-          <td th:text="${forum.getTitle()}">14:37Uhr</td>
+      <tr class="mops-row" th:onclick="location.href ='/foren/my-forums/enter?forumId=[[${forum.getId().getId()}]]'">
+        <td th:text="${forum.getTitle()}">AlDat</td>
+        <td th:text="${forum.getTitle()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>
