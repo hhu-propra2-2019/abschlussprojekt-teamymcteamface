@@ -79,6 +79,9 @@ public class TopicRepositoryImpl implements ITopicRepository {
     public void addThreadInTopic(TopicId topicId, Thread thread) {
         TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
         thread.setAnonymous(topicDTO.getAnonymous());
+        thread.setModerated(topicDTO.getModerated());
+        thread.setVisible(!topicDTO.getModerated());
+        thread.setForumId(new ForumId(topicDTO.getForum().getId()));
         ThreadDTO threadDTO = ThreadMapper.mapThreadToThreadDto(thread, topicDTO);
         threadDTO.setPosts(new ArrayList<PostDTO>());
 
@@ -94,4 +97,12 @@ public class TopicRepositoryImpl implements ITopicRepository {
 
         this.threadRepositoryImpl.addPostInThread(new ThreadId(savedThread.getId()), firstPost);
     }
+
+    @Override
+    public void deleteTopic(TopicId topicId) {
+        TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
+        this.topicRepository.delete(topicDTO);
+    }
+
+
 }

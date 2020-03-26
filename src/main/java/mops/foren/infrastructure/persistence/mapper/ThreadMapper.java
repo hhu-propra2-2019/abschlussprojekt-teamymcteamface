@@ -1,5 +1,6 @@
 package mops.foren.infrastructure.persistence.mapper;
 
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
@@ -20,11 +21,14 @@ public abstract class ThreadMapper {
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
                 .anonymous(threadDTO.getAnonymous())
+                .moderated(threadDTO.getModerated())
+                .visible(threadDTO.getVisible())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
                 .lastPostTime(threadDTO.getLastChangedTime())
                 .author(UserMapper.mapUserDtoToUser(threadDTO.getAuthor()))
                 .title(threadDTO.getTitle())
                 .description(threadDTO.getDescription())
+                .forumId(new ForumId(threadDTO.getForum().getId()))
                 .build();
     }
 
@@ -39,9 +43,12 @@ public abstract class ThreadMapper {
         return ThreadDTO.builder()
                 .author(UserMapper.mapUserToUserDto(thread.getAuthor()))
                 .anonymous(topicDTO.getAnonymous())
+                .moderated(topicDTO.getModerated())
+                .visible(thread.getVisible())
                 .description(thread.getDescription())
                 .title(thread.getTitle())
                 .topic(topicDTO)
+                .forum(topicDTO.getForum())
                 .build();
     }
 }

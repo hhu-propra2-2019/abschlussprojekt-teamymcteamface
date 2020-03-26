@@ -12,4 +12,12 @@ public interface IThreadRepository {
     Thread getThreadById(ThreadId threadId);
 
     void addPostInThread(ThreadId threadId, Post post);
+
+    ThreadPage getThreadPageFromDbByVisibility(TopicId topicId, Integer page, Boolean visibility);
+
+    void setThreadVisible(ThreadId threadId);
+
+    Integer countInvisibleThreads(TopicId topicId);
+
+    void deleteThread(ThreadId threadId);
 }

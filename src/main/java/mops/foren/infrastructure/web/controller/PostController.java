@@ -1,10 +1,9 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.PostForm;
@@ -22,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
+
 @Controller
 @SessionScope
 @RequestMapping("/foren/post")
@@ -32,6 +32,8 @@ public class PostController {
     private ThreadService threadService;
     private KeycloakService keycloakService;
     private ValidationService validationService;
+    private PostService postService;
+
 
     /**
      * Constructor for ForenController. The parameters are injected.
@@ -39,13 +41,17 @@ public class PostController {
      * @param userService       - injected UserService (ApplicationService)
      * @param threadService     - ThreadService (ApplicationService)
      * @param keycloakService   - KeycloakService (Infrastructure Service)
+     * @param postService       - PostService (PostService)
      * @param validationService - ValidationService (Infrastructure Service)
      */
-    public PostController(UserService userService, ThreadService threadService,
+    public PostController(UserService userService,
+                          ThreadService threadService,
+                          PostService postService,
                           KeycloakService keycloakService,
                           ValidationService validationService) {
         this.userService = userService;
         this.threadService = threadService;
+        this.postService = postService;
         this.keycloakService = keycloakService;
         this.validationService = validationService;
     }
@@ -88,6 +94,48 @@ public class PostController {
         this.threadService.addPostInThread(threadId, post);
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
     }
+
+    /**
+     * Approve a post.
+     *
+     * @param postIdLong   The post id
+     * @param threadIdLong The thread id
+     * @return Redirect to the thread page
+     */
+    @PostMapping("/approvePost")
+    public String approvePost(@RequestParam("postId") Long postIdLong,
+                              @RequestParam("threadId") Long threadIdLong) {
+        this.postService.setPostVisible(new PostId(postIdLong));
+        return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
+    }
+
+    /**
+     * Delete a post.
+     *
+     * @param token        The key cloak token
+     * @param threadIdLong The thread id
+     * @param postIdLong   The post id
+     * @param page         The current page
+     * @return The thread page or the error
+     */
+    @PostMapping("/delete-post")
+    public String deletePost(KeycloakAuthenticationToken token,
+                             @RequestParam("threadId") Long threadIdLong,
+                             @RequestParam("postId") Long postIdLong,
+                             @RequestParam("page") Integer page) {
+
+        User user = this.userService.getUserFromDB(token);
+        Post post = this.postService.getPost(new PostId(postIdLong));
+
+        // TODO forum id aus post
+        if (user.checkPermission(new ForumId(1L), Permission.DELETE_POST, post.getAuthor())) {
+            this.postService.deletePost(post);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d",
+                    threadIdLong, page + 1);
+        }
+        return "error-no-permission";
+    }
+
 
     /**
      * Adds the account object to each request.

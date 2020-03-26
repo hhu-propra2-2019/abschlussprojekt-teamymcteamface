@@ -1,9 +1,7 @@
 package mops.foren.infrastructure.persistence.repositories;
 
-import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
@@ -59,9 +57,41 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void addPostInThread(ThreadId threadId, Post post) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         post.setAnonymous(threadDTO.getAnonymous());
+        post.setVisible(!threadDTO.getModerated());
+        post.setForumId(new ForumId(threadDTO.getForum().getId()));
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
         threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
+    }
+
+    @Override
+    public ThreadPage getThreadPageFromDbByVisibility(TopicId topicId,
+                                                      Integer page,
+                                                      Boolean visibility) {
+        Page<ThreadDTO> dtoPage = this.threadRepository
+                .findThreadPageByTopic_IdAndVisible(topicId.getId(),
+                        visibility, PageRequest.of(page, PAGE_SIZE));
+
+        return ThreadPageMapper.toThreadPage(dtoPage, page);
+    }
+
+    @Override
+    public void setThreadVisible(ThreadId threadId) {
+        ThreadDTO byId = this.threadRepository.findById(threadId.getId()).get();
+        byId.setVisible(true);
+        this.threadRepository.save(byId);
+
+    }
+
+    @Override
+    public Integer countInvisibleThreads(TopicId topicId) {
+        return this.threadRepository.countThreadDTOByVisibleAndTopic_Id(false, topicId.getId());
+    }
+
+    @Override
+    public void deleteThread(ThreadId threadId) {
+        ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
+        this.threadRepository.delete(threadDTO);
     }
 }

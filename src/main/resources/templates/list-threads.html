@@ -83,16 +83,33 @@
 </header>
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
-  <button class="btn btn-primary"
-          th:onclick="location.href = '/foren/thread/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread
-    erstellen
-  </button>
+  <span th:if="${moderatePermission == true}">
+  <form method="post"
+        th:action="@{/foren/topic/moderationview(forumId=${forumId.getId()},topicId=${topicId.getId()},page=1)}"
+        th:unless="${countInvisibleThreads==0}">
+    <button class="btn btn-warning" th:if="${countInvisibleThreads==1}"
+            th:text="${countInvisibleThreads} + ' Thread muss noch freigegeben werden'"
+            type="submit">
+    </button>
+    <button class="btn btn-warning" th:text="${countInvisibleThreads} + ' Threads müssen noch freigegeben werden'"
+            th:unless="${countInvisibleThreads==1}"
+            type="submit">
+    </button>
+  </form>
+  </span>
+  <span>
+    <form method="get" th:action="@{'/foren/thread/' + ${forumId.getId()} + '/' + ${topicId.getId()} + '/new-thread'}">
+    <button class="btn btn-primary" type="submit"> Thread erstellen
+      </button>
+    </form>
+  </span>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -102,6 +119,15 @@
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
+        <td>
+          <form th:if="${deletePermission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId.getId()},
+                                  topicId=${topicId.getId()},
+                                  threadId=${thread.getId().getId()})}">
+            <button class="btn btn-danger" type="submit">
+              löschen
+            </button>
+          </form>
+        </td>
       </tr>
     </div>
     </tbody>
@@ -118,7 +144,6 @@
               th:text="${i}"
               type="button">page#
       </button>
-
     </li>
   </ul>
 </main>

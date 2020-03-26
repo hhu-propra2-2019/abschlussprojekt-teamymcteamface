@@ -1,9 +1,6 @@
 package mops.foren.infrastructure.persistence.mapper;
 
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.PostId;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
@@ -25,9 +22,11 @@ public abstract class PostMapper {
                 .id(new PostId(postDTO.getId()))
                 .anonymous(postDTO.getAnonymous())
                 .threadId(new ThreadId(postDTO.getThread().getId()))
+                .visible(postDTO.getVisible())
                 .author(author)
                 .text(postDTO.getText())
                 .creationDate(postDTO.getDateTime())
+                .forumId(new ForumId(postDTO.getForum().getId()))
                 .build();
     }
 
@@ -42,8 +41,10 @@ public abstract class PostMapper {
         return PostDTO.builder()
                 .author(UserMapper.mapUserToUserDto(post.getAuthor()))
                 .anonymous(threadDTO.getAnonymous())
+                .visible(post.getVisible())
                 .thread(threadDTO)
                 .text(post.getText())
+                .forum(threadDTO.getForum())
                 .build();
     }
 }

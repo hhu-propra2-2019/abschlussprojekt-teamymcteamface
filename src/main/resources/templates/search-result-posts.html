@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+    <script crossorigin="anonymous"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script crossorigin="anonymous"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Foren - Posts</title>
+
+</head>
+<th:block th:fragment="headcontent">
+    <style>
+        .page-list, .page-list > li {
+            float: right;
+        }
+
+        .content {
+            padding: 40px;
+            text-align: center;
+        }
+
+        .card:not(.quote) {
+            text-align: left;
+            float: none;
+            margin: 10px;
+        }
+
+        .write-answer {
+            display: grid;
+        }
+
+        .quote {
+            width: auto !important;
+            margin-bottom: 10px;
+        }
+
+        .content-divider {
+            border: 1px solid #52a1eb;
+        }
+
+        .preview-pic {
+            width: 25px;
+            height: 25px;
+            float: left;
+            background: green;
+            margin: auto;
+            margin-right: 8px;
+        }
+
+        .edit-button {
+            float: right;
+            clear: right;
+        }
+    </style>
+</th:block>
+<body>
+<header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+        <ul>
+            <li class="active">
+                <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+            </li>
+            <li class="">
+                <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main th:fragment="bodycontent">
+    <div class="container">
+        <h2 th:text="'Du hast gesucht nach: '+ ${content}"></h2>
+        <d class="content">
+            <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
+                <div class="card col p-0">
+                    <div th:class="card-header">
+                        <div th:class="preview-pic">
+
+                        </div>
+                        <div style="float: left;" th:class="author"
+                             th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+                            Jens Bendisposto
+                        </div>
+                        <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
+                            12.03.2020
+                        </div>
+                    </div>
+                    <div th:class="card-body">
+                        <p th:class="card-text" th:text="${post.getText()}"></p>
+                    </div>
+                    <a class="btn btn-info"
+                       th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
+                        Springe zum Thread</a>
+                </div>
+            </div>
+
+            <hr class="content-divider" style="width: auto;">
+
+            <ul class="list-unstyled page-list">
+
+                <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+                    <button class="btn"
+                            th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                            th:text="${i}"
+                            th:unless="${i == pagingObject.getCurrentPage()+1}"
+                            type="button">page#
+                    </button>
+
+
+                    <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
+                            th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                            th:text="${i}"
+                            type="button">page#
+                    </button>
+
+                </li>
+            </ul>
+
+        </d>
+    </div>
+    </div>
+</main>
+</body>
+
+</html>

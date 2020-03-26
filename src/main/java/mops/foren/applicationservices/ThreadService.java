@@ -48,4 +48,20 @@ public class ThreadService {
             // ADD
         }
     }
+
+    public ThreadPage getThreadPageByVisibility(TopicId topicId, Integer page, Boolean visibility) {
+        return this.threadRepository.getThreadPageFromDbByVisibility(topicId, page, visibility);
+    }
+
+    public void setThreadVisible(ThreadId threadId) {
+        this.threadRepository.setThreadVisible(threadId);
+    }
+
+    public Integer countInvisibleThreads(TopicId topicId) {
+        return this.threadRepository.countInvisibleThreads(topicId);
+    }
+
+    public void deleteThread(ThreadId threadId) {
+        this.threadRepository.deleteThread(threadId);
+    }
 }
