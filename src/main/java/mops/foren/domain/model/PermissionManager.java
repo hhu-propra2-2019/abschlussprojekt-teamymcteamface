@@ -50,7 +50,7 @@ public class PermissionManager {
     public Boolean checkPermission(ForumId id, Permission permission,
                                    @NonNull User author, @NonNull User user) {
 
-        return user.equals(author) || checkPermission(id, permission);
+        return user.getName().equals(author.getName()) || checkPermission(id, permission);
     }
 
     /**
