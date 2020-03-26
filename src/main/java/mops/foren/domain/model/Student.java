@@ -8,7 +8,8 @@ public class Student {
             Permission.CREATE_POST,
             Permission.READ_THREAD,
             Permission.CREATE_THREAD,
-            Permission.READ_FORUM
+            Permission.READ_FORUM,
+            Permission.READ_TOPIC
     );
 
     public static boolean hasPermission(Permission permission) {
