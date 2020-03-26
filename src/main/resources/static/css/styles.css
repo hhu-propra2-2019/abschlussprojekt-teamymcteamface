@@ -133,6 +133,10 @@ main > div:first-child > h2 {
     float: left;
 }
 
+.card-body {
+    text-align: center;
+}
+
 .forum-title {
     padding: 30px;
 }
