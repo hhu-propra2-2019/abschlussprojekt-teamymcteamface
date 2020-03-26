@@ -52,35 +52,35 @@ public class TopicController {
      * Mapping to the topic page.
      *
      * @param token       They keycloak token
-     * @param forumIdLong the forum id
      * @param topicIdLong the topic id
      * @param model       the model
      * @return The template for the threads
      */
     @GetMapping
     public String enterATopic(KeycloakAuthenticationToken token,
-                              @RequestParam("forumId") Long forumIdLong,
                               @RequestParam("topicId") Long topicIdLong,
                               @RequestParam("page") Integer page,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(forumIdLong);
+        ForumId forumId = topicService.getTopic(new TopicId(topicIdLong)).getForumId();
         TopicId topicId = new TopicId(topicIdLong);
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
-        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-        model.addAttribute("forumId", forumId);
-        model.addAttribute("topicId", topicId);
-        model.addAttribute("pagingObject", visibleThreadPage.getPaging());
-        model.addAttribute("threads", visibleThreadPage.getThreads());
-        model.addAttribute("countInvisibleThreads", countInvisibleThreads);
-        model.addAttribute("moderatePermission",
-                user.checkPermission(forumId, Permission.MODERATE_THREAD));
-        model.addAttribute("deletePermission",
-                user.checkPermission(forumId, Permission.DELETE_THREAD));
-
-        return "list-threads";
+        if (user.checkPermission(forumId, Permission.READ_TOPIC)) {
+            model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+            model.addAttribute("forumId", forumId.getId());
+            model.addAttribute("topicId", topicId.getId());
+            model.addAttribute("pagingObject", visibleThreadPage.getPaging());
+            model.addAttribute("threads", visibleThreadPage.getThreads());
+            model.addAttribute("countInvisibleThreads", countInvisibleThreads);
+            model.addAttribute("moderatePermission",
+                    user.checkPermission(forumId, Permission.MODERATE_THREAD));
+            model.addAttribute("deletePermission",
+                    user.checkPermission(forumId, Permission.DELETE_THREAD));
+            return "list-threads";
+        }
+        return "error-no-permission";
     }
 
 
@@ -112,7 +112,7 @@ public class TopicController {
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
-        return String.format("redirect:/foren/my-forums/?forumId=%d", forumIdLong);
+        return String.format("redirect:/foren/my-forums/enter?forumId=%d", forumIdLong);
     }
 
     /**
@@ -152,12 +152,12 @@ public class TopicController {
      * @return The template for the threads
      */
     @PostMapping("moderationview")
-    public String enterATopicAsModerator(@RequestParam("forumId") Long forumIdLong,
-                                         @RequestParam("topicId") Long topicIdLong,
+    public String enterATopicAsModerator(@RequestParam("topicId") Long topicIdLong,
                                          @RequestParam("page") Integer page,
                                          Model model,
                                          KeycloakAuthenticationToken token) {
-        ForumId forumId = new ForumId(forumIdLong);
+
+        ForumId forumId = topicService.getTopic(new TopicId(topicIdLong)).getForumId();
         TopicId topicId = new TopicId(topicIdLong);
         User user = this.userService.getUserFromDB(token);
 
