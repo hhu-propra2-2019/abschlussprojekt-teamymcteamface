@@ -16,6 +16,9 @@ public class ForumServiceTest {
     private ForumService forumService;
     private ForumModelService forumModelService;
 
+    /**
+     * set up method, to construct a forumService.
+     */
     @BeforeEach
     public void setUp() {
         this.forumRepository = mock(IForumRepository.class);
