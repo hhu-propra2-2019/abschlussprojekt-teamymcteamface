@@ -13,6 +13,8 @@ public class Thread {
 
     private final TopicId topicId;
 
+    private final ForumId forumId;
+
     private String title;
 
     private String description;
@@ -26,8 +28,6 @@ public class Thread {
     private Boolean moderated;
 
     private LocalDateTime lastPostTime;
-
-    private ForumId forumId;
 
 
     /**
