@@ -118,7 +118,7 @@ public class ForumController {
             return "search-result-posts";
         }
 
-        return "error";
+        return "error-no-permission";
     }
 
     /**
