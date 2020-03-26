@@ -21,7 +21,14 @@ public class Thread {
 
     private Boolean anonymous;
 
+    private Boolean visible;
+
+    private Boolean moderated;
+
     private LocalDateTime lastPostTime;
+
+    private ForumId forumId;
+
 
     /**
      * This method formats the lastPostTime into a nice String representation.
@@ -30,7 +37,7 @@ public class Thread {
      * @return a Date formatted in a String.
      */
     public String getFormattedDate() {
-        if (lastPostTime == null) {
+        if (this.lastPostTime == null) {
             return "Es gab noch keinen Beitrag in diesem Thread";
         }
         return this.lastPostTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));

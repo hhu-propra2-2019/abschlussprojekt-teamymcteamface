@@ -21,6 +21,7 @@ public abstract class TopicMapper {
                 .id(new TopicId(topicDTO.getId()))
                 .anonymous(topicDTO.getAnonymous())
                 .title(topicDTO.getTitle())
+                .moderated(topicDTO.getModerated())
                 .description(topicDTO.getDescription())
                 .forumId(new ForumId(topicDTO.getForum().getId()))
                 .build();

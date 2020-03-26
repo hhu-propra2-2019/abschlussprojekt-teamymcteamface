@@ -65,11 +65,17 @@ public class ThreadController {
         User user = this.userService.getUserFromDB(token);
         ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
-        model.addAttribute("thread", this.threadService.getThreadById(threadId));
+        Thread threadById = this.threadService.getThreadById(threadId);
+
+        model.addAttribute("thread", threadById);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
         model.addAttribute("user", user);
+        model.addAttribute("moderator",
+                user.checkPermission(threadById.getForumId(), Permission.MODERATE_THREAD));
+
+
         return "thread";
     }
 
@@ -146,7 +152,7 @@ public class ThreadController {
      * Image and roles have to be added in the future.
      *
      * @param token - KeycloakAuthenficationToken
-     * @return
+     * @return Keycloak Account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {

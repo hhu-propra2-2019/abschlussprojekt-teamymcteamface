@@ -86,23 +86,23 @@
     <div class="content">
       <h2 style="text-align: left;" th:text="${thread.getTitle()}">Title</h2>
       <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
-        <div class="card col p-0">
-          <div th:class="card-header">
-            <div th:class="preview-pic">
-
-            </div>
-            <div style="float: left;" th:class="author"
-                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
-              Jens Bendisposto
-            </div>
-            <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
-              12.03.2020
-            </div>
-          </div>
-          <div th:class="card-body">
-            <p th:class="card-text" th:text="${post.getText()}"></p>
-          </div>
-          <div>
+       <span th:if="${post.getVisible()==true}">
+         <div class="card col p-0">
+           <div th:class="card-header">
+             <div th:class="preview-pic">
+             </div>
+             <div style="float: left;" th:class="author"
+                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+               Jens Bendisposto
+             </div>
+             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
+               12.03.2020
+             </div>
+           </div>
+           <div th:class="card-body">
+             <p th:class="card-text" th:text="${post.getText()}"></p>
+           </div>
+           <div>
             <form method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
                                   page=${pagingObject.getCurrentPage()})}">
@@ -110,14 +110,47 @@
                 Post löschen
               </button>
             </form>
-          </div>
-        </div>
-      </div>
+           </div>
+         </div>
+       </span>
+        <span th:if="${post.getVisible()==false && moderator==true}">
+         <div class="card border-warning p-0">
+           <div th:class="card-header">
+             <div th:class="preview-pic">
+             </div>
+             <div style="float: left;" th:class="author"
+                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+               Jens Bendisposto
+             </div>
+             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
+               12.03.2020
+             </div>
+           </div>
+           <div th:class="card-body">
+             <p th:class="card-text" th:text="${post.getText()}"></p>
+           </div>
+           <div class="card-footer bg-transparent border-success">
+           <form method="post"
+                 th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+             <button class="btn btn-warning" type="submit">
+               Post freigeben
+             </button>
+           </form>
+             <form method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+                                  postId=${post.getId().getId()},
+                                  page=${pagingObject.getCurrentPage()})}">
+              <button class="btn btn-danger" type="submit">
+                Post löschen
+              </button>
+             </form>
+           </div>
 
+         </div>
+       </span>
+      </div>
       <hr class="content-divider" style="width: auto;">
 
       <ul class="list-unstyled page-list">
-
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
                   th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
@@ -130,31 +163,27 @@
                   th:text="${i}"
                   type="button">page#
           </button>
-
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer" th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}">
-        <div class="row write-answer">
-          <div class="card">
-            <div class="card-header">
-              <div class="author" style="float: left; clear: left;">
-                Antwort erstellen
-              </div>
+      <div class="row write-answer">
+        <div class="card">
+          <div class="card-header">
+            <div class="author" style="float: left; clear: left;">
+              Antwort erstellen
             </div>
-            <form method="post"
-                  th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                  th:object="${form}">
-              <div class="card-body">
-                <div class="form-group">
+          </div>
+          <form method="post"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                th:object="${form}">
+            <div class="card-body">
+              <div class="form-group">
                 <textarea class="form-control" id="my-textarea" name="postContent"
                           rows="3" th:value="*{postContent}"></textarea>
-
-                </div>
               </div>
-              <button class="btn btn-primary" type="submit">abschicken</button>
-            </form>
-          </div>
+            </div>
+            <button class="btn btn-primary" type="submit">abschicken</button>
+          </form>
         </div>
       </div>
     </div>

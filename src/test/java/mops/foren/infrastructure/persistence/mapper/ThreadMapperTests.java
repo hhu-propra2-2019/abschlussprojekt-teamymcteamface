@@ -1,8 +1,10 @@
 package mops.foren.infrastructure.persistence.mapper;
 
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
+import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
@@ -27,7 +29,7 @@ public class ThreadMapperTests {
     @BeforeEach
     public void setUp() {
         TopicId topicId = new TopicId(2L);
-        lastChange = LocalDateTime.now();
+        this.lastChange = LocalDateTime.now();
 
         TopicDTO topicDTO = TopicDTO.builder() // only Id is needed
                 .id(topicId.getId())
@@ -42,13 +44,21 @@ public class ThreadMapperTests {
                 .threads(new LinkedList<>())
                 .build();
 
+        ForumDTO forumDTO = ForumDTO.builder()
+                .id(10L)
+                .build();
+
         this.threadDTO = ThreadDTO.builder()
                 .id(1L)
+                .forum(forumDTO)
                 .author(this.authorDTO)
-                .lastChangedTime(lastChange)
+                .lastChangedTime(this.lastChange)
                 .topic(topicDTO)
                 .title("thread title")
                 .description("thread description")
+                .anonymous(true)
+                .moderated(false)
+                .visible(true)
                 .build();
     }
 
@@ -108,5 +118,45 @@ public class ThreadMapperTests {
 
         // Assert
         assertThat(lastPostTime).isEqualTo(this.lastChange);
+    }
+
+    @Test
+    public void testForumIdIsCorrectlyMappedFromThreadDTOToModel() {
+        // Act
+        ForumId forumId = ThreadMapper.mapThreadDtoToThread(this.threadDTO)
+                .getForumId();
+
+        // Assert
+        assertThat(forumId.getId()).isEqualTo(10L);
+    }
+
+    @Test
+    public void testAnonymIsCorrectlyMappedFromThreadDTOToModel() {
+        // Act
+        Boolean anonymous = ThreadMapper.mapThreadDtoToThread(this.threadDTO)
+                .getAnonymous();
+
+        // Assert
+        assertThat(anonymous).isTrue();
+    }
+
+    @Test
+    public void testVisibleIsCorrectlyMappedFromThreadDTOToModel() {
+        // Act
+        Boolean visible = ThreadMapper.mapThreadDtoToThread(this.threadDTO)
+                .getVisible();
+
+        // Assert
+        assertThat(visible).isTrue();
+    }
+
+    @Test
+    public void testModeratedIsCorrectlyMappedFromThreadDTOToModel() {
+        // Act
+        Boolean moderated = ThreadMapper.mapThreadDtoToThread(this.threadDTO)
+                .getModerated();
+
+        // Assert
+        assertThat(moderated).isFalse();
     }
 }

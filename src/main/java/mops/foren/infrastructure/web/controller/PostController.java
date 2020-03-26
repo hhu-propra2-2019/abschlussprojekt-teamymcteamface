@@ -18,6 +18,7 @@ import org.springframework.web.context.annotation.SessionScope;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
+
 @Controller
 @SessionScope
 @RequestMapping("/foren/post")
@@ -29,12 +30,14 @@ public class PostController {
     private KeycloakService keycloakService;
     private PostService postService;
 
+
     /**
      * Constructor for ForenController. The parameters are injected.
      *
      * @param userService     - injected UserService (ApplicationService)
      * @param threadService   - ThreadService (ApplicationService)
      * @param keycloakService - KeycloakService (Infrastructure Service)
+     * @param postService     - PostService (PostService)
      */
     public PostController(UserService userService,
                           ThreadService threadService,
@@ -64,6 +67,20 @@ public class PostController {
         Post post = postForm.getPost(user, threadId);
         this.threadService.addPostInThread(threadId, post);
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+    }
+
+    /**
+     * Approve a post.
+     *
+     * @param postIdLong   The post id
+     * @param threadIdLong The thread id
+     * @return Redirect to the thread page
+     */
+    @PostMapping("/approvePost")
+    public String approvePost(@RequestParam("postId") Long postIdLong,
+                              @RequestParam("threadId") Long threadIdLong) {
+        this.postService.setPostVisible(new PostId(postIdLong));
+        return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
     }
 
     /**
