@@ -18,7 +18,6 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Foren - Posts</title>
-
 </head>
 <th:block th:fragment="headcontent">
   <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
@@ -41,9 +40,9 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
+  <h1 th:text="'Du hast gesucht nach: '+ ${content}"></h1>
   <div class="container">
-    <h2 th:text="'Du hast gesucht nach: '+ ${content}"></h2>
-    <div class="content">
+    <div class="content-thread">
       <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
         <div class="card col p-0">
           <div th:class="card-header">
