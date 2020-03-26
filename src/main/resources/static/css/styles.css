@@ -178,3 +178,8 @@ main > div:first-child > h2 {
 .content-search::after {
     clear: right;
 }
+
+.btn-danger {
+    background-color: indianred !important;
+    border-color: indianred !important;
+}
