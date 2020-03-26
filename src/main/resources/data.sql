@@ -68,7 +68,7 @@ VALUES (1,
         '2020-03-12 14:32:04',
         1,
         'Hallo Zusammen \nDie Klausur findet am 13.07. statt ! Um 13:00 in 5D.'
-           , true, true, 1),
+           , FALSE, true, 1),
        (2,
         'studentin1',
         '2020-03-12 15:12:49',

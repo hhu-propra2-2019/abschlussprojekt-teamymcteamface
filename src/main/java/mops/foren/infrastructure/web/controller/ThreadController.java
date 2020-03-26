@@ -79,6 +79,7 @@ public class ThreadController {
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
         model.addAttribute("user", user);
+        model.addAttribute("PermissionDelete", Permission.DELETE_POST);
         model.addAttribute("moderator",
                 user.checkPermission(threadById.getForumId(), Permission.MODERATE_THREAD));
         model.addAttribute("minContentLength", MIN_CONTENT_LENGTH);

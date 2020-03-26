@@ -59,7 +59,8 @@
           <div th:class="card-body">
             <p th:class="card-text" th:text="${post.getText()}"></p>
           </div>
-          <div>
+          <div th:if="${user.checkPermission(post.getForumId(), PermissionDelete, post.getAuthor())
+                         && (post.getAuthor().getName() != 'Unbekannt')}">
             <form class="delete-post-form" method="post"
                   th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
@@ -86,7 +87,9 @@
             <p th:class="card-text" th:text="${post.getText()}"></p>
           </div>
           <ul class="moderate-button-list">
-            <li class="moderate-button">
+            <li class="moderate-button"
+                th:if="${user.checkPermission(post.getForumId().getId(), PermissionDelete, post.getAuthor())
+                           && (post.getAuthor().getName() != 'Unbekannt')}">
               <form method="post" class="delete-post-form"
                     th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},

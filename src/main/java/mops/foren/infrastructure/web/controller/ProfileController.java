@@ -42,7 +42,7 @@ public class ProfileController {
      * Image and roles have to be added in the future.
      *
      * @param token - KeycloakAuthenficationToken
-     * @return
+     * @return The keycloak account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {

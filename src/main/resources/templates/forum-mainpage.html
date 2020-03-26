@@ -66,10 +66,9 @@
             </button>
             <div>
               <form th:if="${permission}"
-                    class="delete-topic-form" 
+                    class="delete-topic-form"
                     method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
-                                  topicId=${topic.getId().getId()})}"
-                    >
+                                  topicId=${topic.getId().getId()})}">
                 <button class="delete-button btn-danger" type="submit">
                   <i class="far fa-trash-alt"></i>
                 </button>
