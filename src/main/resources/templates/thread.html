@@ -102,14 +102,15 @@
            <div th:class="card-body">
              <p th:class="card-text" th:text="${post.getText()}"></p>
            </div>
-           <div>
-            <form method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+           <div th:if="${user.checkPermission(post.getForumId(), PermissionDelete, post.getAuthor())}">
+            <form method="post"
+                  th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
                                   page=${pagingObject.getCurrentPage()})}">
               <button class="btn btn-danger" type="submit">
                 Post löschen
               </button>
-            </form>
+             </form>
            </div>
          </div>
        </span>
@@ -130,19 +131,24 @@
              <p th:class="card-text" th:text="${post.getText()}"></p>
            </div>
            <div class="card-footer bg-transparent border-success">
-           <form method="post"
-                 th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
-             <button class="btn btn-warning" type="submit">
-               Post freigeben
-             </button>
-           </form>
-             <form method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
-                                  postId=${post.getId().getId()},
-                                  page=${pagingObject.getCurrentPage()})}">
-              <button class="btn btn-danger" type="submit">
-                Post löschen
-              </button>
-             </form>
+             <div>
+               <form method="post"
+                     th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+                 <button class="btn btn-warning" type="submit">
+                   Post freigeben
+                 </button>
+               </form>
+             </div>
+             <div th:if="${user.checkPermission(post.getForumId().getId(), deletePermission, post.getAuthor())}">
+               <form method="post"
+                     th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+                                    postId=${post.getId().getId()},
+                                    page=${pagingObject.getCurrentPage()})}">
+                <button class="btn btn-danger" type="submit">
+                  Post löschen
+                </button>
+               </form>
+             </div>
            </div>
 
          </div>
