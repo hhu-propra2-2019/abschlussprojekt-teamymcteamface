@@ -101,9 +101,9 @@ public class ForumController {
      * @param model   model
      * @return The template.
      */
-    @GetMapping("/{forumID}/search")
+    @GetMapping("/search")
     public String searchForum(KeycloakAuthenticationToken token,
-                              @PathVariable Long forumID,
+                              @RequestParam Long forumID,
                               @RequestParam String content,
                               @RequestParam Integer page,
                               Model model) {
@@ -119,7 +119,6 @@ public class ForumController {
             model.addAttribute("content", content);
             return "search-result-posts";
         }
-
         return "error-no-permission";
     }
 
