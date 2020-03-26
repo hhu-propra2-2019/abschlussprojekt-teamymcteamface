@@ -3,6 +3,7 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -77,10 +78,20 @@ public class PostController {
      * @return Redirect to the thread page
      */
     @PostMapping("/approvePost")
-    public String approvePost(@RequestParam("postId") Long postIdLong,
+    public String approvePost(KeycloakAuthenticationToken token,
+                              @RequestParam("postId") Long postIdLong,
                               @RequestParam("threadId") Long threadIdLong) {
-        this.postService.setPostVisible(new PostId(postIdLong));
-        return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
+        User user = this.userService.getUserFromDB(token);
+        Thread thread = this.threadService.getThreadById(new ThreadId(threadIdLong));
+        ForumId forumId = thread.getForumId();
+
+        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
+            this.postService.setPostVisible(new PostId(postIdLong));
+            return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
+        }
+
+        return "error-no-permission";
+
     }
 
     /**
@@ -101,8 +112,7 @@ public class PostController {
         User user = this.userService.getUserFromDB(token);
         Post post = this.postService.getPost(new PostId(postIdLong));
 
-        // TODO forum id aus post
-        if (user.checkPermission(new ForumId(1L), Permission.DELETE_POST, post.getAuthor())) {
+        if (user.checkPermission(post.getForumId(), Permission.DELETE_POST, post.getAuthor())) {
             this.postService.deletePost(post);
             return String.format("redirect:/foren/thread?threadId=%d&page=%d",
                     threadIdLong, page + 1);
