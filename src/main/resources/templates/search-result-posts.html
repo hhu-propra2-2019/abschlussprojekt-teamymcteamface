@@ -59,9 +59,9 @@
           <div th:class="card-body">
             <p th:class="card-text" th:text="${post.getText()}"></p>
           </div>
-          <a class="btn btn-info"
-             th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
-            Zum Beitrag gehen</a>
+          <a th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
+            <button class="btn btn-primary delete-button moderate-button" type="submit">Zum Beitrag gehen</button>
+          </a>
         </div>
       </div>
       <hr class="content-divider" style="width: auto;">
