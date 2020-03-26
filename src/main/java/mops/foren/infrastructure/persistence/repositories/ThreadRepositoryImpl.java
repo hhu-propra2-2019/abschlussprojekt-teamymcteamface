@@ -67,8 +67,8 @@ public class ThreadRepositoryImpl implements IThreadRepository {
 
     @Override
     public ThreadPage getThreadPageFromDbByVisibility(TopicId topicId,
-                                                      int page,
-                                                      boolean visibility) {
+                                                      Integer page,
+                                                      Boolean visibility) {
         Page<ThreadDTO> dtoPage = this.threadRepository
                 .findThreadPageByTopic_IdAndVisible(topicId.getId(),
                         visibility, PageRequest.of(page, PAGE_SIZE));
@@ -85,7 +85,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     }
 
     @Override
-    public int countInvisibleThreads(TopicId topicId) {
+    public Integer countInvisibleThreads(TopicId topicId) {
         return this.threadRepository.countThreadDTOByVisibleAndTopic_Id(false, topicId.getId());
     }
 }

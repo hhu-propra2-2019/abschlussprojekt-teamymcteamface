@@ -65,7 +65,8 @@ public class ThreadController {
         ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
         Thread threadById = this.threadService.getThreadById(threadId);
-        Boolean userAModerator = this.userService.isUserAModerator(token, threadById.getForumId());
+        User user = this.userService.getUserFromDB(token);
+        Boolean userAModerator = user.checkPermission(threadById.getForumId(), Permission.MODERATE_THREAD);
         model.addAttribute("thread", threadById);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());

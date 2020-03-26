@@ -66,7 +66,7 @@ public class TopicController {
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         Boolean checkPermission = this.userService.isUserAModerator(token, forumId);
-        int countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
+        Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forumId);
         model.addAttribute("topicId", topicId);

@@ -12,5 +12,5 @@ public interface ThreadJpaRepository extends PagingAndSortingRepository<ThreadDT
 
     Page<ThreadDTO> findThreadPageByTopic_IdAndVisible(Long id, Boolean visible, Pageable pageable);
 
-    int countThreadDTOByVisibleAndTopic_Id(Boolean visible, Long id);
+    Integer countThreadDTOByVisibleAndTopic_Id(Boolean visible, Long id);
 }
