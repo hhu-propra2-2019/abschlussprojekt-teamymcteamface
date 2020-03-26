@@ -13,7 +13,7 @@ public class Thread {
 
     private final TopicId topicId;
 
-    private final ForumId forumId;
+    private ForumId forumId;
 
     private String title;
 

@@ -15,7 +15,7 @@ public class Post {
 
     private final User author;
 
-    private final ForumId forumId;
+    private ForumId forumId;
 
     private final LocalDateTime creationDate;
 

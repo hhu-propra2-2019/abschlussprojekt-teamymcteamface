@@ -105,10 +105,11 @@ public class ForumController {
      */
     @GetMapping("/search")
     public String searchForum(KeycloakAuthenticationToken token,
-                              @RequestParam Long forumIdLong,
-                              @RequestParam String content,
-                              @RequestParam Integer page,
+                              @RequestParam("forumId") Long forumIdLong,
+                              @RequestParam("content") String content,
+                              @RequestParam("page") Integer page,
                               Model model) {
+
         User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forumIdLong);
 

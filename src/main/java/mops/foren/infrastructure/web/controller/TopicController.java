@@ -5,19 +5,22 @@ import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.*;
-import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.TopicForm;
+import mops.foren.infrastructure.web.ValidationService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+
+import static mops.foren.infrastructure.web.ValidationService.*;
 
 @Controller
 @SessionScope
@@ -30,23 +33,30 @@ public class TopicController {
     private ThreadService threadService;
     private UserService userService;
     private KeycloakService keycloakService;
+    private ValidationService validationService;
+    private String errorMessage;
 
     /**
      * Constructor for TopicController. The parameters that are injected.
      *
-     * @param forumService    - injected ForumService (ApplicationService)
-     * @param threadService   - ThreadService (ApplicationService)
-     * @param userService     - UserService (ApplicationService)
-     * @param keycloakService - KeycloakService (Infrastructure Service)
+     * @param forumService      - injected ForumService (ApplicationService)
+     * @param threadService     - ThreadService (ApplicationService)
+     * @param userService       - UserService (ApplicationService)
+     * @param keycloakService   - KeycloakService (Infrastructure Service)
+     * @param validationService - VerificationService (Infrastructure Service)
      */
-    public TopicController(ForumService forumService, TopicService topicService,
-                           ThreadService threadService, UserService userService,
-                           KeycloakService keycloakService) {
+    public TopicController(ForumService forumService,
+                           TopicService topicService,
+                           ThreadService threadService,
+                           UserService userService,
+                           KeycloakService keycloakService,
+                           ValidationService validationService) {
         this.forumService = forumService;
         this.topicService = topicService;
         this.threadService = threadService;
         this.userService = userService;
         this.keycloakService = keycloakService;
+        this.validationService = validationService;
     }
 
     /**
@@ -63,7 +73,7 @@ public class TopicController {
                               @RequestParam("page") Integer page,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = topicService.getTopic(new TopicId(topicIdLong)).getForumId();
+        ForumId forumId = this.topicService.getTopic(new TopicId(topicIdLong)).getForumId();
         TopicId topicId = new TopicId(topicIdLong);
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
@@ -86,6 +96,40 @@ public class TopicController {
 
 
     /**
+     * Mapping to the topic page for moderation.
+     *
+     * @param topicIdLong the topic id
+     * @param page        The thread page
+     * @param model       the model
+     * @return The template for the threads
+     */
+    @GetMapping("/moderationview")
+    public String enterATopicAsModerator(KeycloakAuthenticationToken token,
+                                         @RequestParam("topicId") Long topicIdLong,
+                                         @RequestParam("page") Integer page,
+                                         Model model) {
+
+        TopicId topicId = new TopicId(topicIdLong);
+        ForumId forumId = this.topicService.getTopic(topicId).getForumId();
+        User user = this.userService.getUserFromDB(token);
+
+        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
+            ThreadPage invisibleThreadPage =
+                    this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
+            model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+            model.addAttribute("forumId", forumId.getId());
+            model.addAttribute("topicId", topicId.getId());
+            model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
+            model.addAttribute("threads", invisibleThreadPage.getThreads());
+            model.addAttribute("deletePermission",
+                    user.checkPermission(forumId, Permission.DELETE_THREAD));
+            return "list-threads-moderator";
+        }
+        return "error-no-permission";
+    }
+
+
+    /**
      * Create a new topic.
      *
      * @param forumIdLong The forum id
@@ -95,8 +139,14 @@ public class TopicController {
     @GetMapping("/create-topic")
     public String createNewTopic(@RequestParam("forumId") Long forumIdLong,
                                  Model model) {
+        model.addAttribute("error", this.errorMessage);
         model.addAttribute("form", new TopicForm("", "", false, false));
         model.addAttribute("forumId", forumIdLong);
+        model.addAttribute("minTitleLength", MIN_TITLE_LENGTH);
+        model.addAttribute("maxTitleLength", MAX_TITLE_LENGTH);
+        model.addAttribute("minDescriptionLength", MIN_DESCRIPTION_LENGTH);
+        model.addAttribute("maxDescriptionLength", MAX_DESCRIPTION_LENGTH);
+
         return "create-topic";
     }
 
@@ -108,11 +158,20 @@ public class TopicController {
      * @return The template for the thread.
      */
     @PostMapping("/add-topic")
-    public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
+    public String newTopic(KeycloakAuthenticationToken token,
                            @RequestParam("forumId") Long forumIdLong,
-                           KeycloakAuthenticationToken token) {
+                           @Valid @ModelAttribute TopicForm topicForm,
+                           BindingResult bindingResult) {
 
-        User user = userService.getUserFromDB(token);
+        if (bindingResult.hasErrors()) {
+            this.errorMessage =
+                    this.validationService.getErrorDescriptionFromErrorObjects(bindingResult);
+
+            return String.format("redirect:/foren/topic/create-topic?forumId=%d", forumIdLong);
+        }
+        this.errorMessage = null;
+
+        User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forumIdLong);
 
         if (user.checkPermission(forumId, Permission.CREATE_TOPIC)) {
@@ -135,83 +194,22 @@ public class TopicController {
                               @RequestParam("topicId") Long topicIdLong) {
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
-        ForumId forumId = topicService.getTopic(topicId).getForumId();
+        ForumId forumId = this.topicService.getTopic(topicId).getForumId();
 
         if (user.checkPermission(forumId, Permission.DELETE_TOPIC)) {
             this.topicService.deleteTopic(topicId);
             return String.format("redirect:/foren/my-forums/enter?forumId=%d", forumId.getId());
         }
-
-        return "error-no-permission";
-
-
-    }
-
-    /**
-     * Mapping to the topic page for moderation.
-     *
-     * @param topicIdLong the topic id
-     * @param page        The thread page
-     * @param model       the model
-     * @return The template for the threads
-     */
-    @PostMapping("moderationview")
-    public String enterATopicAsModerator(@RequestParam("topicId") Long topicIdLong,
-                                         @RequestParam("page") Integer page,
-                                         Model model,
-                                         KeycloakAuthenticationToken token) {
-
-        TopicId topicId = new TopicId(topicIdLong);
-        ForumId forumId = topicService.getTopic(topicId).getForumId();
-        User user = this.userService.getUserFromDB(token);
-
-        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
-            ThreadPage invisibleThreadPage =
-                    this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
-            model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-            model.addAttribute("forumId", forumId);
-            model.addAttribute("topicId", topicId);
-            model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
-            model.addAttribute("threads", invisibleThreadPage.getThreads());
-            model.addAttribute("deletePermission",
-                    user.checkPermission(forumId, Permission.DELETE_THREAD));
-            return "list-threads-moderator";
-        }
-
         return "error-no-permission";
     }
 
-    /**
-     * Approving thread by moderator.
-     *
-     * @param threadIdLong the thread that should be approved
-     * @param token        token from Keycloak
-     * @return The template for the threads.
-     */
-    @PostMapping("approveThread")
-    public String approveThread(@RequestParam("threadId") Long threadIdLong,
-                                KeycloakAuthenticationToken token) {
-
-        User user = this.userService.getUserFromDB(token);
-        Thread thread = threadService.getThreadById(new ThreadId(threadIdLong));
-        ForumId forumId = thread.getForumId();
-        TopicId topicId = thread.getTopicId();
-
-
-        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
-            this.threadService.setThreadVisible(new ThreadId(threadIdLong));
-            return String.format("redirect:/foren/topic?topicId=%d&page=1", topicId.getId());
-        }
-
-        return "error-no-permission";
-    }
 
     /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
      * @param token - KeycloakAuthenticationToken
-     * @return Keycloak Account
+     * @return They keycloak account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {

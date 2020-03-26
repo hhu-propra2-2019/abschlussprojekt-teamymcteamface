@@ -92,12 +92,15 @@ public class PostRepositoryImpl implements IPostRepository {
 
     @Override
     public void deletePostById(PostId postId) {
-        PostDTO postDTO = this.postRepository.findPostById(postId.getId());
-        UserDTO defaultDeletedUserDTO = this.userRepository.findById("Unbekannt").get();
-
-        postDTO.setAuthor(defaultDeletedUserDTO);
-        postDTO.setText("Dieser Beitrag wurde entfernt.");
-
-        this.postRepository.save(postDTO);
+        PostDTO postDTO = this.postRepository.findById(postId.getId()).get();
+        if (postDTO.getVisible()) {
+            UserDTO defaultDeletedUserDTO = this.userRepository.findById("Unbekannt").get();
+            postDTO.setAuthor(defaultDeletedUserDTO);
+            postDTO.setText("Dieser Beitrag wurde entfernt.");
+            this.postRepository.save(postDTO);
+        } else {
+            this.postRepository.delete(postDTO);
+        }
     }
+
 }
