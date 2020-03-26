@@ -2,10 +2,9 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
+import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -26,6 +25,7 @@ import javax.validation.Valid;
 public class TopicController {
 
     private ForumService forumService;
+    private TopicService topicService;
     private ThreadService threadService;
     private UserService userService;
     private KeycloakService keycloakService;
@@ -38,9 +38,11 @@ public class TopicController {
      * @param userService     - UserService (ApplicationService)
      * @param keycloakService - KeycloakService (Infrastructure Service)
      */
-    public TopicController(ForumService forumService, ThreadService threadService,
-                           UserService userService, KeycloakService keycloakService) {
+    public TopicController(ForumService forumService, TopicService topicService,
+                           ThreadService threadService, UserService userService,
+                           KeycloakService keycloakService) {
         this.forumService = forumService;
+        this.topicService = topicService;
         this.threadService = threadService;
         this.userService = userService;
         this.keycloakService = keycloakService;
@@ -49,17 +51,19 @@ public class TopicController {
     /**
      * Mapping to the topic page.
      *
+     * @param token   They keycloak token
      * @param forenID the forum id
      * @param topicID the topic id
      * @param model   the model
      * @return The template for the threads
      */
     @GetMapping("/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID,
+    public String enterATopic(KeycloakAuthenticationToken token,
+                              @PathVariable String forenID,
                               @PathVariable String topicID,
                               @RequestParam("page") Integer page,
                               Model model) {
-
+        User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
@@ -69,6 +73,7 @@ public class TopicController {
         model.addAttribute("topicId", topicID);
         model.addAttribute("pagingObject", threadPage.getPaging());
         model.addAttribute("threads", threadPage.getThreads());
+        model.addAttribute("permission", user.checkPermission(forumId, Permission.DELETE_THREAD));
 
         return "list-threads";
     }
@@ -102,6 +107,32 @@ public class TopicController {
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
         return String.format("redirect:/foren/my-forums/%d", forumIdLong);
+    }
+
+    /**
+     * Delete a topic.
+     *
+     * @param token       The keycloak token
+     * @param forumIdLong The forum Id
+     * @param topicIdLong The topic Id
+     * @return Redirect to forum mainpage or to error page
+     */
+    @PostMapping("/delete-topic")
+    public String deleteTopic(KeycloakAuthenticationToken token,
+                              @RequestParam("forenId") Long forumIdLong,
+                              @RequestParam("topicId") Long topicIdLong) {
+        User user = this.userService.getUserFromDB(token);
+        ForumId forumId = new ForumId(forumIdLong);
+        TopicId topicId = new TopicId(topicIdLong);
+
+        if (user.checkPermission(forumId, Permission.DELETE_TOPIC)) {
+            this.topicService.deleteTopic(topicId);
+            return String.format("redirect:/foren/my-forums/%d", forumIdLong);
+        }
+
+        return "error-no-permission";
+
+
     }
 
     /**

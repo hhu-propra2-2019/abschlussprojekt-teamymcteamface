@@ -20,6 +20,9 @@ public class PostService {
         return this.postRepository.getPostPageFromDB(threadId, page);
     }
 
+    public Post getPost(PostId postId) {
+        return this.postRepository.getPostById(postId);
+    }
 
     /**
      * Method to add a post.
@@ -42,9 +45,7 @@ public class PostService {
      * @param post The post that should be deleted.
      */
     public void deletePost(Post post) {
-        threadModelService.updateLastPostTime(post.getThreadId());
-        //TO-DO
-        throw new UnsupportedOperationException();
+        this.postRepository.deletePostById(post.getId());
     }
 
 }

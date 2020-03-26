@@ -83,7 +83,8 @@ public class ForumController {
         }
         model.addAttribute("topics", this.topicService.getTopics(forumIdWrapped));
         model.addAttribute("forum", this.forumService.getForum(forumIdWrapped));
-
+        model.addAttribute("permission", user.checkPermission(
+                forumIdWrapped, Permission.DELETE_TOPIC));
         return "forum-mainpage";
     }
 

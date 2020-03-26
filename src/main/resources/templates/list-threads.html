@@ -93,6 +93,7 @@
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
@@ -102,6 +103,15 @@
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
+        <td>
+          <form th:if="${permission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId},
+                                  topicId=${topicId},
+                                  threadId=${thread.getId().getId()})}">
+            <button class="btn btn-danger" type="submit">
+              löschen
+            </button>
+          </form>
+        </td>
       </tr>
     </div>
     </tbody>
