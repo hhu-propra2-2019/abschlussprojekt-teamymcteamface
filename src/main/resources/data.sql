@@ -35,52 +35,52 @@ VALUES (1,
 
 INSERT
 INTO `topic` (`id`, `description`, `moderated`, `title`, `forum_id`, `anonymous`)
-VALUES (1, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 1,FALSE),
-       (2, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 1,TRUE),
-       (3, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 1,true),
-       (4, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 2,false),
-       (5, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 2,true),
-       (6, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 2,false),
-       (7, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 3,false),
-       (8, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 3,true),
-       (9, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 3,false),
-       (10, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 4,true),
-       (11, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 4,false),
-       (12, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 4,true);
+VALUES (1, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 1, FALSE),
+       (2, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 1, TRUE),
+       (3, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 1, true),
+       (4, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 2, false),
+       (5, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 2, true),
+       (6, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 2, false),
+       (7, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 3, false),
+       (8, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 3, true),
+       (9, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 3, false),
+       (10, 'Hier sind offizielle Ankündigungen und Informationen', 1, 'Ankündigungen', 4, true),
+       (11, 'Hier kann über Aufgaben und Probleme diskutiert werden', 0, 'Aufgabenstellungen', 4, false),
+       (12, 'Hier werden nur Memes gepostet', 0, 'Off-Topic', 4, true);
 
 INSERT
-INTO thread (id, last_changed_time, author_username, title, topic_id,anonymous)
-VALUES (1,'2020-03-12 16:05:50', 'orga1', 'Klausurtermine', 1,FALSE),
-       (2,'2020-03-12 14:05:50' ,'studentin1', 'Praktikum: Informationen', 1,FALSE),
-       (3, '2020-03-10 14:01:50','orga2', 'Organisation / Austausch', 1,FALSE),
-       (4, '2020-03-12 18:05:50','studentin', 'Tutorenjobs im WS 2020', 1,FALSE),
-       (5, '2019-03-12 08:05:50','orga1', 'Kommt zum Hackathon !', 1,FALSE),
-       (6, '2020-03-12 16:05:50','studentin', 'Ich brauche Hilfe bei Aufgabe 4a', 2,TRUE),
-       (7, '2020-01-31 13:05:50','orga2', 'Was ist eine IDE ?', 2,TRUE),
-       (8, '2020-02-18 13:31:50','studentin3', 'Docker Compose funktioniert nicht :(', 2,TRUE),
-       (9, '2020-03-12 16:05:50','orga', 'Ich will lieber Germanistik studieren', 2,TRUE),
-       (10, '2020-03-20 18:56:50','orga', 'Was ist Hibernate ?', 2,TRUE);
+INTO thread (id, last_changed_time, author_username, title, topic_id, anonymous, forum_id, moderated, visible)
+VALUES (1, '2020-03-12 16:05:50', 'orga1', 'Klausurtermine', 1, FALSE, 1,1,1),
+       (2, '2020-03-12 14:05:50', 'studentin1', 'Praktikum: Informationen', 1, FALSE, 1,1,1),
+       (3, '2020-03-10 14:01:50', 'orga2', 'Organisation / Austausch', 1, FALSE, 1,1,1),
+       (4, '2020-03-12 18:05:50', 'studentin', 'Tutorenjobs im WS 2020', 1, FALSE, 1,1,1),
+       (5, '2019-03-12 08:05:50', 'orga1', 'Kommt zum Hackathon !', 1, FALSE, 1,1,1),
+       (6, '2020-03-12 16:05:50', 'studentin', 'Ich brauche Hilfe bei Aufgabe 4a', 2, TRUE, 1,0,1),
+       (7, '2020-01-31 13:05:50', 'orga2', 'Was ist eine IDE ?', 2, TRUE, 1,0,1),
+       (8, '2020-02-18 13:31:50', 'studentin3', 'Docker Compose funktioniert nicht :(', 2, TRUE, 1,0,1),
+       (9, '2020-03-12 16:05:50', 'orga', 'Ich will lieber Germanistik studieren', 2, TRUE, 1,0,1),
+       (10, '2020-03-20 18:56:50', 'orga', 'Was ist Hibernate ?', 2, TRUE, 1,0,1);
 
 INSERT
-INTO post (id, author_username, date_time, thread_id, text,anonymous)
+INTO post (id, author_username, date_time, thread_id, text, anonymous, visible, forum_id)
 VALUES (1,
         'studentin',
         '2020-03-12 14:32:04',
         1,
         'Hallo Zusammen \nDie Klausur findet am 13.07. statt ! Um 13:00 in 5D.'
-        ,FALSE),
+           , true, true, 1),
        (2,
         'studentin1',
         '2020-03-12 15:12:49',
         1,
         'Och nöö, da bin ich im Urlaub :(',
-        FALSE),
+        FALSE, true, 1),
        (3,
         'orga2',
         '2020-03-12 16:05:50',
         1,
         'hahahaha, verkackt.',
-        FALSE);
+        FALSE, true, 1);
 
 INSERT
 INTO user_forum (username, id)

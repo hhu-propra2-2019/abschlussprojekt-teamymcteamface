@@ -27,6 +27,10 @@ public class ThreadDTO {
 
     private Boolean anonymous;
 
+    private Boolean moderated;
+
+    private Boolean visible;
+
     @UpdateTimestamp
     private LocalDateTime lastChangedTime;
 
@@ -35,6 +39,9 @@ public class ThreadDTO {
 
     @ManyToOne
     private TopicDTO topic;
+
+    @ManyToOne
+    private ForumDTO forum;
 
     @OneToMany(mappedBy = "thread", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PostDTO> posts;

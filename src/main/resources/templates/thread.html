@@ -4,16 +4,16 @@
       xmlns:th="http://www.thymeleaf.org">
 <head>
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
   <script crossorigin="anonymous"
-  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+          integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+          src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
   <script crossorigin="anonymous"
-  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-  src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+          integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+          src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
   <script crossorigin="anonymous"
-  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-  src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+          integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+          src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Foren - Posts</title>
@@ -41,19 +41,18 @@
 </header>
 <main th:fragment="bodycontent">
   <div class="container">
-    <div class="content-thread">
+    <div class=" content-thread">
       <h2 th:class="thread-title" th:text="${thread.getTitle()}">Title</h2>
-      <div th:class="row" th:each="post : ${posts}">
-        <div class="card col p-0">
+      <div class="row" th:each="post : ${posts}">
+        <div class="card col p-0" th:if="${post.getVisible()==true}">
           <div th:class="card-header">
             <div th:class="preview-pic">
-
             </div>
             <div th:class="author"
                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
               Jens Bendisposto
             </div>
-            <div style="" th:class="created-date" th:text="${post.getFormattedDate()}">
+            <div th:class="created-date" th:text="${post.getFormattedDate()}">
               12.03.2020
             </div>
           </div>
@@ -61,7 +60,8 @@
             <p th:class="card-text" th:text="${post.getText()}"></p>
           </div>
           <div>
-            <form class="delete-post-form" method="post" th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+            <form class="delete-post-form" method="post"
+                  th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
                                   page=${pagingObject.getCurrentPage()})}">
               <button class="delete-button btn-danger" type="submit">
@@ -69,6 +69,42 @@
               </button>
             </form>
           </div>
+        </div>
+        <div class="card col p-0 border-warning" th:if="${post.getVisible()==false && moderator==true}">
+          <div th:class="card-header">
+            <div th:class="preview-pic">
+            </div>
+            <div th:class="author"
+                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+              Jens Bendisposto
+            </div>
+            <div th:class="created-date" th:text="${post.getFormattedDate()}">
+              12.03.2020
+            </div>
+          </div>
+          <div th:class="card-body">
+            <p th:class="card-text" th:text="${post.getText()}"></p>
+          </div>
+          <ul class="moderate-button-list">
+            <li class="moderate-button">
+              <form method="post" class="delete-post-form"
+                    th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+                                  postId=${post.getId().getId()},
+                                  page=${pagingObject.getCurrentPage()})}">
+                <button class="delete-button btn-danger" type="submit">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </form>
+            </li>
+            <li class="moderate-button">
+              <form method="post" class="delete-post-form"
+                    th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+                <button class="delete-button btn-warning" type="submit">
+                  Freigeben
+                </button>
+              </form>
+            </li>
+          </ul>
         </div>
       </div>
 
@@ -88,31 +124,33 @@
                   th:text="${i}"
                   type="button">page#
           </button>
-
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer" th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}">
-        <div class="row write-answer">
-          <div class="card">
-            <div class="card-header">
-              <div class="author">
-                Antwort erstellen
+      <div class="row write-answer">
+        <div class="card">
+          <div class="card-header">
+            <div class="author">
+              Antwort erstellen
+            </div>
+          </div>
+          <form method="post"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                th:object="${form}">
+            <div class="card-body">
+              <div class="form-group">
+                <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"
+                     th:text="${error}">
+                  error message goes here (or not)
+                </div>
+                <textarea class="form-control" id="my-textarea" name="postContent"
+                          rows="3" th:value="*{postContent}"
+                          th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}"
+                          required></textarea>
               </div>
             </div>
-            <form method="post"
-                  th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                  th:object="${form}">
-              <div class="card-body">
-                <div class="form-group">
-                <textarea class="form-control" id="my-textarea" name="postContent"
-                          rows="3" th:value="*{postContent}"></textarea>
-
-                </div>
-              </div>
-              <button class="btn btn-primary" type="submit">abschicken</button>
-            </form>
-          </div>
+            <button class="btn btn-primary delete-button moderate-button" type="submit">Abschicken</button>
+          </form>
         </div>
       </div>
     </div>
