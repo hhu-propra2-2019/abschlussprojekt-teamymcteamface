@@ -102,6 +102,9 @@
                     <div th:class="card-body">
                         <p th:class="card-text" th:text="${post.getText()}"></p>
                     </div>
+                    <a class="btn btn-info"
+                       th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
+                        Springe zum Thread</a>
                 </div>
             </div>
 

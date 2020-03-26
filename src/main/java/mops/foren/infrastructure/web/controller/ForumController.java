@@ -93,29 +93,32 @@ public class ForumController {
      * Search all posts in one forum by a text search.
      *
      * @param token   keycloak token
-     * @param forenID Id of the forum you want to search all posts
+     * @param forumID Id of the forum you want to search all posts
      * @param content the text the user searches for
      * @param page    number of page in the paging system
      * @param model   model
      * @return The template.
      */
-    @GetMapping("/{forenID}/search")
+    @GetMapping("/{forumID}/search")
     public String searchForum(KeycloakAuthenticationToken token,
-                              @PathVariable Long forenID,
+                              @PathVariable Long forumID,
                               @RequestParam String content,
                               @RequestParam Integer page,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        if (!user.checkPermission(new ForumId(forenID), Permission.READ_FORUM)) {
-            return "error";
-        }
-        PostPage postPage = this.postService.searchWholeForum(new ForumId(forenID), content,
-                page - 1);
+        ForumId forumId = new ForumId(forumID);
 
-        model.addAttribute("pagingObject", postPage.getPaging());
-        model.addAttribute("posts", postPage.getPosts());
-        model.addAttribute("content", content);
-        return "search-result-posts";
+        if (user.checkPermission(forumId, Permission.READ_FORUM)) {
+            PostPage postPage = this.postService.searchWholeForum(forumId, content,
+                    page - 1);
+
+            model.addAttribute("pagingObject", postPage.getPaging());
+            model.addAttribute("posts", postPage.getPosts());
+            model.addAttribute("content", content);
+            return "search-result-posts";
+        }
+
+        return "error";
     }
 
     /**
