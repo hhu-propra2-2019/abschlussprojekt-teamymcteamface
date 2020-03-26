@@ -16,4 +16,6 @@ public interface IPostRepository {
     List<Post> getPostsFromUser(User user);
 
     List<Post> getAllPostsByThreadId(ThreadId id);
+
+    void deletePostById(PostId postId);
 }

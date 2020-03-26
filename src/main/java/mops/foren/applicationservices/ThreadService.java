@@ -48,4 +48,8 @@ public class ThreadService {
             // ADD
         }
     }
+
+    public void deleteThread(ThreadId threadId) {
+        this.threadRepository.deleteThread(threadId);
+    }
 }
