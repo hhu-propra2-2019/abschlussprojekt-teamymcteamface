@@ -10,11 +10,13 @@ import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
-import mops.foren.infrastructure.web.SearchForm;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -83,7 +85,6 @@ public class ForumController {
             model.addAttribute("topics", this.topicService.getTopics(forumId));
             model.addAttribute("forum", this.forumService.getForum(forumId));
             model.addAttribute("forumId", forumIdLong);
-            model.addAttribute("searchForm", new SearchForm(""));
             model.addAttribute("permission", user.checkPermission(
                     forumId, Permission.DELETE_TOPIC));
             return "forum-mainpage";
@@ -95,10 +96,10 @@ public class ForumController {
     /**
      * Search all posts in one forum by a text search.
      *
-     * @param token       keycloak token
-     * @param forumIdLong the ID of the forum you want to search all posts
-     * @param searchContent     the text the user searches for
-     * @param model       model
+     * @param token         keycloak token
+     * @param forumIdLong   the ID of the forum you want to search all posts
+     * @param searchContent the text the user searches for
+     * @param model         model
      * @return The template.
      */
     @GetMapping("/search")
@@ -112,7 +113,7 @@ public class ForumController {
         ForumId forumId = new ForumId(forumIdLong);
 
         if (user.checkPermission(forumId, Permission.READ_FORUM)) {
-            PostPage postPage = this.postService.searchWholeForum(forumId, searchContent,page - 1);
+            PostPage postPage = this.postService.searchWholeForum(forumId, searchContent, page - 1);
 
             model.addAttribute("pagingObject", postPage.getPaging());
             model.addAttribute("posts", postPage.getPosts());
