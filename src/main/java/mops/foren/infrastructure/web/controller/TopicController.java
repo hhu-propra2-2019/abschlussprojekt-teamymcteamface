@@ -68,7 +68,6 @@ public class TopicController {
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
-        Boolean checkPermission = user.checkPermission(forumId, Permission.MODERATE_THREAD);
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
         model.addAttribute("forumId", forumId);
@@ -76,8 +75,10 @@ public class TopicController {
         model.addAttribute("pagingObject", visibleThreadPage.getPaging());
         model.addAttribute("threads", visibleThreadPage.getThreads());
         model.addAttribute("countInvisibleThreads", countInvisibleThreads);
-        model.addAttribute("moderate-permission", checkPermission);
-        model.addAttribute("delete-permission", user.checkPermission(forumId, Permission.DELETE_THREAD));
+        model.addAttribute("moderatePermission",
+                user.checkPermission(forumId, Permission.MODERATE_THREAD));
+        model.addAttribute("deletePermission",
+                user.checkPermission(forumId, Permission.DELETE_THREAD));
 
         return "list-threads";
     }
@@ -140,21 +141,6 @@ public class TopicController {
 
     }
 
-    /**
-     * Adds the account object to each request.
-     * Image and roles have to be added in the future.
-     *
-     * @param token - KeycloakAuthenficationToken
-     * @return
-     */
-    @ModelAttribute("account")
-    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
-        if (token == null) {
-            return null;
-        }
-
-        return this.keycloakService.createAccountFromPrincipal(token);
-    }
 
     /**
      * Mapping to the topic page for moderation.
@@ -174,18 +160,20 @@ public class TopicController {
         ForumId forumId = new ForumId(forumIdLong);
         TopicId topicId = new TopicId(topicIdLong);
         User user = this.userService.getUserFromDB(token);
-        Boolean checkPermission = user.checkPermission(forumId, Permission.MODERATE_THREAD);
-        if (!checkPermission) {
-            return "error-no-permission";
+
+        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
+            ThreadPage invisibleThreadPage =
+                    this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
+            model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+            model.addAttribute("forumId", forumId);
+            model.addAttribute("topicId", topicId);
+            model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
+            model.addAttribute("threads", invisibleThreadPage.getThreads());
+            model.addAttribute("deletePermission", user.checkPermission(forumId, Permission.DELETE_THREAD));
+            return "list-threads-moderator";
         }
-        ThreadPage invisibleThreadPage =
-                this.threadService.getThreadPageByVisibility(topicId, page - 1, false);
-        model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
-        model.addAttribute("forumId", forumId);
-        model.addAttribute("topicId", topicId);
-        model.addAttribute("pagingObject", invisibleThreadPage.getPaging());
-        model.addAttribute("threads", invisibleThreadPage.getThreads());
-        return "list-threads-moderator";
+
+        return "error-no-permission";
     }
 
     /**
@@ -205,13 +193,30 @@ public class TopicController {
 
         ForumId forumIdWrapped = new ForumId(forumIdLong);
         User user = this.userService.getUserFromDB(token);
-        Boolean checkPermission = user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD);
-        if (!checkPermission) {
-            return "error-no-permission";
+
+        if (user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD)) {
+            ThreadId threadId = new ThreadId(threadIdLong);
+            this.threadService.setThreadVisible(threadId);
+            return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
         }
-        ThreadId threadId = new ThreadId(threadIdLong);
-        this.threadService.setThreadVisible(threadId);
-        return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
+
+        return "error-no-permission";
+    }
+
+    /**
+     * Adds the account object to each request.
+     * Image and roles have to be added in the future.
+     *
+     * @param token - KeycloakAuthenficationToken
+     * @return
+     */
+    @ModelAttribute("account")
+    public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
+        if (token == null) {
+            return null;
+        }
+
+        return this.keycloakService.createAccountFromPrincipal(token);
     }
 
 }

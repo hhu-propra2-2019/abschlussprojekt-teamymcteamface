@@ -69,6 +69,13 @@ public class PostController {
         return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
     }
 
+    /**
+     * Approve a post.
+     *
+     * @param postIdLong   The post id
+     * @param threadIdLong The thread id
+     * @return Redirect to the thread page
+     */
     @PostMapping("/approvePost")
     public String approvePost(@RequestParam("postId") Long postIdLong,
                               @RequestParam("threadId") Long threadIdLong) {
