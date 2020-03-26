@@ -104,7 +104,7 @@
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
         <td>
-          <form method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId},
+          <form th:if="${permission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId},
                                   topicId=${topicId},
                                   threadId=${thread.getId().getId()})}">
             <button class="btn btn-danger" type="submit">

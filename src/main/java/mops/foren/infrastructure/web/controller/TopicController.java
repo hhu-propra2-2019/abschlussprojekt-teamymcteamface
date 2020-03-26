@@ -51,17 +51,19 @@ public class TopicController {
     /**
      * Mapping to the topic page.
      *
+     * @param token   They keycloak token
      * @param forenID the forum id
      * @param topicID the topic id
      * @param model   the model
      * @return The template for the threads
      */
     @GetMapping("/{forenID}/{topicID}")
-    public String enterATopic(@PathVariable String forenID,
+    public String enterATopic(KeycloakAuthenticationToken token,
+                              @PathVariable String forenID,
                               @PathVariable String topicID,
                               @RequestParam("page") Integer page,
                               Model model) {
-
+        User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(Long.valueOf(forenID));
         TopicId topicId = new TopicId(Long.valueOf(topicID));
         ThreadPage threadPage = this.threadService.getThreads(topicId, page - 1);
@@ -71,6 +73,7 @@ public class TopicController {
         model.addAttribute("topicId", topicID);
         model.addAttribute("pagingObject", threadPage.getPaging());
         model.addAttribute("threads", threadPage.getThreads());
+        model.addAttribute("permission", user.checkPermission(forumId, Permission.DELETE_THREAD));
 
         return "list-threads";
     }
