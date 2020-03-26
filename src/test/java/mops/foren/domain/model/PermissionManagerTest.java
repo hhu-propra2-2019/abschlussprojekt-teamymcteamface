@@ -87,8 +87,19 @@ class PermissionManagerTest {
     }
 
     @Test
-    void testCheckPermission() {
+    void testCheckPermission_UserIsAuthorButNoSpecialPermission() {
+        //Arrange
+        ForumId forumId1 = new ForumId(1L);
 
+        User sebastian = User.builder().name("Sebastian").build();
+
+        //Act
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
+        Boolean hasPermission = this.permissionManager.checkPermission(
+                forumId1, Permission.DELETE_POST, sebastian, sebastian);
+
+        //Assert
+        assertThat(hasPermission).isTrue();
     }
 
     @Test
