@@ -92,7 +92,7 @@ public class ThreadController {
                                   @RequestParam Long topicId,
                                   Model model) {
         model.addAttribute("form", new ThreadForm("", ""));
-        model.addAttribute("forumId", new ForumId(forumId));
+        model.addAttribute("forumId", new ForumId(forumIdLong));
         model.addAttribute("topicId", new TopicId(topicId));
         return "create-thread";
     }
