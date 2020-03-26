@@ -94,145 +94,156 @@ class PermissionManagerTest {
     // function in the arrage Part of the next tests.
 
     @Test
-    void testCheckPermission_hasNoRoleInForum(){
+    void testCheckPermission_hasNoRoleInForum() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,studentPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.studentPermission);
 
         //assert
         assertThat(hasPermission).isFalse();
     }
 
     @Test
-    void testCheckPermission_isStudentChecksStudentPermission(){
+    void testCheckPermission_isStudentChecksStudentPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.STUDENT);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,studentPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.studentPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_isStudentButChecksModeratorPermission(){
+    void testCheckPermission_isStudentButChecksModeratorPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.STUDENT);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,moderatorPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.moderatorPermission);
 
         //assert
         assertThat(hasPermission).isFalse();
     }
 
     @Test
-    void testCheckPermission_isStudentButChecksAdminPermission(){
+    void testCheckPermission_isStudentButChecksAdminPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.STUDENT);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,adminPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.adminPermission);
 
         //assert
         assertThat(hasPermission).isFalse();
     }
 
     @Test
-    void testCheckPermission_isModeratorChecksStudentPermission(){
+    void testCheckPermission_isModeratorChecksStudentPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.MODERATOR);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.MODERATOR);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,studentPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.studentPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_isModeratorChecksModeratorPermission(){
+    void testCheckPermission_isModeratorChecksModeratorPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.MODERATOR);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.MODERATOR);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,moderatorPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.moderatorPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_isModeratorButChecksAdminPermission(){
+    void testCheckPermission_isModeratorButChecksAdminPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.MODERATOR);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.MODERATOR);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,adminPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.adminPermission);
 
         //assert
         assertThat(hasPermission).isFalse();
     }
 
     @Test
-    void testCheckPermission_isAdminChecksStudentPermission(){
+    void testCheckPermission_isAdminChecksStudentPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.ADMIN);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,studentPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.studentPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_isAdminChecksModeratorPermission(){
+    void testCheckPermission_isAdminChecksModeratorPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.ADMIN);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,moderatorPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.moderatorPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_isAdminChecksAdminPermission(){
+    void testCheckPermission_isAdminChecksAdminPermission() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.ADMIN);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
 
         //act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,adminPermission);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1, this.adminPermission);
 
         //assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_NotAuthorNoGenerallRights(){
+    void testCheckPermission_NotAuthorNoGenerallRights() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.STUDENT);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
         User user1 = User.builder().name("User1").build();
         User user2 = User.builder().name("User2").build();
 
         //Act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,
-                adminPermission,user1,user2);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1,
+                        this.adminPermission, user1, user2);
 
         // Assert
         assertThat(hasPermission).isFalse();
@@ -240,52 +251,53 @@ class PermissionManagerTest {
     }
 
     @Test
-    void testCheckPermission_IsAuthorNoGenerallRights(){
+    void testCheckPermission_IsAuthorNoGenerallRights() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.STUDENT);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
         User user1 = User.builder().name("User1").build();
 
         //Act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,
-                adminPermission,user1,user1);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1,
+                        this.adminPermission, user1, user1);
 
         // Assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_NotAuthorHasGenerallRights(){
+    void testCheckPermission_NotAuthorHasGenerallRights() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.ADMIN);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
         User user1 = User.builder().name("User1").build();
         User user2 = User.builder().name("User2").build();
 
         //Act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,
-                adminPermission,user1,user2);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1,
+                        this.adminPermission, user1, user2);
 
         // Assert
         assertThat(hasPermission).isTrue();
     }
 
     @Test
-    void testCheckPermission_IsAuthorHasGenerallRights(){
+    void testCheckPermission_IsAuthorHasGenerallRights() {
         //Arrange
         ForumId forumId1 = new ForumId(1L);
-        permissionManager.addForumWithPermission(forumId1.getId(),Role.ADMIN);
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
         User user1 = User.builder().name("User1").build();
 
         //Act
-        Boolean hasPermission = permissionManager.checkPermission(forumId1,
-                adminPermission,user1,user1);
+        Boolean hasPermission = this.permissionManager
+                .checkPermission(forumId1,
+                        this.adminPermission, user1, user1);
 
         // Assert
         assertThat(hasPermission).isTrue();
     }
-
-
 
 
     @Test
