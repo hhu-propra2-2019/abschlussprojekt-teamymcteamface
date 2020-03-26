@@ -60,4 +60,8 @@ public class ThreadService {
     public Integer countInvisibleThreads(TopicId topicId) {
         return this.threadRepository.countInvisibleThreads(topicId);
     }
+
+    public void deleteThread(ThreadId threadId) {
+        this.threadRepository.deleteThread(threadId);
+    }
 }

@@ -97,4 +97,12 @@ public class TopicRepositoryImpl implements ITopicRepository {
 
         this.threadRepositoryImpl.addPostInThread(new ThreadId(savedThread.getId()), firstPost);
     }
+
+    @Override
+    public void deleteTopic(TopicId topicId) {
+        TopicDTO topicDTO = this.topicRepository.findById(topicId.getId()).get();
+        this.topicRepository.delete(topicDTO);
+    }
+
+
 }

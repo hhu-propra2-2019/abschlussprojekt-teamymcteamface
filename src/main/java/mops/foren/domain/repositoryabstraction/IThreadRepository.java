@@ -18,4 +18,6 @@ public interface IThreadRepository {
     void setThreadVisible(ThreadId threadId);
 
     Integer countInvisibleThreads(TopicId topicId);
+
+    void deleteThread(ThreadId threadId);
 }

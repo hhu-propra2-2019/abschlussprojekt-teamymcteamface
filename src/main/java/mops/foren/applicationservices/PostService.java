@@ -1,6 +1,9 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.*;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Post;
+import mops.foren.domain.model.PostId;
+import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.domain.services.ThreadModelService;
@@ -20,20 +23,10 @@ public class PostService {
         return this.postRepository.getPostPageFromDB(threadId, page);
     }
 
-
-    /**
-     * Method to add a post.
-     *
-     * @param post    The post to add
-     * @param user    The user that wants to create the post
-     * @param forumId The threadId the post belongs to
-     */
-    public void addPost(Post post, User user, ForumId forumId) {
-        if (user.checkPermission(forumId, Permission.CREATE_POST)) {
-            // ADD
-        }
-
+    public Post getPost(PostId postId) {
+        return this.postRepository.getPostById(postId);
     }
+
 
     /**
      * This method should delete a post.
@@ -42,9 +35,7 @@ public class PostService {
      * @param post The post that should be deleted.
      */
     public void deletePost(Post post) {
-        this.threadModelService.updateLastPostTime(post.getThreadId());
-        //TO-DO
-        throw new UnsupportedOperationException();
+        this.postRepository.deletePostById(post.getId());
     }
 
     public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {

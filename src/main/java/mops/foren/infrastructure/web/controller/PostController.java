@@ -3,10 +3,7 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Post;
-import mops.foren.domain.model.PostId;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.PostForm;
@@ -20,6 +17,7 @@ import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+
 
 @Controller
 @SessionScope
@@ -41,12 +39,14 @@ public class PostController {
      * @param keycloakService - KeycloakService (Infrastructure Service)
      * @param postService     - PostService (PostService)
      */
-    public PostController(UserService userService, ThreadService threadService,
-                          KeycloakService keycloakService, PostService postService) {
+    public PostController(UserService userService,
+                          ThreadService threadService,
+                          PostService postService,
+                          KeycloakService keycloakService) {
         this.userService = userService;
         this.threadService = threadService;
-        this.keycloakService = keycloakService;
         this.postService = postService;
+        this.keycloakService = keycloakService;
     }
 
     /**
@@ -77,6 +77,34 @@ public class PostController {
     }
 
     /**
+     * Delete a post.
+     *
+     * @param token        The key cloak token
+     * @param threadIdLong The thread id
+     * @param postIdLong   The post id
+     * @param page         The current page
+     * @return The thread page or the error
+     */
+    @PostMapping("/delete-post")
+    public String deletePost(KeycloakAuthenticationToken token,
+                             @RequestParam("threadId") Long threadIdLong,
+                             @RequestParam("postId") Long postIdLong,
+                             @RequestParam("page") Integer page) {
+
+        User user = this.userService.getUserFromDB(token);
+        Post post = this.postService.getPost(new PostId(postIdLong));
+
+        // TODO forum id aus post
+        if (user.checkPermission(new ForumId(1L), Permission.DELETE_POST, post.getAuthor())) {
+            this.postService.deletePost(post);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d",
+                    threadIdLong, page + 1);
+        }
+        return "error-no-permission";
+    }
+
+
+    /**
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
@@ -91,5 +119,6 @@ public class PostController {
 
         return this.keycloakService.createAccountFromPrincipal(token);
     }
+
 
 }

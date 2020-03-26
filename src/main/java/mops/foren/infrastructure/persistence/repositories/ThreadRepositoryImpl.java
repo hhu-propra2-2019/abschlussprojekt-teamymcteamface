@@ -88,4 +88,10 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public Integer countInvisibleThreads(TopicId topicId) {
         return this.threadRepository.countThreadDTOByVisibleAndTopic_Id(false, topicId.getId());
     }
+
+    @Override
+    public void deleteThread(ThreadId threadId) {
+        ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
+        this.threadRepository.delete(threadDTO);
+    }
 }

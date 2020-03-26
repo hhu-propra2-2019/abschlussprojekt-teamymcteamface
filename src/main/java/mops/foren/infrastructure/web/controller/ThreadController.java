@@ -58,21 +58,24 @@ public class ThreadController {
      * @return The template for the thread
      */
     @GetMapping
-    public String displayAThread(@RequestParam("threadId") Long threadID,
+    public String displayAThread(KeycloakAuthenticationToken token,
+                                 @RequestParam("threadId") Long threadID,
                                  @RequestParam("page") Integer page,
-                                 Model model,
-                                 KeycloakAuthenticationToken token) {
+                                 Model model) {
+        User user = this.userService.getUserFromDB(token);
         ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
         Thread threadById = this.threadService.getThreadById(threadId);
-        User user = this.userService.getUserFromDB(token);
-        Boolean userAModerator = user.checkPermission(threadById.getForumId(),
+
+        Boolean isModerator = user.checkPermission(threadById.getForumId(),
                 Permission.MODERATE_THREAD);
         model.addAttribute("thread", threadById);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
         model.addAttribute("form", new PostForm(""));
-        model.addAttribute("moderator", userAModerator);
+        model.addAttribute("moderator", isModerator);
+        model.addAttribute("user", user);
+
         return "thread";
     }
 
@@ -114,6 +117,35 @@ public class ThreadController {
         this.topicService.addThreadInTopic(topicId, thread);
         return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
     }
+
+    /**
+     * Delete a thread.
+     *
+     * @param token        The keycloak token
+     * @param forenIdLong  The forum id
+     * @param topicIdLong  The topic id
+     * @param threadIdLong The thread id
+     * @return Redirect to list-thread or to error page
+     */
+    @PostMapping("/delete-thread")
+    public String deleteThread(KeycloakAuthenticationToken token,
+                               @RequestParam("forenId") Long forenIdLong,
+                               @RequestParam("topicId") Long topicIdLong,
+                               @RequestParam("threadId") Long threadIdLong) {
+        User user = this.userService.getUserFromDB(token);
+        ForumId forumId = new ForumId(forenIdLong);
+        ThreadId threadId = new ThreadId(threadIdLong);
+        Thread thread = this.threadService.getThreadById(threadId);
+
+        if (user.checkPermission(forumId, Permission.DELETE_THREAD, thread.getAuthor())) {
+            this.threadService.deleteThread(threadId);
+            return String.format("redirect:/foren/topic/%d/%d/%s",
+                    forenIdLong, topicIdLong, "?page=1");
+        }
+
+        return "error-no-permission";
+    }
+
 
     /**
      * Adds the account object to each request.

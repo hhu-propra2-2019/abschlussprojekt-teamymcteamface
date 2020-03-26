@@ -17,4 +17,6 @@ public interface IPostRepository {
     PostPage searchWholeForumForContent(ForumId forumId, String content, Integer page);
 
     void setPostVisible(PostId postId);
+
+    void deletePostById(PostId postId);
 }
