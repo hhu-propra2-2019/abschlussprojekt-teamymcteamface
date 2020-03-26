@@ -208,8 +208,8 @@ public class TopicController {
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
-     * @param token - KeycloakAuthenficationToken
-     * @return
+     * @param token - KeycloakAuthenticationToken
+     * @return Keycloak Account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {
