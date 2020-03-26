@@ -1,10 +1,10 @@
 package mops.foren.domain.repositoryabstraction;
 
-import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
+
+import java.util.List;
 
 public interface IThreadRepository {
     ThreadPage getThreadPageFromDB(TopicId topicId, Integer page);
@@ -20,4 +20,6 @@ public interface IThreadRepository {
     Integer countInvisibleThreads(TopicId topicId);
 
     void deleteThread(ThreadId threadId);
+
+    List<Thread> getThreadByForumId(ForumId forumId);
 }

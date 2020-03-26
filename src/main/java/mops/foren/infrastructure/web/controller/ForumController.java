@@ -4,6 +4,7 @@ import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.User;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 @Controller
 @SessionScope
@@ -61,7 +63,9 @@ public class ForumController {
     public String allForum(KeycloakAuthenticationToken token,
                            Model model) {
         User user = this.userService.getUserFromDB(token);
-        model.addAttribute("forums", this.forumService.getForums(user));
+        List<Forum> forums = this.forumService.getForums(user);
+        forums.forEach(f -> this.forumService.updateLastTimeChanged(f));
+        model.addAttribute("forums", forums);
         model.addAttribute("forum", new ForumForm("", ""));
         return "my-forums";
     }

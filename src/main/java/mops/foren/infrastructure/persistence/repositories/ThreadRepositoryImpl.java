@@ -14,6 +14,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -93,5 +95,13 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void deleteThread(ThreadId threadId) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         this.threadRepository.delete(threadDTO);
+    }
+
+    @Override
+    public List<Thread> getThreadByForumId(ForumId forumId) {
+        List<ThreadDTO> threadDTOsByForum_id = this.threadRepository.findThreadDTOByForum_Id(forumId.getId());
+        return threadDTOsByForum_id.stream()
+                .map(ThreadMapper::mapThreadDtoToThread)
+                .collect(Collectors.toList());
     }
 }
