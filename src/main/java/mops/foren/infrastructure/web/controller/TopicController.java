@@ -51,21 +51,21 @@ public class TopicController {
     /**
      * Mapping to the topic page.
      *
-     * @param token   They keycloak token
-     * @param forenID the forum id
-     * @param topicID the topic id
-     * @param model   the model
+     * @param token       They keycloak token
+     * @param forumIdLong the forum id
+     * @param topicIdLong the topic id
+     * @param model       the model
      * @return The template for the threads
      */
-    @GetMapping("/{forenID}/{topicID}")
+    @GetMapping
     public String enterATopic(KeycloakAuthenticationToken token,
-                              @PathVariable String forenID,
-                              @PathVariable String topicID,
+                              @RequestParam("forumId") Long forumIdLong,
+                              @RequestParam("topicId") Long topicIdLong,
                               @RequestParam("page") Integer page,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(Long.valueOf(forenID));
-        TopicId topicId = new TopicId(Long.valueOf(topicID));
+        ForumId forumId = new ForumId(forumIdLong);
+        TopicId topicId = new TopicId(topicIdLong);
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
@@ -87,15 +87,15 @@ public class TopicController {
     /**
      * Create a new topic.
      *
-     * @param forenID The forum id
-     * @param model   The model
+     * @param forumIdLong The forum id
+     * @param model       The model
      * @return The template for creating a new topic
      */
-    @GetMapping("/{forenID}/new-topic")
-    public String createNewTopic(@PathVariable String forenID,
+    @GetMapping("/create-topic")
+    public String createNewTopic(@RequestParam("forumId") Long forumIdLong,
                                  Model model) {
         model.addAttribute("form", new TopicForm("", "", false, false));
-        model.addAttribute("forenId", forenID);
+        model.addAttribute("forumId", forumIdLong);
         return "create-topic";
     }
 
@@ -106,13 +106,13 @@ public class TopicController {
      * @param forumIdLong The id of the thread the post is in.
      * @return The template for the thread
      */
-    @PostMapping("/new-topic")
+    @PostMapping("/add-topic")
     public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
-                           @RequestParam("forenId") Long forumIdLong) {
+                           @RequestParam("forumId") Long forumIdLong) {
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
-        return String.format("redirect:/foren/my-forums/%d", forumIdLong);
+        return String.format("redirect:/foren/my-forums/?forumId=%d", forumIdLong);
     }
 
     /**
@@ -125,7 +125,7 @@ public class TopicController {
      */
     @PostMapping("/delete-topic")
     public String deleteTopic(KeycloakAuthenticationToken token,
-                              @RequestParam("forenId") Long forumIdLong,
+                              @RequestParam("forumId") Long forumIdLong,
                               @RequestParam("topicId") Long topicIdLong) {
         User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forumIdLong);
@@ -198,7 +198,7 @@ public class TopicController {
         if (user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD)) {
             ThreadId threadId = new ThreadId(threadIdLong);
             this.threadService.setThreadVisible(threadId);
-            return "redirect:/foren/topic/" + forumIdLong + "/" + topicIdLong + "?page=1";
+            return String.format("redirect:/foren/topic/?forumId=%d&topicId=%d&page=1", forumIdLong, topicIdLong);
         }
 
         return "error-no-permission";

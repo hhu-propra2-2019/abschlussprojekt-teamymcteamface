@@ -91,19 +91,21 @@
       accusantium in aspernatur natus labore facilis animi harum!
     </div>
     <br>
-    <button class="btn btn-primary"
-            th:onclick="location.href = '/foren/topic/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
-      erstellen
-    </button>
+    <a th:href="@{/foren/topic/create-topic(forumId=${forumId})}">
+      <button class="btn btn-primary">
+        Forum erstellen
+      </button>
+    </a>
     <div class="card-deck">
       <div th:each="topic : ${topics}">
         <div class="card">
           <div class="card-body">
             <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
-            <button class="btn btn-primary"
-                    th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
-                    type="button">Betreten
-            </button>
+            <a th:href="@{/foren/topic(forumId=${forumId}, topicId=${topic.getId().getId()}, page=1)}">
+              <button class="btn btn-primary"
+                      type="button">Betreten
+              </button>
+            </a>
             <div>
               <form th:if="${permission}"
                     method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},

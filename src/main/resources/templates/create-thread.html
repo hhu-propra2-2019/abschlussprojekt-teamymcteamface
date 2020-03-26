@@ -57,7 +57,7 @@
 </header>
 <main th:fragment="bodycontent">
   <h1>Thread erstellen:</h1>
-  <form method="post" th:action="@{/foren/thread/add-thread(forenId=${forenId.getId()},topicId=${topicId.getId()})}"
+  <form method="post" th:action="@{/foren/thread/add-thread(forumId=${forumId.getId()},topicId=${topicId.getId()})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>

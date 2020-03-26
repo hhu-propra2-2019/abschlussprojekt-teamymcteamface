@@ -57,7 +57,7 @@
 </header>
 <main th:fragment="bodycontent">
   <h1>Topic erstellen:</h1>
-  <form method="post" th:action="@{/foren/topic/new-topic(forenId=${forenId})}"
+  <form method="post" th:action="@{/foren/topic/add-topic(forumId=${forumId})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>

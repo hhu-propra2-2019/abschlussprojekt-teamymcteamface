@@ -88,11 +88,11 @@ public class ThreadController {
      * @return The template to create a new thread.
      */
     @GetMapping("/new-thread")
-    public String createNewThread(@RequestParam Long forumId,
+    public String createNewThread(@RequestParam("forumId") Long forumIdLong,
                                   @RequestParam Long topicId,
                                   Model model) {
         model.addAttribute("form", new ThreadForm("", ""));
-        model.addAttribute("forenId", new ForumId(forumId));
+        model.addAttribute("forumId", new ForumId(forumId));
         model.addAttribute("topicId", new TopicId(topicId));
         return "create-thread";
     }
@@ -101,46 +101,48 @@ public class ThreadController {
      * Creates a thread and redirects to the topic page.
      *
      * @param token       The user token
-     * @param forenIdLong The forum id
+     * @param forumIdLong The forum id
      * @param topicIdLong The topic id
      * @param threadForm  The form that that includes the new thread
-     * @return The topic page template
+     * @return The topic page template.
      */
     @PostMapping("/add-thread")
     public String addNewThread(KeycloakAuthenticationToken token,
-                               @RequestParam("forenId") Long forenIdLong,
+                               @RequestParam("forumId") Long forumIdLong,
                                @RequestParam("topicId") Long topicIdLong,
                                @Valid @ModelAttribute ThreadForm threadForm) {
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         Thread thread = threadForm.getThread(user, topicId);
         this.topicService.addThreadInTopic(topicId, thread);
-        return String.format("redirect:/foren/topic/%d/%d/%s", forenIdLong, topicIdLong, "?page=1");
+        return String.
+                format("redirect:/foren/topic/?forumId=%d&topicId=%d&page=%d",
+                        forumIdLong, topicIdLong, 1);
     }
 
     /**
      * Delete a thread.
      *
      * @param token        The keycloak token
-     * @param forenIdLong  The forum id
+     * @param forumIdLong  The forum id
      * @param topicIdLong  The topic id
      * @param threadIdLong The thread id
      * @return Redirect to list-thread or to error page
      */
     @PostMapping("/delete-thread")
     public String deleteThread(KeycloakAuthenticationToken token,
-                               @RequestParam("forenId") Long forenIdLong,
+                               @RequestParam("forumId") Long forumIdLong,
                                @RequestParam("topicId") Long topicIdLong,
                                @RequestParam("threadId") Long threadIdLong) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(forenIdLong);
+        ForumId forumId = new ForumId(forumIdLong);
         ThreadId threadId = new ThreadId(threadIdLong);
         Thread thread = this.threadService.getThreadById(threadId);
 
         if (user.checkPermission(forumId, Permission.DELETE_THREAD, thread.getAuthor())) {
             this.threadService.deleteThread(threadId);
-            return String.format("redirect:/foren/topic/%d/%d/%s",
-                    forenIdLong, topicIdLong, "?page=1");
+            return String.format("redirect:/foren/topic?forumId=%d&topicId=%d&page=%d",
+                    forumIdLong, topicIdLong, 1);
         }
 
         return "error-no-permission";
