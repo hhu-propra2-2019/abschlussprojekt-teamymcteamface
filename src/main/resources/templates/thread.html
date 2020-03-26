@@ -167,23 +167,29 @@
       </ul>
       <br><br>
       <div class="row write-answer">
-        <div class="card">
-          <div class="card-header">
-            <div class="author" style="float: left; clear: left;">
-              Antwort erstellen
-            </div>
-          </div>
-          <form method="post"
-                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
-                th:object="${form}">
-            <div class="card-body">
-              <div class="form-group">
-                <textarea class="form-control" id="my-textarea" name="postContent"
-                          rows="3" th:value="*{postContent}"></textarea>
+          <div class="card">
+            <div class="card-header">
+              <div class="author" style="float: left; clear: left;">
+                Antwort erstellen
               </div>
             </div>
-            <button class="btn btn-primary" type="submit">abschicken</button>
-          </form>
+            <form method="post"
+                  th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                  th:object="${form}">
+              <div class="card-body">
+                <div class="form-group">
+                  <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"
+                       th:text="${error}">
+                    error message goes here (or not)
+                  </div>
+                  <textarea class="form-control" id="my-textarea" name="postContent"
+                            rows="3" th:value="*{postContent}"
+                            th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}" required></textarea>
+                </div>
+              </div>
+              <button class="btn btn-primary" type="submit">abschicken</button>
+            </form>
+
         </div>
       </div>
     </div>

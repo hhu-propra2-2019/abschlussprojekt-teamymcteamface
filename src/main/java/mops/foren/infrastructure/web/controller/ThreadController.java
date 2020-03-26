@@ -7,18 +7,18 @@ import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.PostPage;
-import mops.foren.infrastructure.web.Account;
-import mops.foren.infrastructure.web.KeycloakService;
-import mops.foren.infrastructure.web.PostForm;
-import mops.foren.infrastructure.web.ThreadForm;
+import mops.foren.infrastructure.web.*;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+
+import static mops.foren.infrastructure.web.ValidationService.*;
 
 @Controller
 @SessionScope
@@ -30,24 +30,29 @@ public class ThreadController {
     private UserService userService;
     private TopicService topicService;
     private KeycloakService keycloakService;
+    private ValidationService validationService;
+    private String threadErrorMessage;
 
     /**
      * Constructor for ThreadController. The parameters are injected.
      *
-     * @param threadService   - ThreadService (ApplicationService)
-     * @param postService     - injected PostService (ApplicationService)
-     * @param userService     - injected UserService (ApplicationService)
-     * @param topicService    - TopicService (ApplicationService)
-     * @param keycloakService - KeycloakService (Infrastructure Service)
+     * @param threadService     - ThreadService (ApplicationService)
+     * @param postService       - injected PostService (ApplicationService)
+     * @param userService       - injected UserService (ApplicationService)
+     * @param topicService      - TopicService (ApplicationService)
+     * @param keycloakService   - KeycloakService (Infrastructure Service)
+     * @param validationService - ValidationService (Infrastructure Service)
      */
     public ThreadController(ThreadService threadService, PostService postService,
                             UserService userService, TopicService topicService,
-                            KeycloakService keycloakService) {
+                            KeycloakService keycloakService,
+                            ValidationService validationService) {
         this.threadService = threadService;
         this.postService = postService;
         this.userService = userService;
         this.topicService = topicService;
         this.keycloakService = keycloakService;
+        this.validationService = validationService;
     }
 
     /**
@@ -61,12 +66,14 @@ public class ThreadController {
     public String displayAThread(KeycloakAuthenticationToken token,
                                  @RequestParam("threadId") Long threadID,
                                  @RequestParam("page") Integer page,
+                                 @ModelAttribute("error") String postErrorMessage,
                                  Model model) {
         User user = this.userService.getUserFromDB(token);
         ThreadId threadId = new ThreadId(threadID);
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
         Thread threadById = this.threadService.getThreadById(threadId);
-
+        model.addAttribute("error", postErrorMessage);
+        model.addAttribute("thread", this.threadService.getThreadById(threadId));
         model.addAttribute("thread", threadById);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
@@ -74,8 +81,8 @@ public class ThreadController {
         model.addAttribute("user", user);
         model.addAttribute("moderator",
                 user.checkPermission(threadById.getForumId(), Permission.MODERATE_THREAD));
-
-
+        model.addAttribute("minContentLength", MIN_CONTENT_LENGTH);
+        model.addAttribute("maxContentLength", MAX_CONTENT_LENGTH);
         return "thread";
     }
 
@@ -91,9 +98,14 @@ public class ThreadController {
     public String createNewThread(@PathVariable Long forenID,
                                   @PathVariable Long topicID,
                                   Model model) {
+        model.addAttribute("error", this.threadErrorMessage);
         model.addAttribute("form", new ThreadForm("", ""));
         model.addAttribute("forenId", new ForumId(forenID));
         model.addAttribute("topicId", new TopicId(topicID));
+        model.addAttribute("minTitleLength", MIN_TITLE_LENGTH);
+        model.addAttribute("maxTitleLength", MAX_TITLE_LENGTH);
+        model.addAttribute("minContentLength", MIN_CONTENT_LENGTH);
+        model.addAttribute("maxContentLength", MAX_CONTENT_LENGTH);
         return "create-thread";
     }
 
@@ -110,7 +122,23 @@ public class ThreadController {
     public String addNewThread(KeycloakAuthenticationToken token,
                                @RequestParam("forenId") Long forenIdLong,
                                @RequestParam("topicId") Long topicIdLong,
-                               @Valid @ModelAttribute ThreadForm threadForm) {
+                               @Valid @ModelAttribute ThreadForm threadForm,
+                               BindingResult bindingResult) {
+
+        // for failed validation
+        if (bindingResult.hasErrors()) {
+
+            this.threadErrorMessage =
+                    this.validationService.getErrorDescriptionFromErrorObjects(bindingResult);
+
+            return String.format("redirect:/foren/thread/%d/%d/new-thread",
+                    forenIdLong,
+                    topicIdLong);
+        }
+
+        // Set to null after successful validation
+        this.threadErrorMessage = null;
+
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         Thread thread = threadForm.getThread(user, topicId);

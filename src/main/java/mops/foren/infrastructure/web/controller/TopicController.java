@@ -9,14 +9,18 @@ import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.TopicForm;
+import mops.foren.infrastructure.web.ValidationService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+
+import static mops.foren.infrastructure.web.ValidationService.*;
 
 @Controller
 @SessionScope
@@ -29,23 +33,30 @@ public class TopicController {
     private ThreadService threadService;
     private UserService userService;
     private KeycloakService keycloakService;
+    private ValidationService validationService;
+    private String errorMessage;
 
     /**
      * Constructor for TopicController. The parameters are injected.
      *
-     * @param forumService    - injected ForumService (ApplicationService)
-     * @param threadService   - ThreadService (ApplicationService)
-     * @param userService     - UserService (ApplicationService)
-     * @param keycloakService - KeycloakService (Infrastructure Service)
+     * @param forumService      - injected ForumService (ApplicationService)
+     * @param threadService     - ThreadService (ApplicationService)
+     * @param userService       - UserService (ApplicationService)
+     * @param keycloakService   - KeycloakService (Infrastructure Service)
+     * @param validationService - VerificationService (Infrastructure Service)
      */
-    public TopicController(ForumService forumService, TopicService topicService,
-                           ThreadService threadService, UserService userService,
-                           KeycloakService keycloakService) {
+    public TopicController(ForumService forumService,
+                           TopicService topicService,
+                           ThreadService threadService,
+                           UserService userService,
+                           KeycloakService keycloakService,
+                           ValidationService validationService) {
         this.forumService = forumService;
         this.topicService = topicService;
         this.threadService = threadService;
         this.userService = userService;
         this.keycloakService = keycloakService;
+        this.validationService = validationService;
     }
 
     /**
@@ -94,8 +105,13 @@ public class TopicController {
     @GetMapping("/{forenID}/new-topic")
     public String createNewTopic(@PathVariable String forenID,
                                  Model model) {
+        model.addAttribute("error", this.errorMessage);
         model.addAttribute("form", new TopicForm("", "", false, false));
         model.addAttribute("forenId", forenID);
+        model.addAttribute("minTitleLength", MIN_TITLE_LENGTH);
+        model.addAttribute("maxTitleLength", MAX_TITLE_LENGTH);
+        model.addAttribute("minDescriptionLength", MIN_DESCRIPTION_LENGTH);
+        model.addAttribute("maxDescriptionLength", MAX_DESCRIPTION_LENGTH);
         return "create-topic";
     }
 
@@ -108,7 +124,20 @@ public class TopicController {
      */
     @PostMapping("/new-topic")
     public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
+                           BindingResult bindingResult,
                            @RequestParam("forenId") Long forumIdLong) {
+
+        // for failed validation
+        if (bindingResult.hasErrors()) {
+            this.errorMessage =
+                    this.validationService.getErrorDescriptionFromErrorObjects(bindingResult);
+
+            return String.format("redirect:/foren/topic/%d/new-topic", forumIdLong);
+        }
+
+        // set error message to null after successful validation
+        this.errorMessage = null;
+
         ForumId forumId = new ForumId(forumIdLong);
         Topic topic = topicForm.getTopic(forumId);
         this.forumService.addTopicInForum(forumId, topic);
