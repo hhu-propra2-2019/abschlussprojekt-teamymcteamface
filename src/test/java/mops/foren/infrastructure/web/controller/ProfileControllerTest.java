@@ -53,7 +53,6 @@ public class ProfileControllerTest {
 
     @Test
     void testProfileAuthenticated() throws Exception {
-
         Account fakeAccount = Account.builder()
                 .name("studentin")
                 .email("s@hhu.de")
@@ -67,6 +66,22 @@ public class ProfileControllerTest {
                 .flashAttr("account", fakeAccount))
                 .andExpect(status().isOk())
                 .andExpect(view().name("profile"));
+    }
+
+    @Test
+    void testModel() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("studentin")
+                .email("s@hhu.de")
+                .image("https://google.de")
+                .roles(Set.of("studentin"))
+                .build();
+
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        this.mvcMock.perform(get("/foren/profile")
+                .flashAttr("account", fakeAccount))
+                .andExpect(model().attribute("account", fakeAccount));
     }
 
     @Test
