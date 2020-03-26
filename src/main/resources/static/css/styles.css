@@ -114,9 +114,13 @@ main > div:first-child > h2 {
     text-align: left;
 }
 
-.delete-post-form, .delete-topic-form {
+.delete-post-form {
     float: right;
     clear: right;
+}
+
+.delete-topic-form {
+    margin: -4px;
 }
 
 #Topics
