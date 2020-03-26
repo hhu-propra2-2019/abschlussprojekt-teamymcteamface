@@ -133,7 +133,7 @@ main > div:first-child > h2 {
     float: left;
 }
 
-.card-body {
+.topic>.card-body {
     text-align: center;
 }
 
