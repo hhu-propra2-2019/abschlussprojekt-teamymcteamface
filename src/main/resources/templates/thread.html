@@ -3,7 +3,6 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link href="font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet">
   <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
   <script crossorigin="anonymous"
@@ -21,145 +20,102 @@
 
 </head>
 <th:block th:fragment="headcontent">
-  <style>
-    .page-list, .page-list > li {
-      float: right;
-    }
-
-    .content {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .card:not(.quote) {
-      text-align: left;
-      float: none;
-      margin: 10px;
-    }
-
-    .write-answer {
-      display: grid;
-    }
-
-    .quote {
-      width: auto !important;
-      margin-bottom: 10px;
-    }
-
-    .content-divider {
-      border: 1px solid #52a1eb;
-    }
-
-    .preview-pic {
-      width: 25px;
-      height: 25px;
-      float: left;
-      background: green;
-      margin: auto;
-      margin-right: 8px;
-    }
-
-    .edit-button {
-      float: right;
-      clear: right;
-    }
-  </style>
+  <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
 </th:block>
 <body>
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
       <li class="active">
-        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+        <a th:href="@{/foren}">Dashboard</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+        <a th:href="@{/foren/my-forums}">Meine Foren</a>
       </li>
       <li class="">
-        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
+        <a th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
 </header>
 <main th:fragment="bodycontent">
   <div class="container">
-    <div class="content">
-      <h2 style="text-align: left;" th:text="${thread.getTitle()}">Title</h2>
-      <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
-       <span th:if="${post.getVisible()==true}">
-         <div class="card col p-0">
-           <div th:class="card-header">
-             <div th:class="preview-pic">
-             </div>
-             <div style="float: left;" th:class="author"
-                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
-               Jens Bendisposto
-             </div>
-             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
-               12.03.2020
-             </div>
-           </div>
-           <div th:class="card-body">
-             <p th:class="card-text" th:text="${post.getText()}"></p>
-           </div>
-           <div th:if="${user.checkPermission(post.getForumId(), PermissionDelete, post.getAuthor())
+    <div class=" content-thread">
+      <h2 th:class="thread-title" th:text="${thread.getTitle()}">Title</h2>
+      <div class="row" th:each="post : ${posts}">
+        <div class="card col p-0" th:if="${post.getVisible()==true}">
+          <div th:class="card-header">
+            <div th:class="preview-pic">
+            </div>
+            <div th:class="author"
+                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+              Jens Bendisposto
+            </div>
+            <div th:class="created-date" th:text="${post.getFormattedDate()}">
+              12.03.2020
+            </div>
+          </div>
+          <div th:class="card-body">
+            <p th:class="card-text" th:text="${post.getText()}"></p>
+          </div>
+          <div th:if="${user.checkPermission(post.getForumId(), PermissionDelete, post.getAuthor())
                          && (post.getAuthor().getName() != 'Unbekannt')}">
-            <form method="post"
+            <form class="delete-post-form" method="post"
                   th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
                                   postId=${post.getId().getId()},
                                   page=${pagingObject.getCurrentPage()})}">
-              <button class="btn btn-danger" type="submit">
-                Post löschen
+              <button class="delete-button btn-danger" type="submit">
+                <i class="far fa-trash-alt"></i>
               </button>
-             </form>
-           </div>
-      </div>
-      </span>
-        <span th:if="${post.getVisible()==false && moderator==true}">
-         <div class="card border-warning p-0">
-           <div th:class="card-header">
-             <div th:class="preview-pic">
-             </div>
-             <div style="float: left;" th:class="author"
-                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
-               Jens Bendisposto
-             </div>
-             <div style="float: right;" th:class="created-date" th:text="${post.getFormattedDate()}">
-               12.03.2020
-             </div>
-           </div>
-           <div th:class="card-body">
-             <p th:class="card-text" th:text="${post.getText()}"></p>
-           </div>
-           <div class="card-footer bg-transparent border-success">
-             <div>
-               <form method="post"
-                     th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
-                 <button class="btn btn-warning" type="submit">
-                   Post freigeben
-                 </button>
-               </form>
-             </div>
-             <div th:if="${user.checkPermission(post.getForumId().getId(), PermissionDelete, post.getAuthor())
+            </form>
+          </div>
+        </div>
+        <div class="card col p-0 border-warning" th:if="${post.getVisible()==false && moderator==true}">
+          <div th:class="card-header">
+            <div th:class="preview-pic">
+            </div>
+            <div th:class="author"
+                 th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
+              Jens Bendisposto
+            </div>
+            <div th:class="created-date" th:text="${post.getFormattedDate()}">
+              12.03.2020
+            </div>
+          </div>
+          <div th:class="card-body">
+            <p th:class="card-text" th:text="${post.getText()}"></p>
+          </div>
+          <ul class="moderate-button-list">
+            <li class="moderate-button"
+                th:if="${user.checkPermission(post.getForumId().getId(), PermissionDelete, post.getAuthor())
                            && (post.getAuthor().getName() != 'Unbekannt')}">
-               <form method="post"
-                     th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
-                                    postId=${post.getId().getId()},
-                                    page=${pagingObject.getCurrentPage()})}">
-                <button class="btn btn-danger" type="submit">
-                  Post löschen
+              <form method="post" class="delete-post-form"
+                    th:action="@{/foren/post/delete-post(threadId=${thread.getId().getId()},
+                                  postId=${post.getId().getId()},
+                                  page=${pagingObject.getCurrentPage()})}">
+                <button class="delete-button btn-danger" type="submit">
+                  <i class="far fa-trash-alt"></i>
                 </button>
-               </form>
-             </div>
-           </div>
-
-         </div>
-       </span>
+              </form>
+            </li>
+            <li class="moderate-button">
+              <form method="post" class="delete-post-form"
+                    th:action="@{/foren/post/approvePost(postId=${post.getId().getId()},threadId=${thread.getId().getId()})}">
+                <button class="delete-button btn-warning" type="submit">
+                  Freigeben
+                </button>
+              </form>
+            </li>
+          </ul>
+        </div>
       </div>
-      <hr class="content-divider" style="width: auto;">
+
+      <hr class="content-divider">
 
       <ul class="list-unstyled page-list">
-        <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+
+        <li th:if="${posts.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
                   th:onclick="location.href = '?threadId=' + '[[${thread.getId().getId()}]]' + '&page=' + '[[${i}]]'"
                   th:text="${i}"
@@ -177,7 +133,7 @@
       <div class="row write-answer">
         <div class="card">
           <div class="card-header">
-            <div class="author" style="float: left; clear: left;">
+            <div class="author">
               Antwort erstellen
             </div>
           </div>
@@ -186,11 +142,17 @@
                 th:object="${form}">
             <div class="card-body">
               <div class="form-group">
+                <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"
+                     th:text="${error}">
+                  error message goes here (or not)
+                </div>
                 <textarea class="form-control" id="my-textarea" name="postContent"
-                          rows="3" th:value="*{postContent}"></textarea>
+                          rows="3" th:value="*{postContent}"
+                          th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}"
+                          required></textarea>
               </div>
             </div>
-            <button class="btn btn-primary" type="submit">abschicken</button>
+            <button class="btn btn-primary delete-button moderate-button" type="submit">Abschicken</button>
           </form>
         </div>
       </div>

@@ -5,13 +5,20 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
 
-import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import static mops.foren.infrastructure.web.ValidationService.MAX_CONTENT_LENGTH;
+import static mops.foren.infrastructure.web.ValidationService.MIN_CONTENT_LENGTH;
 
 @Value
 public class PostForm {
 
-    // For now only check for Null until there is a content class
-    @NotBlank(message = "Post content cannot be blank.")
+    @NotNull(message = "Thread title cannot be null.")
+    @Size(min = MIN_CONTENT_LENGTH, max = MAX_CONTENT_LENGTH,
+            message = "Post content must be between "
+                    + MIN_CONTENT_LENGTH + " and "
+                    + MAX_CONTENT_LENGTH + " characters.")
     private final String postContent;
 
     /**

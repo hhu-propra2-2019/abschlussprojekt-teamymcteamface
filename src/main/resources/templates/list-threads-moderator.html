@@ -11,58 +11,8 @@
   <meta charset="utf-8">
   <title th:text="${forumTitle} Moderationsmodus"></title>
   <th:block th:fragment="headcontent">
-    <style>
-      .page-list, .page-list > li {
-        float: right;
-      }
-
-      .page-list {
-        margin-bottom: 100px;
-      }
-
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
-
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
-
-      .mops-row {
-        transition-duration: 0.3s;
-      }
-
-      .mops-row > *:hover {
-        cursor: pointer;
-      }
-
-      .mops-row:hover {
-        background: #a9d0f5;
-        transition-duration: 0.3s;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
+    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
@@ -89,7 +39,7 @@
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
-      <th>Freigeben</th>
+      <th></th>
       <th></th>
     </tr>
     </thead>
@@ -112,8 +62,8 @@
           <form th:if="${deletePermission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId.getId()},
                                   topicId=${topicId.getId()},
                                   threadId=${thread.getId().getId()})}">
-            <button class="btn btn-danger" type="submit">
-              löschen
+            <button class="delete-button btn-danger" type="submit">
+              <i class="far fa-trash-alt"></i>
             </button>
           </form>
         </td>

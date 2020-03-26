@@ -56,20 +56,24 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
+  <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
+    error message goes here (or not)
+  </div>
   <h1>Thread erstellen:</h1>
   <form method="post" th:action="@{/foren/thread/new-thread(forenId=${forenId.getId()},topicId=${topicId.getId()})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
       <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100"
-             name="title"
-             placeholder="Gebe einen Titel ein." th:value="*{title}" type="text">
+             name="title" th:attr="minlength=${minTitleLength}, maxlength=${maxTitleLength}"
+             placeholder="Gebe einen Titel ein." th:value="*{title}" type="text" required>
       <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Inhalt:</label>
       <textarea class="form-control" id="exampleFormControlTextarea1" name="content" rows="3"
-                th:value="*{content}"></textarea>
+                th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}"
+                th:value="*{content}" required></textarea>
     </div>
     <div class="form-group">
       <label for="media">Lade Medien hoch</label>

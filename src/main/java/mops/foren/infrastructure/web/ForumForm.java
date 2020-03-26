@@ -5,13 +5,9 @@ import mops.foren.domain.model.Forum;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import static mops.foren.infrastructure.web.ValidationService.*;
+
 public class ForumForm {
-
-    private static final int MAX_DESCRIPTION_LENGTH = 100;
-    private static final int MAX_TITLE_LENGTH = 40;
-
-    private static final int MIN_DESCRIPTION_LENGTH = 3;
-    private static final int MIN_TITLE_LENGTH = 3;
 
     @NotNull(message = "Forum title cannot be null.")
     @Size(min = MIN_TITLE_LENGTH, max = MAX_TITLE_LENGTH,

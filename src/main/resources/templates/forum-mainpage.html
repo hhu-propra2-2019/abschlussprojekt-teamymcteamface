@@ -22,48 +22,8 @@
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
-
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
-
-      .card {
-        box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.12);
-        text-align: center;
-        width: 300px;
-        height: 120px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin: 10px;
-        float: left;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
+    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
@@ -71,19 +31,19 @@
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
       <li class="active">
-        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+        <a th:href="@{/foren}">Dashboard</a>
       </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
+      <li>
+        <a th:href="@{/foren/my-forums}">Meine Foren</a>
       </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <div style="padding: 30px;">
+  <div class="forum-title">
     <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
     <br>
     <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
@@ -97,7 +57,7 @@
     </button>
     <div class="card-deck">
       <div th:each="topic : ${topics}">
-        <div class="card">
+        <div class="card topic">
           <div class="card-body">
             <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
             <button class="btn btn-primary"
@@ -106,10 +66,12 @@
             </button>
             <div>
               <form th:if="${permission}"
+                    class="delete-topic-form"
                     method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
-                                  topicId=${topic.getId().getId()})}">
-                <button class="btn btn-danger" type="submit">
-                  löschen
+                                  topicId=${topic.getId().getId()})}"
+              >
+                <button class="delete-button btn-danger" type="submit">
+                  <i class="far fa-trash-alt"></i>
                 </button>
               </form>
             </div>
