@@ -75,7 +75,6 @@ public class ThreadController {
         model.addAttribute("moderator",
                 user.checkPermission(threadById.getForumId(), Permission.MODERATE_THREAD));
 
-
         return "thread";
     }
 

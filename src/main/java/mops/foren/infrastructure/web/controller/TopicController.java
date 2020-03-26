@@ -5,6 +5,7 @@ import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.*;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -31,7 +32,7 @@ public class TopicController {
     private KeycloakService keycloakService;
 
     /**
-     * Constructor for TopicController. The parameters are injected.
+     * Constructor for TopicController. The parameters that are injected.
      *
      * @param forumService    - injected ForumService (ApplicationService)
      * @param threadService   - ThreadService (ApplicationService)
@@ -54,7 +55,7 @@ public class TopicController {
      * @param token       They keycloak token
      * @param topicIdLong the topic id
      * @param model       the model
-     * @return The template for the threads
+     * @return The template for the threads.
      */
     @GetMapping
     public String enterATopic(KeycloakAuthenticationToken token,
@@ -89,14 +90,20 @@ public class TopicController {
      *
      * @param forumIdLong The forum id
      * @param model       The model
-     * @return The template for creating a new topic
+     * @return The template for creating a new topic.
      */
     @GetMapping("/create-topic")
     public String createNewTopic(@RequestParam("forumId") Long forumIdLong,
+                                 KeycloakAuthenticationToken token,
                                  Model model) {
-        model.addAttribute("form", new TopicForm("", "", false, false));
-        model.addAttribute("forumId", forumIdLong);
-        return "create-topic";
+        User user = userService.getUserFromDB(token);
+        ForumId forumId = new ForumId(forumIdLong);
+        if (user.checkPermission(forumId, Permission.CREATE_TOPIC)) {
+            model.addAttribute("form", new TopicForm("", "", false, false));
+            model.addAttribute("forumId", forumIdLong);
+            return "create-topic";
+        }
+        return "error-no-permission";
     }
 
     /**
@@ -104,7 +111,7 @@ public class TopicController {
      *
      * @param topicForm   a form to create topics.
      * @param forumIdLong The id of the thread the post is in.
-     * @return The template for the thread
+     * @return The template for the thread.
      */
     @PostMapping("/add-topic")
     public String newTopic(@Valid @ModelAttribute TopicForm topicForm,
@@ -119,21 +126,19 @@ public class TopicController {
      * Delete a topic.
      *
      * @param token       The keycloak token
-     * @param forumIdLong The forum Id
      * @param topicIdLong The topic Id
      * @return Redirect to forum mainpage or to error page
      */
     @PostMapping("/delete-topic")
     public String deleteTopic(KeycloakAuthenticationToken token,
-                              @RequestParam("forumId") Long forumIdLong,
                               @RequestParam("topicId") Long topicIdLong) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(forumIdLong);
         TopicId topicId = new TopicId(topicIdLong);
+        ForumId forumId = topicService.getTopic(topicId).getForumId();
 
         if (user.checkPermission(forumId, Permission.DELETE_TOPIC)) {
             this.topicService.deleteTopic(topicId);
-            return String.format("redirect:/foren/my-forums/%d", forumIdLong);
+            return String.format("redirect:/foren/my-forums/enter?forumId=%d", forumId.getId());
         }
 
         return "error-no-permission";
@@ -141,11 +146,9 @@ public class TopicController {
 
     }
 
-
     /**
      * Mapping to the topic page for moderation.
      *
-     * @param forumIdLong the forum id
      * @param topicIdLong the topic id
      * @param page        The thread page
      * @param model       the model
@@ -157,8 +160,8 @@ public class TopicController {
                                          Model model,
                                          KeycloakAuthenticationToken token) {
 
-        ForumId forumId = topicService.getTopic(new TopicId(topicIdLong)).getForumId();
         TopicId topicId = new TopicId(topicIdLong);
+        ForumId forumId = topicService.getTopic(topicId).getForumId();
         User user = this.userService.getUserFromDB(token);
 
         if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
@@ -180,25 +183,23 @@ public class TopicController {
     /**
      * Approving thread by moderator.
      *
-     * @param forumIdLong  the forum id
-     * @param topicIdLong  the topic id
      * @param threadIdLong the thread that should be approved
      * @param token        token from Keycloak
-     * @return The template for the threads
+     * @return The template for the threads.
      */
     @PostMapping("approveThread")
-    public String approveThread(@RequestParam("forumId") Long forumIdLong,
-                                @RequestParam("topicId") Long topicIdLong,
-                                @RequestParam("threadId") Long threadIdLong,
+    public String approveThread(@RequestParam("threadId") Long threadIdLong,
                                 KeycloakAuthenticationToken token) {
 
-        ForumId forumIdWrapped = new ForumId(forumIdLong);
         User user = this.userService.getUserFromDB(token);
+        Thread thread = threadService.getThreadById(new ThreadId(threadIdLong));
+        ForumId forumId = thread.getForumId();
+        TopicId topicId = thread.getTopicId();
 
-        if (user.checkPermission(forumIdWrapped, Permission.MODERATE_THREAD)) {
-            ThreadId threadId = new ThreadId(threadIdLong);
-            this.threadService.setThreadVisible(threadId);
-            return String.format("redirect:/foren/topic/?forumId=%d&topicId=%d&page=1", forumIdLong, topicIdLong);
+
+        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
+            this.threadService.setThreadVisible(new ThreadId(threadIdLong));
+            return String.format("redirect:/foren/topic?topicId=%d&page=1", topicId.getId());
         }
 
         return "error-no-permission";
