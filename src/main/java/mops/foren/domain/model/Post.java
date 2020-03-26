@@ -15,6 +15,8 @@ public class Post {
 
     private final User author;
 
+    private ForumId forumId;
+
     private final LocalDateTime creationDate;
 
     private String text;
@@ -25,7 +27,6 @@ public class Post {
 
     private Boolean visible;
 
-    private ForumId forumId;
 
     public String getFormattedDate() {
         return this.creationDate.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));

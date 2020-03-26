@@ -6,37 +6,8 @@
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-
-      main > div:first-child img {
-        border-radius: 1rem;
-        border: 1px solid black;
-      }
-
-      main > div:first-child > h2 {
-        position: absolute;
-        bottom: 0;
-        margin: 1rem;
-        color: white;
-        text-shadow: 0 0 3px black;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-
-      @media (max-width: 576px) {
-        main > div:first-child > h2 {
-          font-size: 1.0rem;
-        }
-      }
-    </style>
+    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
@@ -56,26 +27,29 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1>Topic erstellen:</h1>
-  <form method="post" th:action="@{/foren/topic/new-topic(forenId=${forenId})}"
+  <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
+    error message goes here (or not)
+  </div>
+  <h1>Thema erstellen:</h1>
+  <form method="post" th:action="@{/foren/topic/add-topic(forumId=${forumId})}"
         th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
-      <input aria-describedby="emailHelp" class="form-control" id="title" maxlength="100" name="title"
-             placeholder="Gebe einen Titel ein."
-             th:value="*{title}" type="text">
+      <input aria-describedby="emailHelp" class="form-control" id="title" name="title"
+             placeholder="Gebe einen Titel ein." th:attr="minlength=${minTitleLength}, maxlength=${maxTitleLength}"
+             th:value="*{title}" type="text" required>
       <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
     </div>
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Beschreibung:</label>
       <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"
-                th:value="*{description}"></textarea>
+                th:attr="minlength=${minDescriptionLength}, maxlength=${maxDescriptionLength}"
+                th:value="*{description}" required></textarea>
     </div>
     <label>Moderationsmodus:</label>
     <input name="moderated" th:checked="*{moderated}" type="checkbox">
-    <label>Sollen Beiträge in diesem Topic annonym sein:</label>
+    <label>Sollen Beiträge in diesem Thema annonym sein:</label>
     <input name="anonymous" th:checked="*{anonymous}" type="checkbox">
-
     <div>
       <button class="btn btn-primary" type="submit">erstellen</button>
     </div>

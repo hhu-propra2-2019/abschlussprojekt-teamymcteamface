@@ -32,10 +32,10 @@ public class PostService {
      * This method should delete a post.
      * This method also updates the lastPostTime changed in Threads.
      *
-     * @param post The post that should be deleted.
+     * @param postId The post id of the post that should be deleted.
      */
-    public void deletePost(Post post) {
-        this.postRepository.deletePostById(post.getId());
+    public void deletePost(PostId postId) {
+        this.postRepository.deletePostById(postId);
     }
 
     public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {
