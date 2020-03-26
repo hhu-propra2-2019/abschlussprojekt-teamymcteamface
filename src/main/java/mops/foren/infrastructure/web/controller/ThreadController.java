@@ -82,18 +82,18 @@ public class ThreadController {
     /**
      * Brings up the form to create a new thread.
      *
-     * @param forenID The forum id
-     * @param topicID The topic id
+     * @param forumId The forum id
+     * @param topicId The topic id
      * @param model   The model
-     * @return The template to create a new thread
+     * @return The template to create a new thread.
      */
-    @GetMapping("/{forenID}/{topicID}/new-thread")
-    public String createNewThread(@PathVariable Long forenID,
-                                  @PathVariable Long topicID,
+    @GetMapping("/new-thread")
+    public String createNewThread(@RequestParam Long forumId,
+                                  @RequestParam Long topicId,
                                   Model model) {
         model.addAttribute("form", new ThreadForm("", ""));
-        model.addAttribute("forenId", new ForumId(forenID));
-        model.addAttribute("topicId", new TopicId(topicID));
+        model.addAttribute("forenId", new ForumId(forumId));
+        model.addAttribute("topicId", new TopicId(topicId));
         return "create-thread";
     }
 
@@ -106,7 +106,7 @@ public class ThreadController {
      * @param threadForm  The form that that includes the new thread
      * @return The topic page template
      */
-    @PostMapping("/new-thread")
+    @PostMapping("/add-thread")
     public String addNewThread(KeycloakAuthenticationToken token,
                                @RequestParam("forenId") Long forenIdLong,
                                @RequestParam("topicId") Long topicIdLong,

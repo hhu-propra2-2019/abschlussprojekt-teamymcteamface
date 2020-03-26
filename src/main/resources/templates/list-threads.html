@@ -98,10 +98,10 @@
   </form>
   </span>
   <span>
-    <form method="get" th:action="@{'/foren/thread/' + ${forumId.getId()} + '/' + ${topicId.getId()} + '/new-thread'}">
-    <button class="btn btn-primary" type="submit"> Thread erstellen
+    <a th:href="@{/foren/thread/new-thread(forumId=${forumId.getId()},topicId=${topicId.getId()})}">
+      <button class="btn btn-primary" type="submit">Beitrag erstellen
       </button>
-    </form>
+    </a>
   </span>
   <table class="table table-light">
     <thead class="thead-light">
