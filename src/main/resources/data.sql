@@ -106,8 +106,8 @@ VALUES ('studentin', 1),
 INSERT
 INTO roles (username, role, forum_id)
 VALUES ('studentin','STUDENT', 1),
-       ('studentin','STUDENT', 2),
        ('studentin','STUDENT', 3),
+       ('studentin','STUDENT', 2),
        ('actuator', 'ADMIN', 1),
        ('actuator', 'ADMIN', 2),
        ('actuator', 'ADMIN',4),
