@@ -139,15 +139,13 @@ public class PostController {
         Post post = this.postService.getPost(new PostId(postIdLong));
 
         if (user.checkPermission(post.getForumId(), Permission.DELETE_POST, post.getAuthor())) {
-            if (!post.getVisible()) {
-                this.postService.deletePostCompletely(post.getId());
-                return String.format("redirect:/foren/thread?threadId=%d&page=%d",
-                        threadIdLong, page + 1);
-            } else {
+            if (post.getVisible()) {
                 this.postService.deletePost(post.getId());
-                return String.format("redirect:/foren/thread?threadId=%d&page=%d",
-                        threadIdLong, page + 1);
+            } else {
+                this.postService.deletePostCompletely(post.getId());
             }
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d",
+                    threadIdLong, page + 1);
 
         }
         return "error-no-permission";
