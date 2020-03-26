@@ -86,6 +86,8 @@ class PermissionManagerTest {
 
     }
 
+
+    //Ab hier die gleiche Methode mit der erweiterten Signatur!
     @Test
     void testCheckPermission_UserIsAuthorButNoSpecialPermission() {
         //Arrange
@@ -93,14 +95,67 @@ class PermissionManagerTest {
 
         User sebastian = User.builder().name("Sebastian").build();
 
-        //Act
         this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
+
+        //Act
         Boolean hasPermission = this.permissionManager.checkPermission(
                 forumId1, Permission.DELETE_POST, sebastian, sebastian);
+
 
         //Assert
         assertThat(hasPermission).isTrue();
     }
+
+    @Test
+    void testCheckPermission_UserIsAuthorAndAndHasSpecialPermission() {
+        //Arrange
+        ForumId forumId1 = new ForumId(1L);
+
+        User valentin = User.builder().name("Valentin").build();
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
+
+        //Act
+        Boolean hasPermission = this.permissionManager.checkPermission(
+                forumId1, Permission.DELETE_POST, valentin, valentin);
+
+        //Assert
+        assertThat(hasPermission).isTrue();
+    }
+
+    @Test
+    void testCheckPermission_UserIsNotAuthorAndButHasSpecialPermission() {
+        //Arrange
+        ForumId forumId1 = new ForumId(1L);
+
+        User sebastian = User.builder().name("Sebastian").build();
+        User valentin = User.builder().name("Valentin").build();
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.ADMIN);
+
+        //Act
+        Boolean hasPermission = this.permissionManager.checkPermission(
+                forumId1, Permission.DELETE_POST, sebastian, valentin);
+
+        //Assert
+        assertThat(hasPermission).isTrue();
+    }
+
+    @Test
+    void testCheckPermission_UserIsNotAuthorAndNoSpecialPermission() {
+        //Arrange
+        ForumId forumId1 = new ForumId(1L);
+
+        User sebastian = User.builder().name("Sebastian").build();
+        User valentin = User.builder().name("Valentin").build();
+        this.permissionManager.addForumWithPermission(forumId1.getId(), Role.STUDENT);
+
+        //Act
+        Boolean hasPermission = this.permissionManager.checkPermission(
+                forumId1, Permission.DELETE_POST, sebastian, valentin);
+
+        //Assert
+        assertThat(hasPermission).isFalse();
+    }
+
 
     @Test
     void getAllForumsOnlyStudents() {
