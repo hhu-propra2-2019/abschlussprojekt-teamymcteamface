@@ -23,7 +23,8 @@ public class ForumModelService {
      * @param forum the forum.
      */
     public void updateLastChangedTime(Forum forum) {
-        List<Thread> threadByForumId = this.threadRepository.getThreadByForumIdAndVisible(forum.getId(), true);
+        List<Thread> threadByForumId = this.threadRepository
+                .getThreadByForumIdAndVisible(forum.getId(), true);
         Optional<LocalDateTime> max = threadByForumId.stream()
                 .map(Thread::getLastPostTime)
                 .filter(Objects::nonNull)

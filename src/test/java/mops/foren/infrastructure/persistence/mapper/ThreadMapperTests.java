@@ -10,7 +10,6 @@ import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
 
@@ -20,7 +19,6 @@ public class ThreadMapperTests {
 
     private ThreadDTO threadDTO;
     private UserDTO authorDTO;
-    private LocalDateTime lastChange;
 
     /**
      * Sets up the test environment for ThreadMapper.
@@ -55,6 +53,7 @@ public class ThreadMapperTests {
                 .description("thread description")
                 .anonymous(true)
                 .moderated(false)
+                .posts(new LinkedList<>())
                 .visible(true)
                 .build();
     }
