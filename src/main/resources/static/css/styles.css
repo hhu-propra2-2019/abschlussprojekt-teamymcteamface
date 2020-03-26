@@ -157,12 +157,12 @@ main > div:first-child > h2 {
 
 .forum-mainpage-bar {
     list-style: none;
-    margin-left: 0;
+    padding: 0 0 5px;
 }
 
 .button-create-topic {
     float: left;
-    margin-left: 0;
+    padding-left: 0 !important;
 }
 
 .button-create-topic::after {

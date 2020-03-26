@@ -68,13 +68,13 @@
       <ul class="list-unstyled page-list">
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
-                  th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                  th:onclick="|location.href='@{./search(forumId=${forumId}, searchContent=${content}, page=${i})}'|"
                   th:text="${i}"
                   th:unless="${i == pagingObject.getCurrentPage()+1}"
                   type="button">page#
           </button>
           <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
-                  th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                  th:onclick="|location.href='@{./search(forumId=${forumId}, searchContent=${content}, page=${i})}'|"
                   th:text="${i}"
                   type="button">page#
           </button>

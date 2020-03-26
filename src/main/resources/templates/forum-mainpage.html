@@ -61,12 +61,16 @@
       </li>
       <li class="content-search">
           <ul class="forum-mainpage-bar">
-            <form method="post" th:object="${searchForm}"
-                  th:action="@{/foren/my-forums/search(forumId=${forumId})}">
-            <div class="form-group">
-              <input aria-describedby="emailHelp" class="form-control" id="searchContent" name="searchContent" type="text" th:value="*{searchContent}" required>
-            </div>
+            <form method="get"
+                  th:action="@{/foren/my-forums/search}">
+              <li class="button-create-topic">
+                <input type="hidden" hidden name="forumId" th:value="${forumId}">
+                <input aria-describedby="emailHelp" class="form-control" name="searchContent" type="text" required>
+                <input type="hidden" hidden name="page" value="1">
+              </li>
+              <li class="content-search">
                 <button class="btn btn-primary" type="submit">Im Forum Suchen</button>
+              </li>
             </form>
           </ul>
       </li>
