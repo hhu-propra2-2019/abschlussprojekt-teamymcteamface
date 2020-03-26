@@ -84,7 +84,7 @@
     </thead>
     <tbody>
     <div th:each="forum : ${forums}">
-      <tr class="mops-row" th:onclick="location.href ='/foren/my-forums/?forumId=[[${forum.getId().getId()}]]'">
+      <tr class="mops-row" th:onclick="location.href ='/foren/my-forums/enter?forumId=[[${forum.getId().getId()}]]'">
         <td th:text="${forum.getTitle()}">AlDat</td>
         <td th:text="${forum.getTitle()}">14:37Uhr</td>
       </tr>
