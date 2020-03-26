@@ -32,7 +32,7 @@ public class PostController {
 
 
     /**
-     * Constructor for ForenController. The parameters are injected.
+     * Constructor for ForenController. The parameters that are injected.
      *
      * @param userService     - injected UserService (ApplicationService)
      * @param threadService   - ThreadService (ApplicationService)
@@ -55,57 +55,70 @@ public class PostController {
      * @param token        Keycloak token
      * @param postForm     a form to create posts.
      * @param threadIdLong The id of the thread the post is in.
-     * @return The template for the thread
+     * @return The template for the thread.
      */
     @PostMapping("/new-post")
     public String newPost(KeycloakAuthenticationToken token,
                           @Valid @ModelAttribute PostForm postForm,
                           @RequestParam("threadId") Long threadIdLong,
                           @RequestParam("page") Integer page) {
-        ThreadId threadId = new ThreadId(threadIdLong);
+
         User user = this.userService.getUserFromDB(token);
+        ThreadId threadId = new ThreadId(threadIdLong);
         Post post = postForm.getPost(user, threadId);
-        this.threadService.addPostInThread(threadId, post);
-        return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+        ForumId forumId = threadService.getThreadById(threadId).getForumId();
+
+        if (user.checkPermission(forumId, Permission.CREATE_POST)) {
+            this.threadService.addPostInThread(threadId, post);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+        }
+        return "error-no-permission";
     }
 
     /**
      * Approve a post.
      *
-     * @param postIdLong   The post id
-     * @param threadIdLong The thread id
-     * @return Redirect to the thread page
+     * @param postIdLong The post id
+     * @return Redirect to the thread page.
      */
     @PostMapping("/approvePost")
     public String approvePost(@RequestParam("postId") Long postIdLong,
-                              @RequestParam("threadId") Long threadIdLong) {
-        this.postService.setPostVisible(new PostId(postIdLong));
-        return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
+                              KeycloakAuthenticationToken token) {
+
+        User user = this.userService.getUserFromDB(token);
+        PostId postId = new PostId(postIdLong);
+        this.postService.setPostVisible(postId);
+        ThreadId threadId = postService.getPost(postId).getThreadId();
+        ForumId forumId = postService.getPost(postId).getForumId();
+
+        if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
+            return String.format("redirect:/foren/thread?threadId=%d&page=1", threadId.getId());
+        }
+        return "error-no-permission";
     }
 
     /**
      * Delete a post.
      *
-     * @param token        The key cloak token
-     * @param threadIdLong The thread id
-     * @param postIdLong   The post id
-     * @param page         The current page
-     * @return The thread page or the error
+     * @param token      The key cloak token
+     * @param postIdLong The post id
+     * @param page       The current page
+     * @return The thread page or the error.
      */
     @PostMapping("/delete-post")
     public String deletePost(KeycloakAuthenticationToken token,
-                             @RequestParam("threadId") Long threadIdLong,
                              @RequestParam("postId") Long postIdLong,
                              @RequestParam("page") Integer page) {
 
         User user = this.userService.getUserFromDB(token);
         Post post = this.postService.getPost(new PostId(postIdLong));
+        ForumId forumId = post.getForumId();
+        ThreadId threadId = post.getThreadId();
 
-        // TODO forum id aus post
-        if (user.checkPermission(new ForumId(1L), Permission.DELETE_POST, post.getAuthor())) {
+        if (user.checkPermission(forumId, Permission.DELETE_POST, post.getAuthor())) {
             this.postService.deletePost(post);
             return String.format("redirect:/foren/thread?threadId=%d&page=%d",
-                    threadIdLong, page + 1);
+                    threadId.getId(), page + 1);
         }
         return "error-no-permission";
     }
