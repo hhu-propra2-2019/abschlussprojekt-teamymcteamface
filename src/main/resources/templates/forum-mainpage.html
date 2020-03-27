@@ -29,18 +29,18 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
 <main th:fragment="bodycontent">
   <div class="forum-title">
     <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
@@ -52,7 +52,7 @@
     </div>
     <br>
     <ul class="forum-mainpage-bar">
-      <li class="button-create-topic">
+      <li class="button-create-topic" th:if="${createPermission}">
         <a th:href="@{/foren/topic/create-topic(forumId=${forumId})}">
           <button class="btn btn-primary">
             Thema erstellen
