@@ -4,7 +4,6 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
-import mops.foren.domain.services.ThreadModelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +14,6 @@ public class PostServiceTest {
 
     private IPostRepository postRepository;
     private PostService postService;
-    private ThreadModelService threadModelService;
 
     /**
      * Set up test setting.
