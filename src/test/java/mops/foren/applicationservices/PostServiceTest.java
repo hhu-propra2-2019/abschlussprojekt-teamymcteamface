@@ -1,5 +1,7 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.domain.services.ThreadModelService;
@@ -21,8 +23,7 @@ public class PostServiceTest {
     @BeforeEach
     public void setUp() {
         this.postRepository = mock(IPostRepository.class);
-        this.threadModelService = mock(ThreadModelService.class);
-        this.postService = new PostService(this.postRepository, this.threadModelService);
+        this.postService = new PostService(this.postRepository);
     }
 
     @Test
@@ -36,5 +37,56 @@ public class PostServiceTest {
 
         //Assert
         verify(this.postRepository).getPostPageFromDB(threadId, page);
+    }
+
+
+    @Test
+    public void testGetPostDirectsTheCallCorrectly() {
+        //Arrange
+        PostId postId = new PostId(1L);
+
+        //Act
+        this.postService.getPost(postId);
+
+        //Assert
+        verify(this.postRepository).getPostById(postId);
+    }
+
+    @Test
+    public void testDeletePostDirectsTheCallCorrectly() {
+        //Arrange
+        PostId postId = new PostId(1L);
+
+        //Act
+        this.postService.deletePost(postId);
+
+        //Assert
+        verify(this.postRepository).deletePostById(postId);
+    }
+
+    @Test
+    public void testSearchWholeForumDirectsTheCallCorrectly() {
+        //Arrange
+        ForumId forumId = new ForumId(1L);
+        String content = "Hallo ich bin ein test";
+        Integer page = 1;
+
+        //Act
+        this.postService.searchWholeForum(forumId, content, page);
+
+        //Assert
+        verify(this.postRepository).searchWholeForumForContent(forumId, content, page);
+    }
+
+    @Test
+    public void testSetPostVisibleDirectsTheCallCorrectly() {
+        //Arrange
+        PostId postId = new PostId(1L);
+
+        //Act
+        this.postService.setPostVisible(postId);
+
+        //Assert
+        verify(this.postRepository).setPostVisible(postId);
     }
 }
