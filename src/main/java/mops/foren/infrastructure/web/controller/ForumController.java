@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 @SessionScope
-@RequestMapping("/foren/my-forums")
+@RequestMapping({"/foren/my-forums", "/foren"})
 @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
 public class ForumController {
 
