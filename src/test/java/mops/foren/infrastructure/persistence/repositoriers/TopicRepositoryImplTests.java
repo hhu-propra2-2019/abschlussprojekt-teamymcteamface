@@ -86,20 +86,32 @@ public class TopicRepositoryImplTests {
      */
     @BeforeEach
     public void setUp() {
+        this.forumWithTwoTopics =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
 
-        this.forumWithTwoTopics = ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
-        this.firstTopicForForum = TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(1L).get());
-        this.secondTopicForForum = TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
-        this.topicWithoutThread = TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(1L).get());
-        this.userInDatabase = UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
+        this.firstTopicForForum =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(1L).get());
+
+        this.secondTopicForForum =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
+
+        this.topicWithoutThread =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(1L).get());
+
+        this.userInDatabase =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
     }
 
     @Test
     public void testIfTopicsCanBeLoadedForForumFromDatabase() {
         // Arrange
-        List<Topic> expectedTopics = Arrays.asList(this.firstTopicForForum, this.secondTopicForForum);
+        List<Topic> expectedTopics =
+                Arrays.asList(this.firstTopicForForum, this.secondTopicForForum);
+
         // Act
-        List<Topic> loadedTopics = this.topicRepositoryImpl.getTopicsFromDB(this.forumWithTwoTopics.getId());
+        List<Topic> loadedTopics =
+                this.topicRepositoryImpl.getTopicsFromDB(this.forumWithTwoTopics.getId());
+
         // Assert
         assertThat(loadedTopics).containsOnlyElementsOf(expectedTopics);
     }
@@ -107,7 +119,9 @@ public class TopicRepositoryImplTests {
     @Test
     public void testIfOneTopicCanBeLoadedFromDatabase() {
         // Act
-        Topic loadedTopic = this.topicRepositoryImpl.getOneTopicFromDB(this.firstTopicForForum.getId());
+        Topic loadedTopic =
+                this.topicRepositoryImpl.getOneTopicFromDB(this.firstTopicForForum.getId());
+
         // Assert
         assertThat(loadedTopic).isEqualTo(this.firstTopicForForum);
     }
@@ -116,7 +130,10 @@ public class TopicRepositoryImplTests {
     public void testIfTopicCanBeDeleted() {
         // Act
         this.topicRepositoryImpl.deleteTopic(this.topicWithoutThread.getId());
-        Boolean topicDoesExist = this.topicJpaRepository.existsById(this.topicWithoutThread.getId().getId());
+
+        Boolean topicDoesExist =
+                this.topicJpaRepository.existsById(this.topicWithoutThread.getId().getId());
+
         // Assert
         assertThat(topicDoesExist).isFalse();
     }
@@ -135,9 +152,13 @@ public class TopicRepositoryImplTests {
                 .topicId(this.topicWithoutThread.getId())
                 .lastPostTime(LocalDateTime.now())
                 .build();
+
         // Act
         this.topicRepositoryImpl.addThreadInTopic(this.topicWithoutThread.getId(), newThread);
-        Boolean threadWasAdded = this.threadJpaRepository.existsByTopic_Id(this.topicWithoutThread.getId().getId());
+
+        Boolean threadWasAdded =
+                this.threadJpaRepository.existsByTopic_Id(this.topicWithoutThread.getId().getId());
+
         // Assert
         assertThat(threadWasAdded).isTrue();
     }

@@ -72,7 +72,6 @@ public class UserRepositoryImplTests {
      */
     @BeforeEach
     public void setUp() {
-
         UserDTO notInDatabaseDTO = UserDTO.builder()
                 .username("notInDatabase")
                 .forums(new HashSet<ForumDTO>())
@@ -83,15 +82,22 @@ public class UserRepositoryImplTests {
                 .threads(new ArrayList<ThreadDTO>())
                 .build();
 
-        this.userInDatabase = UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user1").get());
-        this.userNotInDatabase = UserMapper.mapUserDtoToUser(notInDatabaseDTO);
-        this.forumWithoutUser = ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
+        this.userInDatabase =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user1").get());
+
+        this.userNotInDatabase =
+                UserMapper.mapUserDtoToUser(notInDatabaseDTO);
+
+        this.forumWithoutUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
     }
 
     @Test
     public void testCheckIfUserIsNotInDBWhenHeActuallyIsNot() {
         // Act
-        Boolean isNotInDatabase = this.userRepositoryImpl.isUserNotInDB(this.userNotInDatabase);
+        Boolean isNotInDatabase =
+                this.userRepositoryImpl.isUserNotInDB(this.userNotInDatabase);
+
         //Assert
         assertThat(isNotInDatabase).isTrue();
     }
@@ -99,7 +105,9 @@ public class UserRepositoryImplTests {
     @Test
     public void testCheckIfUserIsNotInDBWhenHeActuallyIs() {
         // Act
-        Boolean isNotInDatabase = this.userRepositoryImpl.isUserNotInDB(this.userInDatabase);
+        Boolean isNotInDatabase =
+                this.userRepositoryImpl.isUserNotInDB(this.userInDatabase);
+
         //Assert
         assertThat(isNotInDatabase).isFalse();
     }
@@ -108,6 +116,7 @@ public class UserRepositoryImplTests {
     public void testIfNewUserCanBeAddedToDatabase() {
         // Act
         this.userRepositoryImpl.addNewUserToDB(this.userNotInDatabase);
+
         // Assert
         assertThat(this.userJpaRepository.existsById(this.userNotInDatabase.getName())).isTrue();
     }
@@ -115,7 +124,9 @@ public class UserRepositoryImplTests {
     @Test
     public void testIfUserCanBeLoadedFromDatabase() {
         // Act
-        User loadedUser = this.userRepositoryImpl.getUserFromDB(this.userInDatabase);
+        User loadedUser =
+                this.userRepositoryImpl.getUserFromDB(this.userInDatabase);
+
         // Assert
         assertThat(this.userInDatabase).isEqualTo(loadedUser);
     }
@@ -124,13 +135,17 @@ public class UserRepositoryImplTests {
     public void testIfForumCanBeAddedToUser() {
         // Arrange
         ForumId forumId = this.forumWithoutUser.getId();
+
         // Act
         this.userRepositoryImpl.addForumToUser(
                 this.userInDatabase, this.forumWithoutUser);
+
         // Reload User1 and obtain List for check
         User updatedUser = UserMapper.mapUserDtoToUser(
                 this.userJpaRepository.findById(this.userInDatabase.getName()).get());
+
         List<ForumId> forumsForUpdatedUser = updatedUser.getForums();
+
         // Assert
         assertThat(forumsForUpdatedUser).containsOnly(forumId);
     }

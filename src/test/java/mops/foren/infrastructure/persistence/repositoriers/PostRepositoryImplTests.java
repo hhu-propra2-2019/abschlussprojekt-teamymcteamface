@@ -90,21 +90,37 @@ public class PostRepositoryImplTests {
      */
     @BeforeEach
     public void setUp() {
+        this.threadWithTwoPosts =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
 
-        this.threadWithTwoPosts = ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
-        this.firstPostInThreadWithTwoPosts = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-        this.secondPostInThreadWithTwoPosts = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
-        this.authorOfMultiplePosts = UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
-        this.firstPostForUser = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(1L).get());
-        this.secondPostForUser = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-        this.notVisiblePost = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-        this.visiblePost = PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
+        this.firstPostInThreadWithTwoPosts =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
+        this.secondPostInThreadWithTwoPosts =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
+
+        this.authorOfMultiplePosts =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
+
+        this.firstPostForUser =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(1L).get());
+
+        this.secondPostForUser =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
+        this.notVisiblePost =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
+        this.visiblePost =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
     }
 
     @Test
     public void testIfPostPageCanBeLoadedForThreadFromDatabase() {
         // Act
-        PostPage loadedPage = this.postRepositoryImpl.getPostPageFromDB(this.threadWithTwoPosts.getId(), 0);
+        PostPage loadedPage =
+                this.postRepositoryImpl.getPostPageFromDB(this.threadWithTwoPosts.getId(), 0);
+
         int entryCount = loadedPage.getPosts().size();
 
         // Assert
@@ -114,8 +130,11 @@ public class PostRepositoryImplTests {
     @Test
     public void testIfPostCanBeLoadedFromDatabaseById() {
         // Act
-        Post loadedPost = PostMapper.mapPostDtoToPost(
-                this.postJpaRepository.findById(this.firstPostInThreadWithTwoPosts.getId().getId()).get());
+        Post loadedPost =
+                PostMapper.mapPostDtoToPost(
+                        this.postJpaRepository.findById(
+                                this.firstPostInThreadWithTwoPosts.getId().getId()).get());
+
         // Assert
         assertThat(loadedPost).isEqualTo(this.firstPostInThreadWithTwoPosts);
     }
@@ -124,8 +143,11 @@ public class PostRepositoryImplTests {
     public void testIfPostsCanBeLoadedFromDatabaseForUser() {
         // Arrange
         List<Post> expectedPosts = Arrays.asList(this.firstPostForUser, this.secondPostForUser);
+
         // Act
-        List<Post> postsForUser = this.postRepositoryImpl.getPostsFromUser(this.authorOfMultiplePosts);
+        List<Post> postsForUser =
+                this.postRepositoryImpl.getPostsFromUser(this.authorOfMultiplePosts);
+
         // Assert
         assertThat(postsForUser).containsOnlyElementsOf(expectedPosts);
     }
@@ -133,9 +155,13 @@ public class PostRepositoryImplTests {
     @Test
     public void testIfAllPostsFromThreadCanBeLoadedFromDatabaseByThreadId() {
         // Arrange
-        List<Post> expectedPosts = Arrays.asList(this.firstPostInThreadWithTwoPosts, this.secondPostInThreadWithTwoPosts);
+        List<Post> expectedPosts = Arrays.asList(
+                this.firstPostInThreadWithTwoPosts, this.secondPostInThreadWithTwoPosts);
+
         // Act
-        List<Post> loadedPosts = this.postRepositoryImpl.getAllPostsByThreadId(this.threadWithTwoPosts.getId());
+        List<Post> loadedPosts =
+                this.postRepositoryImpl.getAllPostsByThreadId(this.threadWithTwoPosts.getId());
+
         // Assert
         assertThat(loadedPosts).containsOnlyElementsOf(expectedPosts);
     }
@@ -149,7 +175,9 @@ public class PostRepositoryImplTests {
         // Act
         PostPage loadedPage = this.postRepositoryImpl.searchWholeForumForContent(
                 forumToSearchIn, contentToSearchFor, 0);
+
         List<Post> foundPosts = loadedPage.getPosts();
+
         // Assert
         assertThat(foundPosts).containsOnly(this.visiblePost);
     }
@@ -158,10 +186,13 @@ public class PostRepositoryImplTests {
     public void testIfPostCanBeSetToVisible() {
         // Act
         this.postRepositoryImpl.setPostVisible(this.notVisiblePost.getId());
+
         // load updated post
         Post updatedPost = PostMapper.mapPostDtoToPost(
                 this.postJpaRepository.findById(this.notVisiblePost.getId().getId()).get());
+
         Boolean isVisible = updatedPost.getVisible();
+
         // Assert
         assertThat(isVisible).isTrue();
     }
@@ -170,7 +201,11 @@ public class PostRepositoryImplTests {
     public void testIfPostCanBeDeletedFromDatabaseById() {
         // Act
         this.postRepositoryImpl.deletePostById(this.firstPostInThreadWithTwoPosts.getId());
-        Boolean wasDeleted = !this.postJpaRepository.existsById(this.firstPostInThreadWithTwoPosts.getId().getId());
+
+        Boolean wasDeleted =
+                !this.postJpaRepository.existsById(
+                        this.firstPostInThreadWithTwoPosts.getId().getId());
+
         // Assert
         assertThat(wasDeleted).isTrue();
     }

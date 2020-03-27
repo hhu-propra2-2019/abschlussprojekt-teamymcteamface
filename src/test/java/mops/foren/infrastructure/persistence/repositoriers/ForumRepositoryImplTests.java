@@ -76,19 +76,29 @@ public class ForumRepositoryImplTests {
      */
     @BeforeEach
     public void setUp() {
+        this.userWithTwoForums =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user3").get());
 
-        this.userWithTwoForums = UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user3").get());
-        this.firstForumForUser = ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
-        this.secondForumForUser = ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(3L).get());
-        this.forumWithoutTopics = ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
+        this.firstForumForUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
+
+        this.secondForumForUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(3L).get());
+
+        this.forumWithoutTopics =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
     }
 
     @Test
     public void testIfForumsForUserCanBeLoadedFromDatabase() {
         // Arrange
-        List<Forum> expectedForum = Arrays.asList(this.firstForumForUser, this.secondForumForUser);
+        List<Forum> expectedForum =
+                Arrays.asList(this.firstForumForUser, this.secondForumForUser);
+
         // Act
-        List<Forum> loadedForums = this.forumRepositoryImpl.getForumsFromDB(this.userWithTwoForums);
+        List<Forum> loadedForums =
+                this.forumRepositoryImpl.getForumsFromDB(this.userWithTwoForums);
+
         //Assert
         assertThat(loadedForums).containsOnlyElementsOf(expectedForum);
     }
@@ -96,7 +106,9 @@ public class ForumRepositoryImplTests {
     @Test
     public void testIfOneForumCanBeLoadedFromDatabase() {
         // Act
-        Forum loadedForum = this.forumRepositoryImpl.getOneForumFromDB(this.forumWithoutTopics.getId());
+        Forum loadedForum = this.forumRepositoryImpl.getOneForumFromDB(
+                this.forumWithoutTopics.getId());
+
         // Assert
         assertThat(loadedForum).isEqualTo(this.forumWithoutTopics);
     }
@@ -114,7 +126,8 @@ public class ForumRepositoryImplTests {
 
         // Act
         this.forumRepositoryImpl.addTopicInForum(this.forumWithoutTopics.getId(), newTopic);
-        Boolean topicWasAdded = this.topicJpaRepository.existsByForum_Id(this.forumWithoutTopics.getId().getId());
+        Boolean topicWasAdded =
+                this.topicJpaRepository.existsByForum_Id(this.forumWithoutTopics.getId().getId());
 
         // Assert
         assertThat(topicWasAdded).isTrue();
