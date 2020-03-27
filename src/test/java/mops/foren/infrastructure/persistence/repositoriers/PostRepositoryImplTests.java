@@ -5,10 +5,13 @@ import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.PostPage;
+import mops.foren.domain.repositoryabstraction.IPostRepository;
 import mops.foren.infrastructure.persistence.mapper.PostMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
-import mops.foren.infrastructure.persistence.repositories.*;
+import mops.foren.infrastructure.persistence.repositories.PostJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.ThreadJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,19 +30,13 @@ public class PostRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private final PostRepositoryImpl postRepositoryImpl;
+    private final IPostRepository postRepositoryImpl;
 
     /**
      * Jpa thread repository that can be assumed to work correctly. Used for database setup before
      * the actual tests.
      */
     private final ThreadJpaRepository threadJpaRepository;
-
-    /**
-     * Jpa topic repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
-    private final TopicJpaRepository topicJpaRepository;
 
     /**
      * Jpa post repository that can be assumed to work correctly. Used for database setup before
@@ -68,18 +65,15 @@ public class PostRepositoryImplTests {
      *
      * @param threadJpaRepository injected threadJpaRepository
      * @param postRepositoryImpl  injected postRepositoryImpl
-     * @param topicJpaRepository  injected topicJpaRepository
      * @param postJpaRepository   injected postJpaRepository
      * @param userJpaRepository   injected userJpaRepository
      */
     @Autowired
     public PostRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
-                                   PostRepositoryImpl postRepositoryImpl,
-                                   TopicJpaRepository topicJpaRepository,
+                                   IPostRepository postRepositoryImpl,
                                    PostJpaRepository postJpaRepository,
                                    UserJpaRepository userJpaRepository) {
         this.threadJpaRepository = threadJpaRepository;
-        this.topicJpaRepository = topicJpaRepository;
         this.postJpaRepository = postJpaRepository;
         this.userJpaRepository = userJpaRepository;
         this.postRepositoryImpl = postRepositoryImpl;

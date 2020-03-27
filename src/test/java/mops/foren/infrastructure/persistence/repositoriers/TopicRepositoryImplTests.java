@@ -4,10 +4,14 @@ import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
+import mops.foren.domain.repositoryabstraction.ITopicRepository;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
-import mops.foren.infrastructure.persistence.repositories.*;
+import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.ThreadJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.TopicJpaRepository;
+import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +31,7 @@ public class TopicRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private final TopicRepositoryImpl topicRepositoryImpl;
+    private final ITopicRepository topicRepositoryImpl;
 
     /**
      * Jpa thread repository that can be assumed to work correctly. Used for database setup before
@@ -70,7 +74,7 @@ public class TopicRepositoryImplTests {
      */
     @Autowired
     public TopicRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
-                                    TopicRepositoryImpl topicRepositoryImpl,
+                                    ITopicRepository topicRepositoryImpl,
                                     ForumJpaRepository forumJpaRepository,
                                     TopicJpaRepository topicJpaRepository,
                                     UserJpaRepository userJpaRepository) {

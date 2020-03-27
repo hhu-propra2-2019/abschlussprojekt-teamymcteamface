@@ -4,6 +4,7 @@ import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Role;
 import mops.foren.domain.model.User;
+import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
 import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
@@ -12,7 +13,6 @@ import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
-import mops.foren.infrastructure.persistence.repositories.UserRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class UserRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private final UserRepositoryImpl userRepositoryImpl;
+    private final IUserRepository userRepositoryImpl;
 
     /**
      * Jpa user repository that can be assumed to work correctly. Used for database setup before
@@ -60,7 +60,7 @@ public class UserRepositoryImplTests {
      */
     @Autowired
     public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
-                                   UserRepositoryImpl userRepositoryImpl,
+                                   IUserRepository userRepositoryImpl,
                                    ForumJpaRepository forumJpaRepository) {
         this.userJpaRepository = userJpaRepository;
         this.userRepositoryImpl = userRepositoryImpl;

@@ -3,10 +3,10 @@ package mops.foren.infrastructure.persistence.repositoriers;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
+import mops.foren.domain.repositoryabstraction.IForumRepository;
 import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
-import mops.foren.infrastructure.persistence.repositories.ForumRepositoryImpl;
 import mops.foren.infrastructure.persistence.repositories.TopicJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,7 +27,7 @@ public class ForumRepositoryImplTests {
     /**
      * Repository under test.
      */
-    private final ForumRepositoryImpl forumRepositoryImpl;
+    private final IForumRepository forumRepositoryImpl;
 
     /**
      * Jpa user repository that can be assumed to work correctly. Used for database setup before
@@ -62,7 +62,7 @@ public class ForumRepositoryImplTests {
      */
     @Autowired
     public ForumRepositoryImplTests(UserJpaRepository userJpaRepository,
-                                    ForumRepositoryImpl forumRepositoryImpl,
+                                    IForumRepository forumRepositoryImpl,
                                     ForumJpaRepository forumJpaRepository,
                                     TopicJpaRepository topicJpaRepository) {
         this.userJpaRepository = userJpaRepository;
