@@ -11,6 +11,7 @@ import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadPageMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -71,7 +72,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
                                                       Boolean visibility) {
         Page<ThreadDTO> dtoPage = this.threadRepository
                 .findThreadPageByTopic_IdAndVisible(topicId.getId(),
-                        visibility, PageRequest.of(page, PAGE_SIZE));
+                        visibility, PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending()));
 
         return ThreadPageMapper.toThreadPage(dtoPage, page);
     }
