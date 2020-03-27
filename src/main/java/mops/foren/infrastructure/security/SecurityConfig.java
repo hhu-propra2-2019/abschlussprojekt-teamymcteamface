@@ -61,7 +61,7 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 .antMatchers("/actuator/**")
                 .hasRole("monitoring")
                 .anyRequest()
-                .permitAll();
+                .authenticated();
     }
 
     /**
