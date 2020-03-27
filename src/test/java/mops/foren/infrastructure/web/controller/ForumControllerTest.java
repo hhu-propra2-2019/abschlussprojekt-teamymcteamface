@@ -2,6 +2,7 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.PermissionManager;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -106,6 +107,27 @@ public class ForumControllerTest {
         this.mvcMock.perform(get("/foren"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
+    }
+
+    @Test
+    void testEnterAForumWithoutPermission() throws Exception {
+        //Arrange
+        Account fakeAccount = Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        User fakeUser = User.builder()
+                .name("studentin")
+                .permissionManager(new PermissionManager())
+                .forums(new LinkedList<>())
+                .build();
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+
+        this.mvcMock.perform(get("/foren/my-forums/enter?forumId=1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
     }
 
 }
