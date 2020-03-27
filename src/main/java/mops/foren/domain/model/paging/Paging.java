@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class Paging {
-    boolean isFirst;
-    boolean isLast;
-    boolean hasContent;
-    int totalPages;
-    long totalElements;
-    int currentPage;
+    Boolean isFirst;
+    Boolean isLast;
+    Boolean hasContent;
+    Integer totalPages;
+    Long totalElements;
+    Integer currentPage;
 }

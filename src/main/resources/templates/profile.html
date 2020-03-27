@@ -27,17 +27,18 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-<h1>Profil</h1>
-<div class="row">
-  <div class="col">
-    <div>Vorname: <p>John</p></div>
-    <div>Nachname: <p>Doe</p></div>
+  <h1>Profil</h1>
+  <div class="row">
+    <div class="col">
+      <div>Benutzername: <p th:text="${account.getName()}">John</p></div>
+      <div>Email: <p th:text="${account.getEmail()}">email@example.com</p></div>
+    </div>
+    <div class="col">
+      <img th:src="${account.getImage()}" src="https://avatars1.githubusercontent.com/t/3617896?s=280&v=4"
+           width="100px" height="100px">
+    </div>
   </div>
-  <div class="col">
-    <img src="https://avatars1.githubusercontent.com/t/3617896?s=280&v=4" width="100px" height="100px">
-  </div>
-</div>
-<hr>
+  <hr>
 </main>
 </body>
 </html>

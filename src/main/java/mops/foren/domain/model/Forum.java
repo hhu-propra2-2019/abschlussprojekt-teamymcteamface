@@ -17,10 +17,6 @@ public class Forum {
 
     private LocalDateTime lastChange;
 
-    public void sendEmailToUsers() {
-        throw new UnsupportedOperationException();
-    }
-
     /**
      * This method formats the lastChange into a nice String representation.
      * "Es gab noch keinen Beitrag in diesem Forum" will be returned if the Thread has no posts.
@@ -29,7 +25,7 @@ public class Forum {
      */
     public String getFormattedDate() {
         if (this.lastChange == null) {
-            return "Es gab noch keinen Beitrag in diesem Thread";
+            return "--:--:--";
         }
         return this.lastChange.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }

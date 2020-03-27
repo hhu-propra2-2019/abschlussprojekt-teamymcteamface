@@ -51,11 +51,31 @@
       accusantium in aspernatur natus labore facilis animi harum!
     </div>
     <br>
-    <a th:href="@{/foren/topic/create-topic(forumId=${forumId})}">
-      <button class="btn btn-primary">
-        Thema erstellen
-      </button>
-    </a>
+    <ul class="forum-mainpage-bar">
+      <li class="button-create-topic">
+        <a th:href="@{/foren/topic/create-topic(forumId=${forumId})}">
+          <button class="btn btn-primary">
+            Thema erstellen
+          </button>
+        </a>
+      </li>
+      <li class="content-search">
+          <ul class="forum-mainpage-bar">
+            <form method="get"
+                  th:action="@{/foren/my-forums/search}">
+              <li class="button-create-topic">
+                <input type="hidden" hidden name="forumId" th:value="${forumId}">
+                <input aria-describedby="emailHelp" class="form-control" name="searchContent" type="text" required>
+                <input type="hidden" hidden name="page" value="1">
+              </li>
+              <li class="content-search">
+                <button class="btn btn-primary" type="submit">Im Forum Suchen</button>
+              </li>
+            </form>
+          </ul>
+      </li>
+    </ul>
+    <br>
     <div class="card-deck">
       <div th:each="topic : ${topics}">
         <div class="card topic">
