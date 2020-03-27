@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface TopicJpaRepository extends CrudRepository<TopicDTO, Long> {
     List<TopicDTO> findAllByForum_Id(Long id);
+
+    // added for testing
+    Boolean existsByForum_Id(Long id);
 }

@@ -20,4 +20,5 @@ public interface PostJpaRepository extends PagingAndSortingRepository<PostDTO, L
     Page<PostDTO> findAllByVisibleIsTrueAndForum_IdAndTextContainingIgnoreCase(
             Long forumId, String text, Pageable pageable);
 
+    Boolean existsByText(String text);
 }
