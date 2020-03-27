@@ -18,52 +18,10 @@
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Foren - Posts</title>
-
 </head>
 <th:block th:fragment="headcontent">
-  <style>
-    .page-list, .page-list > li {
-      float: right;
-    }
-
-    .content {
-      padding: 40px;
-      text-align: center;
-    }
-
-    .card:not(.quote) {
-      text-align: left;
-      float: none;
-      margin: 10px;
-    }
-
-    .write-answer {
-      display: grid;
-    }
-
-    .quote {
-      width: auto !important;
-      margin-bottom: 10px;
-    }
-
-    .content-divider {
-      border: 1px solid #52a1eb;
-    }
-
-    .preview-pic {
-      width: 25px;
-      height: 25px;
-      float: left;
-      background: green;
-      margin: auto;
-      margin-right: 8px;
-    }
-
-    .edit-button {
-      float: right;
-      clear: right;
-    }
-  </style>
+  <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
 </th:block>
 <body>
 <header>
@@ -82,14 +40,13 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
+  <h1 th:text="'Du hast gesucht nach: '+ ${content}"></h1>
   <div class="container">
-    <h2 th:text="'Du hast gesucht nach: '+ ${content}"></h2>
-    <d class="content">
+    <div class="content-thread">
       <div style="clear: initial;" th:class="row" th:each="post : ${posts}">
         <div class="card col p-0">
           <div th:class="card-header">
             <div th:class="preview-pic">
-
             </div>
             <div style="float: left;" th:class="author"
                  th:text="${false == post.getAnonymous()}?${post.getAuthor().getName()}:'Anonym'">
@@ -102,35 +59,28 @@
           <div th:class="card-body">
             <p th:class="card-text" th:text="${post.getText()}"></p>
           </div>
-          <a class="btn btn-info"
-             th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
-            Springe zum Thread</a>
+          <a th:href="@{/foren/thread(threadId=${post.getThreadId().getId()}, page=1)}">
+            <button class="btn btn-primary delete-button moderate-button" type="submit">Zum Beitrag gehen</button>
+          </a>
         </div>
       </div>
-
       <hr class="content-divider" style="width: auto;">
-
       <ul class="list-unstyled page-list">
-
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
-                  th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                  th:onclick="|location.href='@{./search(forumId=${forumId}, searchContent=${content}, page=${i})}'|"
                   th:text="${i}"
                   th:unless="${i == pagingObject.getCurrentPage()+1}"
                   type="button">page#
           </button>
-
-
           <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
-                  th:onclick="|location.href='@{./search(content=${content}, page=${i})}'|"
+                  th:onclick="|location.href='@{./search(forumId=${forumId}, searchContent=${content}, page=${i})}'|"
                   th:text="${i}"
                   type="button">page#
           </button>
-
         </li>
       </ul>
-
-    </d>
+    </div>
   </div>
   </div>
 </main>

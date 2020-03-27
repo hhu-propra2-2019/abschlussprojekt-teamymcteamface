@@ -35,7 +35,7 @@ public class DashboardController {
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
-     * @param token - KeycloakAuthenficationToken
+     * @param token - KeycloakAuthenticationToken
      * @return The keycloak account
      */
     @ModelAttribute("account")

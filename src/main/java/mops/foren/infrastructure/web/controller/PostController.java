@@ -3,7 +3,6 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -37,7 +36,7 @@ public class PostController {
 
 
     /**
-     * Constructor for ForenController. The parameters are injected.
+     * Constructor for ForenController. The parameters that are injected.
      *
      * @param userService       - injected UserService (ApplicationService)
      * @param threadService     - ThreadService (ApplicationService)
@@ -63,90 +62,84 @@ public class PostController {
      * @param token        Keycloak token
      * @param postForm     a form to create posts.
      * @param threadIdLong The id of the thread the post is in.
-     * @return The template for the thread
+     * @return The template for the thread.
      */
     @PostMapping("/new-post")
     public String newPost(KeycloakAuthenticationToken token,
-                          @Valid @ModelAttribute PostForm postForm,
-                          BindingResult bindingResult,
                           @RequestParam("threadId") Long threadIdLong,
                           @RequestParam("page") Integer page,
+                          @Valid @ModelAttribute PostForm postForm,
+                          BindingResult bindingResult,
                           RedirectAttributes redirectAttributes) {
 
-        // for failed validation
         if (bindingResult.hasErrors()) {
             String errorMessage =
                     this.validationService.getErrorDescriptionFromErrorObjects(bindingResult);
-
-            // used to hand error as model attribute after redirect to ThreadController
             redirectAttributes.addFlashAttribute("error", errorMessage);
-
             return String.format("redirect:/foren/thread?threadId=%d&page=%d",
-                    threadIdLong,
-                    page + 1);
+                    threadIdLong, page + 1);
         }
-
-        // set error messagte to null after successful validation
         redirectAttributes.addFlashAttribute("error", null);
 
-        ThreadId threadId = new ThreadId(threadIdLong);
         User user = this.userService.getUserFromDB(token);
+        ThreadId threadId = new ThreadId(threadIdLong);
         Post post = postForm.getPost(user, threadId);
-        this.threadService.addPostInThread(threadId, post);
-        return String.format("redirect:/foren/thread?threadId=%d&page=%d", threadIdLong, page + 1);
+        ForumId forumId = this.threadService.getThreadById(threadId).getForumId();
+
+        if (user.checkPermission(forumId, Permission.CREATE_POST)) {
+            this.threadService.addPostInThread(threadId, post);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d",
+                    threadIdLong, page + 1);
+        }
+        return "error-no-permission";
     }
 
     /**
      * Approve a post.
      *
-     * @param postIdLong   The post id
-     * @param threadIdLong The thread id
-     * @return Redirect to the thread page
+     * @param postIdLong The post id
+     * @return Redirect to the thread page.
      */
-    @PostMapping("/approvePost")
+    @PostMapping("/approve-post")
     public String approvePost(KeycloakAuthenticationToken token,
                               @RequestParam("postId") Long postIdLong,
-                              @RequestParam("threadId") Long threadIdLong) {
+                              @RequestParam("page") Integer page) {
+
         User user = this.userService.getUserFromDB(token);
-        Thread thread = this.threadService.getThreadById(new ThreadId(threadIdLong));
-        ForumId forumId = thread.getForumId();
+        PostId postId = new PostId(postIdLong);
+        ThreadId threadId = this.postService.getPost(postId).getThreadId();
+        ForumId forumId = this.postService.getPost(postId).getForumId();
 
         if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
-            this.postService.setPostVisible(new PostId(postIdLong));
-            return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
+            this.postService.setPostVisible(postId);
+            return String.format("redirect:/foren/thread?threadId=%d&page=%d",
+                    threadId.getId(), page + 1);
         }
-
         return "error-no-permission";
-
     }
 
     /**
      * Delete a post.
      *
-     * @param token        The key cloak token
-     * @param threadIdLong The thread id
-     * @param postIdLong   The post id
-     * @param page         The current page
-     * @return The thread page or the error
+     * @param token      The key cloak token
+     * @param postIdLong The post id
+     * @param page       The current page
+     * @return The thread page or the error.
      */
     @PostMapping("/delete-post")
     public String deletePost(KeycloakAuthenticationToken token,
-                             @RequestParam("threadId") Long threadIdLong,
                              @RequestParam("postId") Long postIdLong,
                              @RequestParam("page") Integer page) {
 
         User user = this.userService.getUserFromDB(token);
         Post post = this.postService.getPost(new PostId(postIdLong));
+        ForumId forumId = post.getForumId();
+        ThreadId threadId = post.getThreadId();
 
-        if (user.checkPermission(post.getForumId(), Permission.DELETE_POST, post.getAuthor())) {
-            if (post.getVisible()) {
-                this.postService.deletePost(post.getId());
-            } else {
-                this.postService.deletePostCompletely(post.getId());
-            }
+        if (user.checkPermission(forumId, Permission.DELETE_POST, post.getAuthor())) {
+            this.postService.deletePost(post.getId());
             return String.format("redirect:/foren/thread?threadId=%d&page=%d",
-                    threadIdLong, page + 1);
-
+                    threadId.getId(), page + 1);
         }
         return "error-no-permission";
     }
@@ -156,7 +149,7 @@ public class PostController {
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
-     * @param token - KeycloakAuthenficationToken
+     * @param token - KeycloakAuthenticationToken
      * @return The keycloak account
      */
     @ModelAttribute("account")

@@ -18,9 +18,9 @@ public class PermissionManager {
 
     /**
      * Method checks if the permission requires a certain role and
-     * also if the user has the required role.
+     * if the user has the required role.
      *
-     * @param id         - id of the Forum in which the request was executed
+     * @param id         - id of the requested Forum
      * @param permission - the event represented by it permission-type
      * @return Boolean
      */
@@ -39,9 +39,9 @@ public class PermissionManager {
 
     /**
      * Method checks if the permission requires a certain role and
-     * also if the user has the required role or has the Rights because he is the Author.
+     * if the user has the required role or has the Rights because he is the Author.
      *
-     * @param id         - id of the Forum in which the request was executed
+     * @param id         - id of the requested Forum
      * @param permission - the event represented by it permission-type
      * @param author     - author of the Object on which the permission is to check
      * @param user       - user that is trying to execute an operation which needs permission
@@ -67,7 +67,7 @@ public class PermissionManager {
     }
 
     /**
-     * Add forum to role list of user.
+     * Add a forum to role list of user.
      *
      * @param forumId Forum-id, where user has this role
      * @param role    The role, the user has in the forum.

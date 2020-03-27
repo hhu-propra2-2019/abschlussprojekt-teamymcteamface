@@ -11,8 +11,4 @@ public class Forum {
     private String title;
 
     private String description;
-
-    public void sendEmailToUsers() {
-        throw new UnsupportedOperationException();
-    }
 }

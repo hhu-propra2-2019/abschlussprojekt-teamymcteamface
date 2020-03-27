@@ -15,6 +15,11 @@
     }
 }
 
+.btn-primary {
+    background-color: #52a1eb !important;
+    border-color: #52a1eb !important;
+}
+
 #General-Tables
 .mops-row {
     transition-duration: 0.3s;
@@ -156,4 +161,33 @@ main > div:first-child > h2 {
 .moderate-button-list {
     list-style: none;
     margin-bottom: 0;
+}
+
+.forum-mainpage-bar {
+    list-style: none;
+    padding: 0 0 5px;
+}
+
+.button-create-topic {
+    float: left;
+    padding-left: 0 !important;
+}
+
+.button-create-topic::after {
+    clear: left;
+}
+
+.content-search {
+    float: right;
+    margin-left: 6px;
+    margin-bottom: 0;
+}
+
+.content-search::after {
+    clear: right;
+}
+
+.btn-danger {
+    background-color: indianred !important;
+    border-color: indianred !important;
 }

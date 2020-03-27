@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en"
-  th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
-  xmlns:th="http://www.thymeleaf.org">
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
+          integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+          crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-    crossorigin="anonymous"></script>
+          integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+          crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
+          integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+          crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
   <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
+          integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+          crossorigin="anonymous"></script>
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
@@ -29,57 +29,78 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Dashboard</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/my-forums}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
-  <main th:fragment="bodycontent">
-    
-    <div class="forum-title">
-      <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
-      <br>
-      
-      <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
-        laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae
-        accusantium in aspernatur natus labore facilis animi harum!
-      </div>
-      <br>
-      <button class="btn btn-primary"
-        th:onclick="location.href = '/foren/topic/' + [[${forum.getId().getId().toString()}]] + '/new-topic'">Topic
-        erstellen
-      </button>
-      <div class="card-deck">
-        <div th:each="topic : ${topics}">
-          <div class="card topic">
-            <div class="card-body">
-              <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
-              <button class="btn btn-primary"
-                th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
-                type="button">Betreten
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Dashboard</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/my-forums}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main th:fragment="bodycontent">
+  <div class="forum-title">
+    <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
+    <br>
+
+    <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
+      laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae
+      accusantium in aspernatur natus labore facilis animi harum!
+    </div>
+    <br>
+    <ul class="forum-mainpage-bar">
+      <li class="button-create-topic">
+        <a th:href="@{/foren/topic/create-topic(forumId=${forumId})}">
+          <button class="btn btn-primary">
+            Thema erstellen
+          </button>
+        </a>
+      </li>
+      <li class="content-search">
+        <ul class="forum-mainpage-bar">
+          <form method="get"
+                th:action="@{/foren/my-forums/search}">
+            <li class="button-create-topic">
+              <input type="hidden" hidden name="forumId" th:value="${forumId}">
+              <input aria-describedby="emailHelp" class="form-control" name="searchContent" type="text" required>
+              <input type="hidden" hidden name="page" value="1">
+            </li>
+            <li class="content-search">
+              <button class="btn btn-primary" type="submit">Im Forum Suchen</button>
+            </li>
+          </form>
+        </ul>
+      </li>
+    </ul>
+    <br>
+    <div class="card-deck">
+      <div th:each="topic : ${topics}">
+        <div class="card topic">
+          <div class="card-body">
+            <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
+            <button class="btn btn-primary"
+                    th:onclick="location.href = '/foren/topic/?topicId=[[${topic.getId().getId()}]]&page=1'"
+                    type="button">Betreten
+            </button>
+            <form th:if="${permission}"
+                  class="delete-topic-form"
+                  method="post" th:action="@{/foren/topic/delete-topic(topicId=${topic.getId().getId()})}">
+              <button class="delete-button btn-danger" type="submit">
+                <i class="far fa-trash-alt"></i>
               </button>
-              <form th:if="${permission}" class="delete-topic-form" method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
-                                  topicId=${topic.getId().getId()})}">
-                <button class="delete-button btn-danger" type="submit">
-                  <i class="far fa-trash-alt"></i>
-                </button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
+</main>
 </body>
 
 </html>

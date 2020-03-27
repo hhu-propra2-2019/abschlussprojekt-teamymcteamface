@@ -9,12 +9,14 @@ import mops.foren.domain.model.Permission;
 import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
-import mops.foren.infrastructure.web.ForumForm;
 import mops.foren.infrastructure.web.KeycloakService;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.context.annotation.SessionScope;
 
 import javax.annotation.security.RolesAllowed;
@@ -58,67 +60,68 @@ public class ForumController {
      * @return Get-mapping for my-forums.
      */
     @GetMapping
-    public String allForum(KeycloakAuthenticationToken token,
-                           Model model) {
+    public String allForums(KeycloakAuthenticationToken token,
+                            Model model) {
         User user = this.userService.getUserFromDB(token);
         model.addAttribute("forums", this.forumService.getForums(user));
-        model.addAttribute("forum", new ForumForm("", ""));
         return "my-forums";
     }
 
     /**
      * Mapping to the main-page of a certain forum.
      *
-     * @param token   - the keycloak token
-     * @param forenID - id of the forum
-     * @param model   - Model
+     * @param token       - the keycloak token
+     * @param forumIdLong - id of the forum
+     * @param model       - Model
      * @return The template for the forum main page
      */
-    @GetMapping("/{forenID}")
+    @GetMapping("/enter")
     public String enterAForum(KeycloakAuthenticationToken token,
-                              @PathVariable String forenID,
+                              @RequestParam("forumId") Long forumIdLong,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumIdWrapped = new ForumId(Long.valueOf(forenID));
-        if (!user.checkPermission(forumIdWrapped, Permission.READ_FORUM)) {
-            return "error-no-permission";
+        ForumId forumId = new ForumId(forumIdLong);
+        if (user.checkPermission(forumId, Permission.READ_FORUM)) {
+            model.addAttribute("topics", this.topicService.getTopics(forumId));
+            model.addAttribute("forum", this.forumService.getForum(forumId));
+            model.addAttribute("forumId", forumIdLong);
+            model.addAttribute("permission", user.checkPermission(
+                    forumId, Permission.DELETE_TOPIC));
+            return "forum-mainpage";
         }
-        model.addAttribute("topics", this.topicService.getTopics(forumIdWrapped));
-        model.addAttribute("forum", this.forumService.getForum(forumIdWrapped));
-        model.addAttribute("permission", user.checkPermission(
-                forumIdWrapped, Permission.DELETE_TOPIC));
-        return "forum-mainpage";
+        return "error-no-permission";
+
     }
 
     /**
      * Search all posts in one forum by a text search.
      *
-     * @param token   keycloak token
-     * @param forumID Id of the forum you want to search all posts
-     * @param content the text the user searches for
-     * @param page    number of page in the paging system
-     * @param model   model
+     * @param token         keycloak token
+     * @param forumIdLong   the ID of the forum you want to search all posts
+     * @param searchContent the text the user searches for
+     * @param page          number of page in the paging system
+     * @param model         model
      * @return The template.
      */
-    @GetMapping("/{forumID}/search")
+    @GetMapping("/search")
     public String searchForum(KeycloakAuthenticationToken token,
-                              @PathVariable Long forumID,
-                              @RequestParam String content,
-                              @RequestParam Integer page,
+                              @RequestParam("forumId") Long forumIdLong,
+                              @RequestParam("searchContent") String searchContent,
+                              @RequestParam("page") Integer page,
                               Model model) {
+
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = new ForumId(forumID);
+        ForumId forumId = new ForumId(forumIdLong);
 
         if (user.checkPermission(forumId, Permission.READ_FORUM)) {
-            PostPage postPage = this.postService.searchWholeForum(forumId, content,
-                    page - 1);
+            PostPage postPage = this.postService.searchWholeForum(forumId, searchContent, page - 1);
 
             model.addAttribute("pagingObject", postPage.getPaging());
             model.addAttribute("posts", postPage.getPosts());
-            model.addAttribute("content", content);
+            model.addAttribute("content", searchContent);
+            model.addAttribute("forumId", forumId.getId());
             return "search-result-posts";
         }
-
         return "error-no-permission";
     }
 
@@ -126,8 +129,8 @@ public class ForumController {
      * Adds the account object to each request.
      * Image and roles have to be added in the future.
      *
-     * @param token - KeycloakAuthenficationToken
-     * @return The keycloak account
+     * @param token - KeycloakAuthenticationToken
+     * @return Keycloak Account
      */
     @ModelAttribute("account")
     public Account addAccountToTheRequest(KeycloakAuthenticationToken token) {

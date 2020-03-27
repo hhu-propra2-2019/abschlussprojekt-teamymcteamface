@@ -32,27 +32,33 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
-  <span th:if="${moderatePermission == true}">
-  <form method="post"
-        th:action="@{/foren/topic/moderationview(forumId=${forumId.getId()},topicId=${topicId.getId()},page=1)}"
-        th:unless="${countInvisibleThreads==0}">
-    <button class="btn btn-warning" th:if="${countInvisibleThreads==1}"
-            th:text="${countInvisibleThreads} + ' Thread muss noch freigegeben werden'"
-            type="submit">
-    </button>
-    <button class="btn btn-warning" th:text="${countInvisibleThreads} + ' Threads müssen noch freigegeben werden'"
-            th:unless="${countInvisibleThreads==1}"
-            type="submit">
-    </button>
-  </form>
-  </span>
-  <span>
-    <form method="get" th:action="@{'/foren/thread/' + ${forumId.getId()} + '/' + ${topicId.getId()} + '/new-thread'}">
-    <button class="btn btn-primary btn-create-thread" type="submit"> Thread erstellen
+  <h1 th:text="${forumTitle} + ' - Beiträge'">Beiträge</h1>
+  <div th:if="${moderatePermission == true}">
+    <div th:unless="${countInvisibleThreads==0}">
+      <div th:if="${countInvisibleThreads==1}">
+        <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
+          <button class="btn btn-warning"
+                  th:text="${countInvisibleThreads} + ' Beitrag muss noch freigegeben werden'"
+                  type="submit">
+          </button>
+        </a>
+      </div>
+      <div th:unless="${countInvisibleThreads==1}">
+        <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
+          <button class="btn btn-warning"
+                  th:text="${countInvisibleThreads} + ' Beiträge müssen noch freigegeben werden'"
+                  type="submit">
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <a th:href="@{/foren/thread/new-thread(topicId=${topicId})}">
+      <button class="btn btn-primary btn-create-thread" type="submit">Beitrag erstellen
       </button>
-    </form>
-  </span>
+    </a>
+  </div>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
@@ -65,14 +71,13 @@
     <tbody>
     <div th:each="thread : ${threads}">
       <tr class="mops-row"
-          th:onclick="'window.location.href = \'' + @{/foren/thread(threadId=${thread.getId().getId()}, page=1)} + '\''">
+          th:onclick="location.href ='/foren/thread?threadId=[[${thread.getId().getId()}]]&page=1'">
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
         <td>
-          <form th:if="${deletePermission}" method="post" th:action="@{/foren/thread/delete-thread(forenId=${forumId.getId()},
-                                  topicId=${topicId.getId()},
-                                  threadId=${thread.getId().getId()})}">
+          <form th:if="${deletePermission}" method="post"
+                th:action="@{/foren/thread/delete-thread(threadId=${thread.getId().getId()})}">
             <button class="delete-button btn-danger" type="submit">
               <i class="far fa-trash-alt"></i>
             </button>
@@ -83,14 +88,14 @@
     </tbody>
   </table>
   <ul class="list-unstyled page-list list-threads">
-
     <li th:if="${threads.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
-      <button class="btn" th:onclick="location.href = '?page=' + '[[${i}]]'" th:text="${i}"
+      <button class="btn" th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
+              th:text="${i}"
               th:unless="${i == pagingObject.getCurrentPage()+1}"
               type="button">page#
       </button>
       <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
-              th:onclick="location.href = '?page=' + '[[${i}]]'"
+              th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
               th:text="${i}"
               type="button">page#
       </button>

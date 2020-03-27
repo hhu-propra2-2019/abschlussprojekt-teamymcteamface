@@ -19,6 +19,4 @@ public interface IPostRepository {
     void setPostVisible(PostId postId);
 
     void deletePostById(PostId postId);
-
-    void deletePostCompletely(PostId postId);
 }

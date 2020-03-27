@@ -38,10 +38,6 @@ public class PostService {
         this.postRepository.deletePostById(postId);
     }
 
-    public void deletePostCompletely(PostId postId) {
-        this.postRepository.deletePostCompletely(postId);
-    }
-
     public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {
         return this.postRepository.searchWholeForumForContent(forumId, content, page);
     }
