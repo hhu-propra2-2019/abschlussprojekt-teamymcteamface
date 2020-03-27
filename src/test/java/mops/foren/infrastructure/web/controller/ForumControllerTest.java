@@ -2,7 +2,6 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.PostService;
-import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.User;
@@ -52,9 +51,6 @@ public class ForumControllerTest {
 
     @MockBean
     PostService postServiceMock;
-
-    @MockBean
-    TopicService topicServiceMock;
 
     @MockBean
     User userMock;
