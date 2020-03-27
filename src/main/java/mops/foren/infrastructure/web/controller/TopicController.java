@@ -80,6 +80,7 @@ public class TopicController {
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         if (user.checkPermission(forumId, Permission.READ_TOPIC)) {
             model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
+            model.addAttribute("topic", this.topicService.getTopic(topicId));
             model.addAttribute("forumId", forumId.getId());
             model.addAttribute("topicId", topicId.getId());
             model.addAttribute("pagingObject", visibleThreadPage.getPaging());

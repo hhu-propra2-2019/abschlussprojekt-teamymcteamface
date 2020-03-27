@@ -32,7 +32,11 @@
   </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1 th:text="${forumTitle} + ' - Beiträge'">Beiträge</h1>
+  <h1 th:if="${topic.getModerated()}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()} + '<Moderiert>'">
+    Beiträge</h1>
+  <h1 th:if="${topic.moderated == false}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()}">
+    Beiträge</h1>
+  <p th:text="${topic.getDescription()}">Hier könnte Ihre Werbung stehen!</p>
   <div th:if="${moderatePermission == true}">
     <div th:unless="${countInvisibleThreads==0}">
       <div th:if="${countInvisibleThreads==1}">
