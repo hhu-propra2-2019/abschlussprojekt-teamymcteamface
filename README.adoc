@@ -53,7 +53,7 @@ image:Documentation/Organisation_Foren.png[]
 Hier war die Idee eigentlich, diese Informationen von der Gruppenbildung zu bekommen.
 Deswegen gibts es in unserem System nicht die Möglichkeit ein Forum zu erstellen.
 Diese Anbindung sollte also umgesetzt werden.
-Dazu wollten wir eine synchrone Abfrage an die Gruppenbildung stellen, sodass wir regelmäßig Updates zu neuen Gruppen erhalten zu denen wir dann direkt ein passendes Forum erstellen können und die User zuweisen.
+Dazu wollten wir eine asynchrone Abfrage an die Gruppenbildung stellen, sodass wir regelmäßig Updates zu neuen Gruppen erhalten zu denen wir dann direkt ein passendes Forum erstellen können und die User zuweisen.
 
 * Beim Löschen von Elementen könnte man ein Pop-Up einfügen, dass der User erst bestätigen muss.
 
