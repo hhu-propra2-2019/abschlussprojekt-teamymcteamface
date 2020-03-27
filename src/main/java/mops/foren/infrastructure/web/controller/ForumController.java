@@ -58,7 +58,7 @@ public class ForumController {
      * Method checks if user is in the DB and gets all his forums.
      *
      * @param token Keycloak token.
-     * @param model Content we add to html per Thymleaf.
+     * @param model Content we add to html per Thymeleaf.
      * @return Get-mapping for my-forums.
      */
     @GetMapping
