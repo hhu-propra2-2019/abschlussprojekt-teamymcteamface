@@ -1,5 +1,8 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
@@ -13,8 +16,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.LinkedList;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -31,6 +37,12 @@ public class ForumControllerTest {
 
     @MockBean
     KeycloakService keycloakServiceMock;
+
+    @MockBean
+    UserService userServiceMock;
+
+    @MockBean
+    ForumService forumServiceMock;
 
     /**
      * Building up a security environment for the Test.
@@ -52,13 +64,19 @@ public class ForumControllerTest {
 
     @Test
     void testMyForumTemplateAuthenticated() throws Exception {
-        KeycloakTokenMock.setupTokenMock(Account.builder()
+        Account fakeAccount = Account.builder()
                 .name("studentin")
                 .roles(Set.of("studentin"))
-                .build());
+                .build();
+        User fakeUser = User.builder().name("studentin").build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+        when(forumServiceMock.getForums(fakeUser)).thenReturn(new LinkedList<>());
 
         this.mvcMock.perform(get("/foren/my-forums"))
                 .andExpect(status().isOk())
+                .andExpect(model().attributeExists("forums"))
                 .andExpect(view().name("my-forums"));
     }
 
@@ -75,10 +93,15 @@ public class ForumControllerTest {
 
     @Test
     void testMyForumLandingPage() throws Exception {
-        KeycloakTokenMock.setupTokenMock(Account.builder()
+        Account fakeAccount = Account.builder()
                 .name("orga")
                 .roles(Set.of("orga"))
-                .build());
+                .build();
+        User fakeUser = User.builder().name("orga").build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+        when(forumServiceMock.getForums(fakeUser)).thenReturn(new LinkedList<>());
 
         this.mvcMock.perform(get("/foren"))
                 .andExpect(status().isOk())
