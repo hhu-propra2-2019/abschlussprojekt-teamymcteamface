@@ -189,6 +189,27 @@ public class ForumControllerTest {
                 .andExpect(model().attribute("createPermission", false))
                 .andExpect(model().attribute("permission", false));
     }
+
+    @Test
+    void testSearchAForumWithoutPermission() throws Exception {
+        //Arrange
+        Account fakeAccount = Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        User fakeUser = User.builder()
+                .name("studentin")
+                .permissionManager(new PermissionManager())
+                .build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+
+        this.mvcMock.perform(get("/foren/my-forums/search?forumId=1&searchContent=hallo&page=0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
+    }
 }
 
 
