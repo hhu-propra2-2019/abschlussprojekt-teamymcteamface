@@ -19,7 +19,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,7 +77,7 @@ public class UserRepositoryImplTests {
                 .username("notInDatabase")
                 .forums(new HashSet<ForumDTO>())
                 .email("trash@mail.com")
-                .name("asdfghjkl")
+                .name("Hans Gruber")
                 .posts(new ArrayList<PostDTO>())
                 .roles(new HashMap<Long, Role>())
                 .threads(new ArrayList<ThreadDTO>())
@@ -120,15 +123,15 @@ public class UserRepositoryImplTests {
     @Test
     public void testIfForumCanBeAddedToUser() {
         // Arrange
-        List<ForumId> expectedForums = Arrays.asList(this.forumWithoutUser.getId());
+        ForumId forumId = this.forumWithoutUser.getId();
         // Act
         this.userRepositoryImpl.addForumToUser(
                 this.userInDatabase, this.forumWithoutUser);
         // Reload User1 and obtain List for check
         User updatedUser = UserMapper.mapUserDtoToUser(
-                this.userJpaRepository.findById("user1").get());
+                this.userJpaRepository.findById(this.userInDatabase.getName()).get());
         List<ForumId> forumsForUpdatedUser = updatedUser.getForums();
         // Assert
-        assertThat(forumsForUpdatedUser).isEqualTo(expectedForums);
+        assertThat(forumsForUpdatedUser).containsOnly(forumId);
     }
 }

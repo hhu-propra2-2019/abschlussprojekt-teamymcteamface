@@ -1,8 +1,9 @@
 INSERT
-INTO user (username)
-VALUES ('user1'),
-       ('user2'),
-       ('user3');
+INTO user (username, name, email)
+VALUES ('user1', 'user one', 'user1@hhu.de'),
+       ('user2', 'user two', 'user2@hhu.de'),
+       ('user3', 'user three', 'user3@hhu.de'),
+       ('studentin', 'stud0@gmail.com', 'Bernhard Zimmermann');
 
 INSERT
 INTO forum (id, title, description)

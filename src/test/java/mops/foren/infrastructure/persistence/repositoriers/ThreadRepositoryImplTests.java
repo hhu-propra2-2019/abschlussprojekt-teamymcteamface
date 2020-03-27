@@ -118,8 +118,10 @@ public class ThreadRepositoryImplTests {
     @Test
     public void testIfPostCanBeAddedToThread() {
         // Arrange
+        final String postText = "unique text";
+
         Post newPost = Post.builder()
-                .text("unique text")
+                .text(postText)
                 .author(this.userInThreadWithTwoPosts)
                 .creationDate(LocalDateTime.now())
                 .threadId(this.threadWithTwoPosts.getId())
@@ -132,7 +134,7 @@ public class ThreadRepositoryImplTests {
         // Act
         this.threadRepositoryImpl.addPostInThread(this.threadWithTwoPosts.getId(), newPost);
         // load updated Thread
-        Boolean postWasAdded = this.postJpaRepository.existsByText("unique text");
+        Boolean postWasAdded = this.postJpaRepository.existsByText(postText);
         // Arrange
         assertThat(postWasAdded).isTrue();
     }
