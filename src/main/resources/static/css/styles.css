@@ -204,3 +204,7 @@ main > div:first-child > h2 {
 .btn-approve-threads {
     margin-bottom: 8px;
 }
+
+.anonym-checkbox {
+    margin-left: 10px;
+}
