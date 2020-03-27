@@ -73,4 +73,16 @@ public class ForumControllerTest {
                 .andExpect(status().isForbidden());
     }
 
+    @Test
+    void testMyForumLandingPage() throws Exception {
+        KeycloakTokenMock.setupTokenMock(Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build());
+
+        this.mvcMock.perform(get("/foren"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("my-forums"));
+    }
+
 }
