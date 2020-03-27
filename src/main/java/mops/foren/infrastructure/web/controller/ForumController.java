@@ -25,7 +25,7 @@ import java.util.List;
 
 @Controller
 @SessionScope
-@RequestMapping("/foren/my-forums")
+@RequestMapping({"/foren/my-forums", "/foren"})
 @RolesAllowed({"ROLE_studentin", "ROLE_orga"})
 public class ForumController {
 
@@ -58,7 +58,7 @@ public class ForumController {
      * Method checks if user is in the DB and gets all his forums.
      *
      * @param token Keycloak token.
-     * @param model Content we add to html per thymleaf.
+     * @param model Content we add to html per Thymeleaf.
      * @return Get-mapping for my-forums.
      */
     @GetMapping

@@ -23,21 +23,18 @@
   <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
 </th:block>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li class="active">
-        <a th:href="@{/foren}">Dashboard</a>
-      </li>
-      <li class="">
-        <a th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
-        <a th:href="@{/foren/profile}">Profil</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 <main th:fragment="bodycontent">
   <div class="container">
     <div class="content-thread">

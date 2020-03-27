@@ -16,21 +16,18 @@
   </th:block>
 </head>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li class="active">
-        <a th:href="@{/foren}">Dashboard</a>
-      </li>
-      <li class="">
-        <a th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
-        <a th:href="@{/foren/profile}">Profil</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 <main th:fragment="bodycontent">
   <h1 th:if="${topic.getModerated()}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()} + '<Moderiert>'">
     Beiträge</h1>
@@ -41,7 +38,7 @@
     <div th:unless="${countInvisibleThreads==0}">
       <div th:if="${countInvisibleThreads==1}">
         <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
-          <button class="btn btn-warning"
+          <button class="btn btn-warning btn-approve-threads"
                   th:text="${countInvisibleThreads} + ' Beitrag muss noch freigegeben werden'"
                   type="submit">
           </button>
@@ -49,7 +46,7 @@
       </div>
       <div th:unless="${countInvisibleThreads==1}">
         <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
-          <button class="btn btn-warning"
+          <button class="btn btn-warning btn-approve-threads"
                   th:text="${countInvisibleThreads} + ' Beiträge müssen noch freigegeben werden'"
                   type="submit">
           </button>

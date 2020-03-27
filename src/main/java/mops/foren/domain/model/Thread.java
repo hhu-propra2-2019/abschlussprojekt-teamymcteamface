@@ -38,7 +38,7 @@ public class Thread {
      */
     public String getFormattedDate() {
         if (this.lastPostTime == null) {
-            return "Es gab noch keinen Beitrag in diesem Thread";
+            return "Es gibt noch keinen Inhalt in diesem Beitrag";
         }
         return this.lastPostTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy, HH:mm"));
     }

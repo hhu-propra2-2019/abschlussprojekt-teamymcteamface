@@ -16,21 +16,18 @@
   </th:block>
 </head>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li>
-        <a th:href="@{/foren}">Dashboard</a>
-      </li>
-      <li class="active">
-        <a th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li>
-        <a th:href="@{/foren/profile}">Profil</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 <main th:fragment="bodycontent">
   <h1>Meine Foren:</h1>
   <table class="table table-light">
