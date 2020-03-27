@@ -65,7 +65,7 @@
         </div>
       </div>
       <hr class="content-divider" style="width: auto;">
-      <ul class="list-unstyled page-list">
+      <ul class="list-unstyled page-list search-bottom">
         <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
           <button class="btn"
                   th:onclick="|location.href='@{./search(forumId=${forumId}, searchContent=${content}, page=${i})}'|"
