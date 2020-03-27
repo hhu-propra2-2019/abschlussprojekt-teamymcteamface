@@ -1,14 +1,18 @@
 version: "3.1"
 services:
-  database:
-    image: mysql:5.7
-    env_file: prod.env
-  foren:
-    build: .
-    environment:
-      FORUM_PRODUCTION_PROFILE: prod
-    ports:
-      - "8080:8080"
-    depends_on:
-      - database
+    database:
+        image: mysql:5.7
+        environment:
+            - "MYSQL_ROOT_PASSWORD=geheim"
+            - "MYSQL_DATABASE=foren"
+            - TZ=Europe/Berlin
+
+    foren:
+        build: .
+        environment:
+            FORUM_PRODUCTION_PROFILE: prod
+        ports:
+            - "8080:8080"
+        depends_on:
+            - database
 
