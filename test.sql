@@ -1,5 +1,5 @@
 INSERT INTO foren.forum (id, description, title) VALUES (1, 'orga1 ist hier Admin, studentin1 Moderator, das Topic "Informationen zur Klausur" ist moderiert', 'Algorithmen und Datenstrukturen');
-INSERT INTO foren.forum (id, description, title) VALUES (2, 'orga1 ist hier Admin, studentin2 Moderator, das Topic "schlechte Witze aus dem Internet" ist anonym, "Ankündigungen" ist moderiert', 'Programmierung');
+INSERT INTO foren.forum (id, description, title) VALUES (2, 'orga1 ist hier Admin, studentin2 Moderator, das Topic "schlechte Witze aus dem Internet" ist anonym', 'Programmierung');
 INSERT INTO foren.forum (id, description, title) VALUES (3, 'orga2 ist hier Admin', 'Datenbanksysteme');
 INSERT INTO foren.forum (id, description, title) VALUES (4, 'Wir lehren sie in diesem Modul die Betriebssysteme.
          Bitte besuchen sie regelmäßig die Vorlesung, da es kein Skript geben wird!', 'Betriebssysteme');
@@ -84,7 +84,7 @@ INSERT INTO foren.roles (username, role, forum_id) VALUES ('studentin1', 'MODERA
 INSERT INTO foren.roles (username, role, forum_id) VALUES ('studentin2', 'MODERATOR', 2);
 INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (1, false, 'Die Klausur findet am 05.05.2020 statt
 Die Räume werden noch bekannt gegeben.', true, 'Klausurtermin', true, 'orga1', 1, 1);
-INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (2, false, 'Die Räume werden wie üblich nach Nachnamen verteilt :
+INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (2, false, 'DIe Räume werden wie üblich nach Nachnamen verteilt :
 A-M : Hörsaal 5D
 N-Z : Hörsaal 5C', true, 'Raumverteilung', true, 'studentin1', 1, 1);
 INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (3, false, 'Aufgrund von Corona wird die Klausur auf den 08.08.2020 verschoben', true, 'Verschiebung Klausurtermin', true, 'orga1', 1, 1);
@@ -101,7 +101,7 @@ INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible,
 INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (17, false, 'Also', false, 'Hab hier mal ne längere Frage', true, 'studentin2', 1, 7);
 INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (18, false, 'Es beginnt am Montag um 10:30 in 5C', false, 'Seminarbeginn', true, 'orga2', 4, 8);
 INSERT INTO foren.thread (id, anonymous, description, moderated, title, visible, author_username, forum_id, topic_id) VALUES (19, false, 'sfdgsgsdfs', true, 'fdafdsaf', false, 'studentin1', 2, 9);
-INSERT INTO foren.topic (id, anonymous, description, moderated, title, forum_id) VALUES (1, false, 'Hier finden Sie alle organisatorischen Informationen zur Klausur.', true, 'Informationen zur Klausur', 1);
+INSERT INTO foren.topic (id, anonymous, description, moderated, title, forum_id) VALUES (1, false, 'Hier finden SIe alle organisatorischen Informationen zur Klausur.', true, 'Informationen zur Klausur', 1);
 INSERT INTO foren.topic (id, anonymous, description, moderated, title, forum_id) VALUES (2, false, 'Hier könnt ihr alle Fragen bzgl. des Inhaltes der Vorlesung stellen.', false, 'Inhaltliche Fragen', 1);
 INSERT INTO foren.topic (id, anonymous, description, moderated, title, forum_id) VALUES (3, true, 'Hier könnt ihr anonym Witze posten.', false, 'Schlechte Witze aus dem Internet', 2);
 INSERT INTO foren.topic (id, anonymous, description, moderated, title, forum_id) VALUES (4, false, 'Mit welchem Editor/IDE sollen wir die Übungen vorführen ?', false, 'Editorwahl', 2);
@@ -129,8 +129,12 @@ INSERT INTO foren.user_forum (username, id) VALUES ('orga2', 3);
 INSERT INTO foren.user_forum (username, id) VALUES ('orga2', 4);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin1', 1);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin1', 2);
+INSERT INTO foren.user_forum (username, id) VALUES ('studentin1', 3);
+INSERT INTO foren.user_forum (username, id) VALUES ('studentin1', 4);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin2', 1);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin2', 2);
+INSERT INTO foren.user_forum (username, id) VALUES ('studentin2', 3);
+INSERT INTO foren.user_forum (username, id) VALUES ('studentin2', 5);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin3', 1);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin3', 2);
 INSERT INTO foren.user_forum (username, id) VALUES ('studentin3', 3);
