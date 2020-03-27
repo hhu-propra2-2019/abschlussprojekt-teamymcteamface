@@ -22,7 +22,9 @@ public class ForumModelServiceTest {
     private Forum forum;
     private ForumId forumId = new ForumId(1L);
 
-
+    /**
+     * This method sets up the classes that need to be mocked.
+     */
     @BeforeEach
     public void setUp() {
         this.threadRepository = mock(IThreadRepository.class);
