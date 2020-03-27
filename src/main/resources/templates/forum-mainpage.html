@@ -24,8 +24,6 @@
   <title>Foren</title>
   <th:block th:fragment="headcontent">
     <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
-    <script th:src="@{/javascript/modal.js}" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../static/css/modal.css" th:href="@{/css/modal.css}">
     <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
@@ -51,32 +49,7 @@
     <div class="forum-title">
       <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
       <br>
-      <div th:each="topic, i : ${topics}">
-        <div th:classappend="${topic.getTitle()}" class="modal">
-  
-          <!-- Modal content -->
-          <div class="modal-content">
-            <div class="modal-header">
-              <span th:classappend="${topic.getTitle()}" th:onclick="'closeAllModals();'" class="close">&times;</span>
-              <h2>Möchten Sie das Topic wirklich löschen?</h2>
-            </div>
-            <div class="modal-body">
-              <p>Klicken Sie auf den folgenden Button</p>
-              <p>um die Aktion durchzuführen</p>
-              <form th:if="${permission}" class="delete-topic-form" method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
-                            topicId=${topic.getId().getId()})}">
-                <button th:classappend="${topic.getTitle()}" class="delete-button btn-danger" type="submit">
-                  <i class="far fa-trash-alt"></i>
-                </button>
-              </form>
-            </div>
-            <div class="modal-footer">
-              <h3></h3>
-            </div>
-          </div>
-  
-        </div>
-      </div>
+      
       <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
         laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae
         accusantium in aspernatur natus labore facilis animi harum!
@@ -87,7 +60,7 @@
         erstellen
       </button>
       <div class="card-deck">
-        <div th:each="topic, iter : ${topics}">
+        <div th:each="topic : ${topics}">
           <div class="card topic">
             <div class="card-body">
               <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
@@ -95,12 +68,12 @@
                 th:onclick="location.href = '/foren/topic/[[${forum.getId().getId()}]]/[[${topic.getId().getId()}]]' + '\?page=1'"
                 type="button">Betreten
               </button>
-              <!--<form th:if="${permission}" class="delete-topic-form" method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
-                                  topicId=${topic.getId().getId()})}">-->
-                <button class="modal-button delete-button btn-danger" type="submit" th:onclick="'openModal(\'' + ${topic.getId().getId()} + '\');'">
+              <form th:if="${permission}" class="delete-topic-form" method="post" th:action="@{/foren/topic/delete-topic(forenId=${forum.getId().getId()},
+                                  topicId=${topic.getId().getId()})}">
+                <button class="delete-button btn-danger" type="submit">
                   <i class="far fa-trash-alt"></i>
                 </button>
-              <!--</form>-->
+              </form>
             </div>
           </div>
         </div>
