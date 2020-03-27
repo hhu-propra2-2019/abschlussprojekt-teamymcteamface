@@ -13,6 +13,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.function.Predicate.not;
+
 @Service
 public abstract class ThreadMapper {
 
@@ -24,10 +26,14 @@ public abstract class ThreadMapper {
      */
     public static Thread mapThreadDtoToThread(ThreadDTO threadDTO) {
         LocalDateTime lastChange = getLastPostTime(threadDTO.getPosts());
+        Long count = threadDTO.getPosts().stream()
+                .filter(not(PostDTO::getVisible))
+                .count();
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
                 .anonymous(threadDTO.getAnonymous())
                 .moderated(threadDTO.getModerated())
+                .unModerated(count)
                 .visible(threadDTO.getVisible())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
                 .lastPostTime(lastChange)

@@ -11,23 +11,23 @@
   <meta charset="utf-8">
   <title th:text="${forumTitle}"></title>
   <th:block th:fragment="headcontent">
-    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
 <main th:fragment="bodycontent">
   <h1 th:if="${topic.getModerated()}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()} + '<Moderiert>'">
     Beiträge</h1>
@@ -66,6 +66,9 @@
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
+      <div th:if="${topic.getModerated() && moderatePermission}">
+        <th>Unmoderierte Posts:</th>
+      </div>
       <th></th>
     </tr>
     </thead>
@@ -76,9 +79,13 @@
         <td th:text="${thread.getTitle()}">lorem</td>
         <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
         <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
+        <div th:if="${topic.getModerated() && moderatePermission}">
+          <td th:text="${thread.getUnModerated()}">
+          </td>
+        </div>
         <td>
-          <form th:if="${deletePermission}" method="post"
-                th:action="@{/foren/thread/delete-thread(threadId=${thread.getId().getId()})}">
+          <form method="post" th:action="@{/foren/thread/delete-thread(threadId=${thread.getId().getId()})}"
+                th:if="${deletePermission}">
             <button class="delete-button btn-danger" type="submit">
               <i class="far fa-trash-alt"></i>
             </button>
@@ -89,7 +96,7 @@
     </tbody>
   </table>
   <ul class="list-unstyled page-list list-threads">
-    <li th:if="${threads.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+    <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}" th:if="${threads.size() > 0}">
       <button class="btn" th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
               th:text="${i}"
               th:unless="${i == pagingObject.getCurrentPage()+1}"
