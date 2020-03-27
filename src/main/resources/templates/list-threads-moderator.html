@@ -16,21 +16,18 @@
   </th:block>
 </head>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li class="active">
-        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 <main th:fragment="bodycontent">
   <h1 th:text="${forumTitle} + ' - Beiträge die noch freigegeben werden müssen:'">Beiträge</h1>
   <table class="table table-light">
@@ -71,7 +68,7 @@
     </tbody>
   </table>
   <ul class="list-unstyled page-list">
-    <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+    <li th:if="${threads.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
       <button class="btn" th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
               th:text="${i}"
               th:unless="${i == pagingObject.getCurrentPage()+1}"

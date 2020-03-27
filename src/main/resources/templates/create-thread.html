@@ -11,21 +11,18 @@
   </th:block>
 </head>
 <body>
-<header>
-  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-    <ul>
-      <li class="active">
-        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
-      </li>
-    </ul>
-  </nav>
-</header>
+  <header>
+    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
+    </nav>
+  </header>
 <main th:fragment="bodycontent">
   <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
     error message goes here (or not)
