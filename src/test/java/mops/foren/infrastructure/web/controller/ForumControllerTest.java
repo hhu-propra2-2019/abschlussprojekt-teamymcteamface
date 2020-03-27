@@ -214,6 +214,28 @@ public class ForumControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("search-result-posts"));
     }
+
+    @Test
+    void testSearchModelWithPermission() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        PostPage postPage = new PostPage(paging, List.of());
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when(postServiceMock.searchWholeForum(any(), any(), any())).thenReturn(postPage);
+
+        this.mvcMock.perform(get("/foren/my-forums/search?forumId=1&searchContent=hallo&page=0"))
+                .andExpect(model().attribute("posts", List.of()))
+                .andExpect(model().attribute("pagingObject", paging))
+                .andExpect(model().attribute("content", "hallo"))
+                .andExpect(model().attribute("forumId", 1L));
+    }
 }
 
 
