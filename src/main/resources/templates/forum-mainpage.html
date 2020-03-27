@@ -2,6 +2,7 @@
 <html lang="en"
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -26,6 +27,7 @@
     <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
+
 <body>
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
@@ -46,6 +48,7 @@
   <div class="forum-title">
     <h1 th:text="${forum.getTitle()}">Algorithmen und Datenstrukturen</h1>
     <br>
+
     <div th:text="${forum.getDescription()}">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Magni
       laboriosam dolor ratione dolorum delectus. Tempore magni consequatur unde quam dolore amet! Beatae
       accusantium in aspernatur natus labore facilis animi harum!
@@ -60,19 +63,19 @@
         </a>
       </li>
       <li class="content-search">
-          <ul class="forum-mainpage-bar">
-            <form method="get"
-                  th:action="@{/foren/my-forums/search}">
-              <li class="button-create-topic">
-                <input type="hidden" hidden name="forumId" th:value="${forumId}">
-                <input aria-describedby="emailHelp" class="form-control" name="searchContent" type="text" required>
-                <input type="hidden" hidden name="page" value="1">
-              </li>
-              <li class="content-search">
-                <button class="btn btn-primary" type="submit">Im Forum Suchen</button>
-              </li>
-            </form>
-          </ul>
+        <ul class="forum-mainpage-bar">
+          <form method="get"
+                th:action="@{/foren/my-forums/search}">
+            <li class="button-create-topic">
+              <input type="hidden" hidden name="forumId" th:value="${forumId}">
+              <input aria-describedby="emailHelp" class="form-control" name="searchContent" type="text" required>
+              <input type="hidden" hidden name="page" value="1">
+            </li>
+            <li class="content-search">
+              <button class="btn btn-primary" type="submit">Im Forum Suchen</button>
+            </li>
+          </form>
+        </ul>
       </li>
     </ul>
     <br>
@@ -81,20 +84,17 @@
         <div class="card topic">
           <div class="card-body">
             <h5 th:text="${topic.getTitle()}" class="card-title">Title</h5>
-            <a th:href="@{/foren/topic(forumId=${forumId}, topicId=${topic.getId().getId()}, page=1)}">
-              <button class="btn btn-primary"
-                      type="button">Betreten
+            <button class="btn btn-primary"
+                    th:onclick="location.href = '/foren/topic/?topicId=[[${topic.getId().getId()}]]&page=1'"
+                    type="button">Betreten
+            </button>
+            <form th:if="${permission}"
+                  class="delete-topic-form"
+                  method="post" th:action="@{/foren/topic/delete-topic(topicId=${topic.getId().getId()})}">
+              <button class="delete-button btn-danger" type="submit">
+                <i class="far fa-trash-alt"></i>
               </button>
-            </a>
-            <div>
-              <form th:if="${permission}"
-                    class="delete-topic-form"
-                    method="post" th:action="@{/foren/topic/delete-topic(topicId=${topic.getId().getId()})}">
-                <button class="delete-button btn-danger" type="submit">
-                  <i class="far fa-trash-alt"></i>
-                </button>
-              </form>
-            </div>
+            </form>
           </div>
         </div>
       </div>
@@ -102,4 +102,5 @@
   </div>
 </main>
 </body>
+
 </html>

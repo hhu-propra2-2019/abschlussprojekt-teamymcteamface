@@ -3,6 +3,10 @@
     float: right;
 }
 
+.search-bottom {
+    margin-bottom: 100px;
+}
+
 @media (min-width: 992px) {
     main > div:first-child > h2 {
         font-size: 2.4rem;
@@ -119,9 +123,13 @@ main > div:first-child > h2 {
     text-align: left;
 }
 
-.delete-post-form, .delete-topic-form {
+.delete-post-form {
     float: right;
     clear: right;
+}
+
+.delete-topic-form {
+    margin: -4px;
 }
 
 #Topics
@@ -132,6 +140,10 @@ main > div:first-child > h2 {
     height: 120px;
     margin: 10px;
     float: left;
+}
+
+.topic > .card-body {
+    text-align: center;
 }
 
 .forum-title {
@@ -182,4 +194,9 @@ main > div:first-child > h2 {
 .btn-danger {
     background-color: indianred !important;
     border-color: indianred !important;
+}
+
+.error-page {
+    margin-top: 150px;
+    text-align: center;
 }
