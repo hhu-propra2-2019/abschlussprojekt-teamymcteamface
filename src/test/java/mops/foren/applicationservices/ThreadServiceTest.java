@@ -59,4 +59,55 @@ public class ThreadServiceTest {
         //Assert
         verify(this.threadRepository).addPostInThread(threadId, post);
     }
+
+    @Test
+    public void testGetThreadPageByVisibilityDirectsTheCallCorrectly() {
+        // Arrang
+        TopicId topicId = new TopicId(0L);
+        Integer page = 1;
+        Boolean visibility = true;
+
+        // Act
+        this.threadService.getThreadPageByVisibility(topicId, page, visibility);
+
+        //Assert
+        verify(this.threadRepository).getThreadPageFromDbByVisibility(topicId, page, visibility);
+    }
+
+    @Test
+    public void testSetThreadVisibleDirectsTheCallCorrectly() {
+        // Arrange
+        ThreadId threadId = new ThreadId(0L);
+
+        // Act
+        this.threadService.setThreadVisible(threadId);
+
+        //Assert
+        verify(this.threadRepository).setThreadVisible(threadId);
+    }
+
+    @Test
+    public void testCountInvisibleThreadsDirectsTheCallCorrectly() {
+        // Arrange
+        TopicId topicId = new TopicId(1L);
+
+        // Act
+        this.threadService.countInvisibleThreads(topicId);
+
+        //Assert
+        verify(this.threadRepository).countInvisibleThreads(topicId);
+    }
+
+    @Test
+    public void testDeleteThreadDirectsTheCallCorrectly() {
+        // Arrange
+        ThreadId threadId = new ThreadId(1L);
+
+        // Act
+        this.threadService.deleteThread(threadId);
+
+        //Assert
+        verify(this.threadRepository).deleteThread(threadId);
+    }
+
 }

@@ -35,6 +35,18 @@ public class TopicServiceTest {
     }
 
     @Test
+    public void testGetTopicDirectsTheCallCorrectly() {
+        // Arrange
+        TopicId topicId = new TopicId(0L);
+
+        // Act
+        this.topicService.getTopic(topicId);
+
+        //Assert
+        verify(this.topicRepository).getOneTopicFromDB(topicId);
+    }
+
+    @Test
     public void testAddThreadInTopicDirectsTheCallCorrectly() {
         // Arrange
         TopicId topicId = new TopicId(0L);
@@ -47,4 +59,15 @@ public class TopicServiceTest {
         verify(this.topicRepository).addThreadInTopic(topicId, thread);
     }
 
+    @Test
+    public void testDeleteTopicDirectsTheCallCorrectly() {
+        // Arrange
+        TopicId topicId = new TopicId(0L);
+
+        // Act
+        this.topicService.deleteTopic(topicId);
+
+        //Assert
+        verify(this.topicRepository).deleteTopic(topicId);
+    }
 }

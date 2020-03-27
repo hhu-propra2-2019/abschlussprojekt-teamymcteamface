@@ -1,5 +1,6 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.Forum;
 import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
@@ -63,5 +64,17 @@ public class ForumServiceTest {
 
         //Assert
         verify(this.forumRepository).addTopicInForum(forumId, topic);
+    }
+
+    @Test
+    public void testUpdateLastTimeChangedDirectsTheCallCorrectly() {
+        // Arrange
+        Forum forum = Forum.builder().build();
+
+        // Act
+        this.forumService.updateLastTimeChanged(forum);
+
+        //Assert
+        verify(this.forumModelService).updateLastChangedTime(forum);
     }
 }

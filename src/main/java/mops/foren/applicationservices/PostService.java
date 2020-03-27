@@ -6,17 +6,14 @@ import mops.foren.domain.model.PostId;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
-import mops.foren.domain.services.ThreadModelService;
 
 @ApplicationService
 public class PostService {
 
     private IPostRepository postRepository;
-    private ThreadModelService threadModelService;
 
-    public PostService(IPostRepository postRepository, ThreadModelService threadModelService) {
+    public PostService(IPostRepository postRepository) {
         this.postRepository = postRepository;
-        this.threadModelService = threadModelService;
     }
 
     public PostPage getPosts(ThreadId threadId, Integer page) {
@@ -27,13 +24,6 @@ public class PostService {
         return this.postRepository.getPostById(postId);
     }
 
-
-    /**
-     * This method should delete a post.
-     * This method also updates the lastPostTime changed in Threads.
-     *
-     * @param postId The post id of the post that should be deleted.
-     */
     public void deletePost(PostId postId) {
         this.postRepository.deletePostById(postId);
     }
