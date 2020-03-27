@@ -1,9 +1,10 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
+import mops.foren.applicationservices.PostService;
+import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.PermissionManager;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
@@ -26,8 +27,8 @@ import static org.springframework.security.test.web.servlet.setup.SecurityMockMv
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@AutoConfigureMockMvc
 @SpringBootTest
+@AutoConfigureMockMvc
 public class ForumControllerTest {
 
     @Autowired
@@ -44,6 +45,12 @@ public class ForumControllerTest {
 
     @MockBean
     ForumService forumServiceMock;
+
+    @MockBean
+    PostService postServiceMock;
+
+    @MockBean
+    TopicService topicServiceMock;
 
     /**
      * Building up a security environment for the Test.
@@ -101,6 +108,7 @@ public class ForumControllerTest {
         User fakeUser = User.builder().name("orga").build();
         KeycloakTokenMock.setupTokenMock(fakeAccount);
 
+
         when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
         when(forumServiceMock.getForums(fakeUser)).thenReturn(new LinkedList<>());
 
@@ -121,8 +129,8 @@ public class ForumControllerTest {
         User fakeUser = User.builder()
                 .name("studentin")
                 .permissionManager(new PermissionManager())
-                .forums(new LinkedList<>())
                 .build();
+
         when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
 
         this.mvcMock.perform(get("/foren/my-forums/enter?forumId=1"))
@@ -130,4 +138,57 @@ public class ForumControllerTest {
                 .andExpect(view().name("error-no-permission"));
     }
 
+    @Test
+    void testEnterAForumWithPermissionRouting() throws Exception {
+        //Arrange
+        Account fakeAccount = Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        User fakeUser = User.builder()
+                .name("studentin")
+                .permissionManager(new PermissionManager())
+                .build();
+
+        fakeUser.getPermissionManager().addForumWithPermission(1L, Role.STUDENT);
+        Forum fakeForum = Forum.builder().title("").build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+        when(forumServiceMock.getForum(new ForumId(1L))).thenReturn(fakeForum);
+
+        this.mvcMock.perform(get("/foren/my-forums/enter?forumId=1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("forum-mainpage"));
+    }
+
+    @Test
+    void testEnterAForumWithPermissionModel() throws Exception {
+        //Arrange
+        Account fakeAccount = Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        User fakeUser = User.builder()
+                .name("studentin")
+                .permissionManager(new PermissionManager())
+                .build();
+
+        fakeUser.getPermissionManager().addForumWithPermission(1L, Role.STUDENT);
+        Forum fakeForum = Forum.builder().title("").build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(fakeUser);
+        when(forumServiceMock.getForum(any())).thenReturn(fakeForum);
+
+        this.mvcMock.perform(get("/foren/my-forums/enter?forumId=1"))
+                .andExpect(model().attribute("forum", fakeForum))
+                .andExpect(model().attribute("forumId", 1L))
+                .andExpect(model().attribute("createPermission", false))
+                .andExpect(model().attribute("permission", false));
+    }
 }
+
+
