@@ -1,7 +1,7 @@
 FROM gradle:jdk11 AS BUILD
 WORKDIR /home/gradle/src
-COPY . .
-RUN ./gradle bootJar
+COPY . /home/gradle/src
+RUN gradle bootJar
 
 FROM openjdk:11-jre-slim
 WORKDIR /code
