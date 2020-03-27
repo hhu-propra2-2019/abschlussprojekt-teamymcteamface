@@ -12,6 +12,7 @@ import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -116,6 +117,22 @@ public class ForumControllerTest {
         this.mvcMock.perform(get("/foren"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("my-forums"));
+    }
+
+    @Test
+    void testAccountIsInModel() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
+                .thenReturn(fakeAccount);
+
+        mvcMock.perform(get("/foren"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attribute("account", fakeAccount));
     }
 
     @Test
