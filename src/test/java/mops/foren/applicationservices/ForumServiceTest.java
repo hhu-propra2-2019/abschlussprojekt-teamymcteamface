@@ -4,6 +4,7 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
 import mops.foren.domain.repositoryabstraction.IForumRepository;
+import mops.foren.domain.services.ForumModelService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,11 +14,16 @@ import static org.mockito.Mockito.verify;
 public class ForumServiceTest {
     private IForumRepository forumRepository;
     private ForumService forumService;
+    private ForumModelService forumModelService;
 
+    /**
+     * set up method, to construct a forumService.
+     */
     @BeforeEach
     public void setUp() {
         this.forumRepository = mock(IForumRepository.class);
-        this.forumService = new ForumService(this.forumRepository);
+        this.forumModelService = mock(ForumModelService.class);
+        this.forumService = new ForumService(this.forumRepository, this.forumModelService);
     }
 
     @Test

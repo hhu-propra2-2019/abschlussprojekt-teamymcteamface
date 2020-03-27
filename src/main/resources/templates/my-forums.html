@@ -3,16 +3,16 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+  <script crossorigin="anonymous"
           integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-          crossorigin="anonymous"></script>
+          th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"></script>
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
   </th:block>
 </head>
 <body>
@@ -44,7 +44,7 @@
     <div th:each="forum : ${forums}">
       <tr class="mops-row" th:onclick="location.href ='/foren/my-forums/enter?forumId=[[${forum.getId().getId()}]]'">
         <td th:text="${forum.getTitle()}">AlDat</td>
-        <td th:text="${forum.getTitle()}">14:37Uhr</td>
+        <td th:text="${forum.getFormattedDate()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>

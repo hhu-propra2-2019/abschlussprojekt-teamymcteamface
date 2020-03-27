@@ -4,9 +4,14 @@ import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.TopicId;
+import mops.foren.infrastructure.persistence.dtos.PostDTO;
 import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.TopicDTO;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public abstract class ThreadMapper {
@@ -18,18 +23,27 @@ public abstract class ThreadMapper {
      * @return the corresponding Thread.
      */
     public static Thread mapThreadDtoToThread(ThreadDTO threadDTO) {
+        LocalDateTime lastChange = getLastPostTime(threadDTO.getPosts());
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
                 .anonymous(threadDTO.getAnonymous())
                 .moderated(threadDTO.getModerated())
                 .visible(threadDTO.getVisible())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
-                .lastPostTime(threadDTO.getLastChangedTime())
+                .lastPostTime(lastChange)
                 .author(UserMapper.mapUserDtoToUser(threadDTO.getAuthor()))
                 .title(threadDTO.getTitle())
                 .description(threadDTO.getDescription())
                 .forumId(new ForumId(threadDTO.getForum().getId()))
                 .build();
+    }
+
+    private static LocalDateTime getLastPostTime(List<PostDTO> posts) {
+        Optional<LocalDateTime> max = posts.stream()
+                .filter(PostDTO::getVisible)
+                .map(PostDTO::getDateTime)
+                .max(LocalDateTime::compareTo);
+        return max.orElse(null);
     }
 
     /**
