@@ -41,7 +41,7 @@
     <div th:unless="${countInvisibleThreads==0}">
       <div th:if="${countInvisibleThreads==1}">
         <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
-          <button class="btn btn-warning"
+          <button class="btn btn-warning btn-approve-threads"
                   th:text="${countInvisibleThreads} + ' Beitrag muss noch freigegeben werden'"
                   type="submit">
           </button>
@@ -49,7 +49,7 @@
       </div>
       <div th:unless="${countInvisibleThreads==1}">
         <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
-          <button class="btn btn-warning"
+          <button class="btn btn-warning btn-approve-threads"
                   th:text="${countInvisibleThreads} + ' Beiträge müssen noch freigegeben werden'"
                   type="submit">
           </button>

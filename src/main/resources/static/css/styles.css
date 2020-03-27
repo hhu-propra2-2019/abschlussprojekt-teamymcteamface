@@ -200,3 +200,7 @@ main > div:first-child > h2 {
     margin-top: 150px;
     text-align: center;
 }
+
+.btn-approve-threads {
+    margin-bottom: 8px;
+}
