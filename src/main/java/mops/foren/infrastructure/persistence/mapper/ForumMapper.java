@@ -29,9 +29,14 @@ public abstract class ForumMapper {
      * @return the corresponding ForumDTO.
      */
     public static ForumDTO mapForumToForumDTO(Forum forum) {
-        return ForumDTO.builder()
+        ForumDTO.ForumDTOBuilder builder = ForumDTO.builder()
                 .title(forum.getTitle())
-                .description(forum.getDescription())
-                .build();
+                .description(forum.getDescription());
+
+        if (forum.getId() != null) {
+            builder.id(forum.getId().getId());
+        }
+
+        return builder.build();
     }
 }

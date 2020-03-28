@@ -1,19 +1,27 @@
 package mops.foren.infrastructure.persistence.repositoriers;
 
+import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Role;
 import mops.foren.domain.model.User;
+import mops.foren.domain.repositoryabstraction.IUserRepository;
 import mops.foren.infrastructure.persistence.dtos.ForumDTO;
+import mops.foren.infrastructure.persistence.dtos.PostDTO;
+import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
+import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.UserMapper;
+import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
-import mops.foren.infrastructure.persistence.repositories.UserRepositoryImpl;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,110 +29,120 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserRepositoryImplTests {
 
-    /**
-     * Repository under test.
-     */
-    private final UserRepositoryImpl userRepositoryImpl;
-
-    /**
-     * Jpa user repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
+    private final IUserRepository userRepositoryImpl;
     private final UserJpaRepository userJpaRepository;
-
-    private User user1;
-    private User user2;
+    private final ForumJpaRepository forumJpaRepository;
 
     /**
      * Constructor for repo injection.
      *
-     * @param userJpaRepository  injected userRepository
-     * @param userRepositoryImpl injected userRepositoryimpl
+     * @param userJpaRepository  injected userJpaRepository
+     * @param userRepositoryImpl injected userRepositoryImpl
+     * @param forumJpaRepository injected forumJpaRepository
      */
     @Autowired
     public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
-                                   UserRepositoryImpl userRepositoryImpl) {
+                                   IUserRepository userRepositoryImpl,
+                                   ForumJpaRepository forumJpaRepository) {
         this.userJpaRepository = userJpaRepository;
-
         this.userRepositoryImpl = userRepositoryImpl;
-    }
-
-    /**
-     * Set up method with injection. SetsUp the tests.
-     */
-    @BeforeEach
-    public void setUp() {
-
-        Set<ForumDTO> setWithoutForumDTO = new HashSet<>();
-
-        UserDTO user1DTO = UserDTO.builder()
-                .username("user1")
-                .email("user1@hhu.de")
-                .forums(setWithoutForumDTO)
-                .build();
-
-        UserDTO user2DTO = UserDTO.builder()
-                .username("user2")
-                .email("user2@hhu.de")
-                .forums(setWithoutForumDTO)
-                .build();
-
-        this.userJpaRepository.save(user1DTO);
-
-        this.user1 = UserMapper.mapUserDtoToUser(user1DTO);
-        this.user2 = UserMapper.mapUserDtoToUser(user2DTO);
+        this.forumJpaRepository = forumJpaRepository;
     }
 
     @Test
     public void testCheckIfUserIsNotInDBWhenHeActuallyIsNot() {
+        // Arrange
+        UserDTO notInDatabaseDTO = UserDTO.builder()
+                .username("notInDatabase")
+                .forums(new HashSet<ForumDTO>())
+                .email("trash@mail.com")
+                .name("Hans Gruber")
+                .posts(new ArrayList<PostDTO>())
+                .roles(new HashMap<Long, Role>())
+                .threads(new ArrayList<ThreadDTO>())
+                .build();
+
+        User notInDatabase = UserMapper.mapUserDtoToUser(notInDatabaseDTO);
+
         // Act
-        Boolean isNotInDatabase = this.userRepositoryImpl.isUserNotInDB(this.user2);
-        //Assert
+        Boolean isNotInDatabase =
+                this.userRepositoryImpl.isUserNotInDB(notInDatabase);
+
+        // Assert
         assertThat(isNotInDatabase).isTrue();
     }
 
     @Test
     public void testCheckIfUserIsNotInDBWhenHeActuallyIs() {
+        // Arrange
+        User userInDatabase =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user1").get());
+
         // Act
-        Boolean isNotInDatabase = this.userRepositoryImpl.isUserNotInDB(this.user1);
-        //Assert
+        Boolean isNotInDatabase =
+                this.userRepositoryImpl.isUserNotInDB(userInDatabase);
+
+        // Assert
         assertThat(isNotInDatabase).isFalse();
     }
 
     @Test
     public void testIfNewUserCanBeAddedToDatabase() {
+        // Arrange
+        UserDTO notInDatabaseDTO = UserDTO.builder()
+                .username("notInDatabase")
+                .forums(new HashSet<ForumDTO>())
+                .email("trash@mail.com")
+                .name("Hans Gruber")
+                .posts(new ArrayList<PostDTO>())
+                .roles(new HashMap<Long, Role>())
+                .threads(new ArrayList<ThreadDTO>())
+                .build();
+
+        User notInDatabase = UserMapper.mapUserDtoToUser(notInDatabaseDTO);
+
         // Act
-        this.userRepositoryImpl.addNewUserToDB(this.user2);
+        this.userRepositoryImpl.addNewUserToDB(notInDatabase);
+
         // Assert
-        assertThat(this.userJpaRepository.existsById(this.user2.getName())).isTrue();
+        assertThat(this.userJpaRepository.existsById(notInDatabase.getName())).isTrue();
     }
 
     @Test
     public void testIfUserCanBeLoadedFromDatabase() {
+        // Arrange
+        User userInDatabase =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user1").get());
+
         // Act
-        User loadedUser = this.userRepositoryImpl.getUserFromDB(this.user1);
+        User loadedUser =
+                this.userRepositoryImpl.getUserFromDB(userInDatabase);
+
         // Assert
-        assertThat(this.user1).isEqualTo(loadedUser);
+        assertThat(userInDatabase).isEqualTo(loadedUser);
     }
 
-    /*
     @Test
     public void testIfForumCanBeAddedToUser() {
         // Arrange
-        ForumDTO forum2DTO = ForumDTO.builder()
-                .id(2L)
-                .title("forum2")
-                .description("description2")
-                .build();
+        User userInDatabase =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user1").get());
 
-        Forum forum2 = ForumMapper.mapForumDtoToForum(forum2DTO);
+        Forum forumWithoutUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
+
+        ForumId forumId = forumWithoutUser.getId();
+
         // Act
-        this.userRepositoryImpl.addForumToUser(this.user1, forum2);
-        // Reload User1
-        User updatedUser1 = UserMapper.mapUserDtoToUser(
-        this.userJpaRepository.findById(this.user1.getName()).get());
+        this.userRepositoryImpl.addForumToUser(
+                userInDatabase, forumWithoutUser);
+
+        User updatedUser = UserMapper.mapUserDtoToUser(
+                this.userJpaRepository.findById(userInDatabase.getName()).get());
+
+        List<ForumId> forumsForUpdatedUser = updatedUser.getForums();
+
         // Assert
-        assertThat(updatedUser1.getForums()).contains(forum2.getId());
+        assertThat(forumsForUpdatedUser).containsOnly(forumId);
     }
-     */
 }
