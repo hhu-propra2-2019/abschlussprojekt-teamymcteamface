@@ -4,7 +4,6 @@ import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.TopicService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
@@ -78,10 +77,7 @@ public class TopicController {
         ForumId forumId = this.topicService.getTopic(topicId).getForumId();
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
-        Long count = visibleThreadPage.getThreads()
-                .stream()
-                .filter(thread -> thread.getUnModerated() != null)
-                .mapToLong(Thread::getUnModerated).sum();
+        Long count = visibleThreadPage.getCountUnmoderatedPosts();
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         if (user.checkPermission(forumId, Permission.READ_TOPIC)) {
             model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
