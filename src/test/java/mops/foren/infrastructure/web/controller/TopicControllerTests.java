@@ -1,13 +1,18 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.*;
+import mops.foren.domain.model.Forum;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
+import mops.foren.domain.model.paging.Paging;
+import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,6 +21,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -40,7 +47,10 @@ public class TopicControllerTests {
     @MockBean
     UserService userServiceMock;
 
-    @MockBean
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    TopicService topicServiceMock;
+
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
     ForumService forumServiceMock;
 
     @MockBean
@@ -48,9 +58,6 @@ public class TopicControllerTests {
 
     @MockBean
     ThreadService threadServiceMock;
-
-    @MockBean
-    TopicService topicServiceMock;
 
     @MockBean
     User userMock;
@@ -64,16 +71,16 @@ public class TopicControllerTests {
                 .webAppContextSetup(this.context)
                 .apply(springSecurity())
                 .build();
-    }
 
-    @Test
-    void testEnterATopicWithoutPermission() throws Exception {
         Account fakeAccount = Account.builder()
                 .name("studentin")
                 .roles(Set.of("studentin"))
                 .build();
         KeycloakTokenMock.setupTokenMock(fakeAccount);
+    }
 
+    @Test
+    void testEnterATopicWithoutPermission() throws Exception {
 
         when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
         when(userMock.checkPermission(any(), any())).thenReturn(false);
@@ -84,5 +91,24 @@ public class TopicControllerTests {
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
+    }
+
+    @Test
+    void testEnterATopicWithPermission() throws Exception {
+
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        ThreadPage threadPage = new ThreadPage(paging, List.of());
+        Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("").lastChange(LocalDateTime.now()).build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when((topicServiceMock.getTopic(any())).getForumId()).thenReturn(fakeForum.getId());
+        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any())).thenReturn(threadPage);
+        when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
+
+        this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("list-threads"));
     }
 }
