@@ -18,10 +18,10 @@ VALUES (1, 2, 'topic1', 'topic one', 0, 1),
        (3, 3, 'topic3', 'topic three', 0, 1);
 
 INSERT
-INTO thread (id, forum_id, author_username, topic_id, title, description, moderated, anonymous, visible, last_changed_time)
-VALUES (1, 2, 'user2', 2, 'thread1', 'content one', 1, 0, 1, '2020-01-01 00:00:00'),
-       (2, 2, 'user3', 2, 'thread2', 'content two', 1, 1, 0, '2020-01-01 00:00:00'),
-       (3, 3, 'user3', 3, 'thread3', 'content four', 0, 1, 0, '2020-01-01 00:00:00');
+INTO thread (id, forum_id, author_username, topic_id, title, description, moderated, anonymous, visible)
+VALUES (1, 2, 'user2', 2, 'thread1', 'content one', 1, 0, 1),
+       (2, 2, 'user3', 2, 'thread2', 'content two', 1, 1, 0),
+       (3, 3, 'user3', 3, 'thread3', 'content four', 0, 1, 0);
 
 INSERT
 INTO post (id, forum_id, thread_id, author_username, text, visible, anonymous, date_time)
