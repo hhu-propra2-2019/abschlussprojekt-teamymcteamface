@@ -13,7 +13,6 @@ import mops.foren.infrastructure.persistence.repositories.PostJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.ThreadJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.TopicJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -28,51 +27,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ThreadRepositoryImplTests {
 
-    /**
-     * Repository under test.
-     */
     private final IThreadRepository threadRepositoryImpl;
-
-    /**
-     * Jpa thread repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final ThreadJpaRepository threadJpaRepository;
-
-    /**
-     * Jpa topic repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final TopicJpaRepository topicJpaRepository;
-
-    /**
-     * Jpa post repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final PostJpaRepository postJpaRepository;
-
-
-    /**
-     * Jpa user repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final UserJpaRepository userJpaRepository;
 
-    private Topic topicWithTwoThreads;
-    private Thread visibleThreadInTopicWithTwoThreads;
-    private Thread notVisibleThreadInTopicWithTwoThreads;
-    private Thread threadWithTwoPosts;
-    private User userInThreadWithTwoPosts;
-
-    /**
-     * Constructor for repo injection.
-     *
-     * @param threadJpaRepository  injected threadJpaRepository
-     * @param threadRepositoryImpl injected threadRepositoryImpl
-     * @param topicJpaRepository   injected topicJpaRepository
-     * @param postJpaRepository    injected postJpaRepository
-     * @param userJpaRepository    injected userJpaRepository
-     */
     @Autowired
     public ThreadRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
                                      IThreadRepository threadRepositoryImpl,
@@ -86,32 +46,15 @@ public class ThreadRepositoryImplTests {
         this.userJpaRepository = userJpaRepository;
     }
 
-    /**
-     * Set up method with injection. SetsUp the tests.
-     */
-    @BeforeEach
-    public void setUp() {
-        this.topicWithTwoThreads =
-                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
-
-        this.threadWithTwoPosts =
-                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
-
-        this.userInThreadWithTwoPosts =
-                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
-
-        this.visibleThreadInTopicWithTwoThreads =
-                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(1L).get());
-
-        this.notVisibleThreadInTopicWithTwoThreads =
-                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
-    }
-
     @Test
     public void testIfThreadPageCanBeLoadedForTopicFromDatabase() {
+        // Arrange
+        Topic topicWithTwoThreads =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
+
         // Act
         ThreadPage loadedThreads =
-                this.threadRepositoryImpl.getThreadPageFromDB(this.topicWithTwoThreads.getId(), 0);
+                this.threadRepositoryImpl.getThreadPageFromDB(topicWithTwoThreads.getId(), 0);
 
         int entryCount = loadedThreads.getThreads().size();
 
@@ -121,12 +64,16 @@ public class ThreadRepositoryImplTests {
 
     @Test
     public void testIfThreadCanBeLoadedFromDatabaseById() {
+        // Arrange
+        Thread threadInDatabase =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
         // Act
         Thread loadedThread =
-                this.threadRepositoryImpl.getThreadById(this.threadWithTwoPosts.getId());
+                this.threadRepositoryImpl.getThreadById(threadInDatabase.getId());
 
         // Assert
-        assertThat(loadedThread).isEqualTo(this.threadWithTwoPosts);
+        assertThat(loadedThread).isEqualTo(threadInDatabase);
     }
 
     @Test
@@ -134,19 +81,25 @@ public class ThreadRepositoryImplTests {
         // Arrange
         final String postText = "unique text";
 
+        Thread threadWithTwoPosts =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
+        User userInThreadWithTwoPosts =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
+
         Post newPost = Post.builder()
                 .text(postText)
-                .author(this.userInThreadWithTwoPosts)
+                .author(userInThreadWithTwoPosts)
                 .creationDate(LocalDateTime.now())
-                .threadId(this.threadWithTwoPosts.getId())
-                .forumId(this.threadWithTwoPosts.getForumId())
+                .threadId(threadWithTwoPosts.getId())
+                .forumId(threadWithTwoPosts.getForumId())
                 .visible(false)
                 .anonymous(false)
                 .changed(false)
                 .build();
 
         // Act
-        this.threadRepositoryImpl.addPostInThread(this.threadWithTwoPosts.getId(), newPost);
+        this.threadRepositoryImpl.addPostInThread(threadWithTwoPosts.getId(), newPost);
 
         // load updated Thread
         Boolean postWasAdded = this.postJpaRepository.existsByText(postText);
@@ -157,40 +110,57 @@ public class ThreadRepositoryImplTests {
 
     @Test
     public void testIfOnlyVisibleThreadsCanBePaged() {
+        // Arrange
+        Topic topicWithTwoThreads =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
+
+        Thread visibleThreadInTopicWithTwoThreads =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(1L).get());
+
         // Act
         ThreadPage loadedPage =
                 this.threadRepositoryImpl.getThreadPageFromDbByVisibility(
-                        this.topicWithTwoThreads.getId(), 0, true);
+                        topicWithTwoThreads.getId(), 0, true);
 
         List<Thread> loadedThreads = loadedPage.getThreads();
 
         // Assert
-        assertThat(loadedThreads).containsExactly(this.visibleThreadInTopicWithTwoThreads);
+        assertThat(loadedThreads).containsExactly(visibleThreadInTopicWithTwoThreads);
     }
 
     @Test
     public void testIfOnlyNotVisibleThreadsCanBePaged() {
+        // Arrange
+        Topic topicWithTwoThreads =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
+
+        Thread notVisibleThreadInTopicWithTwoThreads =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
         // Act
         ThreadPage loadedPage =
                 this.threadRepositoryImpl.getThreadPageFromDbByVisibility(
-                        this.topicWithTwoThreads.getId(), 0, false);
+                        topicWithTwoThreads.getId(), 0, false);
 
         List<Thread> loadedThreads = loadedPage.getThreads();
 
         // Assert
-        assertThat(loadedThreads).containsExactly(this.notVisibleThreadInTopicWithTwoThreads);
+        assertThat(loadedThreads).containsExactly(notVisibleThreadInTopicWithTwoThreads);
     }
 
     @Test
     public void testIfVisibilityCanBeSet() {
+        Thread notVisibleThreadInTopicWithTwoThreads =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
         // Act
         this.threadRepositoryImpl.setThreadVisible(
-                this.notVisibleThreadInTopicWithTwoThreads.getId());
+                notVisibleThreadInTopicWithTwoThreads.getId());
 
         // load updated Thread
         Thread updatedThread = ThreadMapper.mapThreadDtoToThread(
                 this.threadJpaRepository.findById(
-                        this.notVisibleThreadInTopicWithTwoThreads.getId().getId()).get());
+                        notVisibleThreadInTopicWithTwoThreads.getId().getId()).get());
 
         Boolean isVisible = updatedThread.getVisible();
 
@@ -200,21 +170,29 @@ public class ThreadRepositoryImplTests {
 
     @Test
     public void testIfInvisibleThreadsAreCountedCorrectly() {
+        // Arrange
+        Topic topicWithTwoThreads =
+                TopicMapper.mapTopicDtoToTopic(this.topicJpaRepository.findById(2L).get());
+
         // Act
         int notVisibleCount =
-                this.threadRepositoryImpl.countInvisibleThreads(this.topicWithTwoThreads.getId());
+                this.threadRepositoryImpl.countInvisibleThreads(topicWithTwoThreads.getId());
 
         // Assert
         assertThat(notVisibleCount).isEqualTo(1);
     }
 
     @Test
-    public void test() {
+    public void testIfThreadCanBeDeletedFromDatabase() {
+        // Arrange
+        Thread threadWithTwoPosts =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
         // Act
-        this.threadRepositoryImpl.deleteThread(this.threadWithTwoPosts.getId());
+        this.threadRepositoryImpl.deleteThread(threadWithTwoPosts.getId());
 
         Boolean wasDeleted =
-                !this.threadJpaRepository.existsById(this.threadWithTwoPosts.getId().getId());
+                !this.threadJpaRepository.existsById(threadWithTwoPosts.getId().getId());
 
         // Assert
         assertThat(wasDeleted).isTrue();

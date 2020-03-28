@@ -12,7 +12,6 @@ import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import mops.foren.infrastructure.persistence.repositories.PostJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.ThreadJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -27,47 +26,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class PostRepositoryImplTests {
 
-    /**
-     * Repository under test.
-     */
     private final IPostRepository postRepositoryImpl;
-
-    /**
-     * Jpa thread repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final ThreadJpaRepository threadJpaRepository;
-
-    /**
-     * Jpa post repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final PostJpaRepository postJpaRepository;
-
-
-    /**
-     * Jpa user repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final UserJpaRepository userJpaRepository;
 
-    private Thread threadWithTwoPosts;
-    private Post firstPostInThreadWithTwoPosts;
-    private Post secondPostInThreadWithTwoPosts;
-    private User authorOfMultiplePosts;
-    private Post firstPostForUser;
-    private Post secondPostForUser;
-    private Post notVisiblePost;
-    private Post visiblePost;
-
-    /**
-     * Constructor for repo injection.
-     *
-     * @param threadJpaRepository injected threadJpaRepository
-     * @param postRepositoryImpl  injected postRepositoryImpl
-     * @param postJpaRepository   injected postJpaRepository
-     * @param userJpaRepository   injected userJpaRepository
-     */
     @Autowired
     public PostRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
                                    IPostRepository postRepositoryImpl,
@@ -79,41 +42,15 @@ public class PostRepositoryImplTests {
         this.postRepositoryImpl = postRepositoryImpl;
     }
 
-    /**
-     * Set up method with injection. SetsUp the tests.
-     */
-    @BeforeEach
-    public void setUp() {
-        this.threadWithTwoPosts =
-                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
-
-        this.firstPostInThreadWithTwoPosts =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-
-        this.secondPostInThreadWithTwoPosts =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
-
-        this.authorOfMultiplePosts =
-                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
-
-        this.firstPostForUser =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(1L).get());
-
-        this.secondPostForUser =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-
-        this.notVisiblePost =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
-
-        this.visiblePost =
-                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
-    }
-
     @Test
     public void testIfPostPageCanBeLoadedForThreadFromDatabase() {
+        // Arrange
+        Thread threadWithTwoPosts =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
         // Act
         PostPage loadedPage =
-                this.postRepositoryImpl.getPostPageFromDB(this.threadWithTwoPosts.getId(), 0);
+                this.postRepositoryImpl.getPostPageFromDB(threadWithTwoPosts.getId(), 0);
 
         int entryCount = loadedPage.getPosts().size();
 
@@ -123,24 +60,37 @@ public class PostRepositoryImplTests {
 
     @Test
     public void testIfPostCanBeLoadedFromDatabaseById() {
+        // Arrange
+        Post postInDatabase =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
         // Act
         Post loadedPost =
                 PostMapper.mapPostDtoToPost(
                         this.postJpaRepository.findById(
-                                this.firstPostInThreadWithTwoPosts.getId().getId()).get());
+                                postInDatabase.getId().getId()).get());
 
         // Assert
-        assertThat(loadedPost).isEqualTo(this.firstPostInThreadWithTwoPosts);
+        assertThat(loadedPost).isEqualTo(postInDatabase);
     }
 
     @Test
     public void testIfPostsCanBeLoadedFromDatabaseForUser() {
         // Arrange
-        List<Post> expectedPosts = Arrays.asList(this.firstPostForUser, this.secondPostForUser);
+        User authorOfMultiplePosts =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user2").get());
+
+        Post firstPostForUser =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(1L).get());
+
+        Post secondPostForUser =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
+        List<Post> expectedPosts = Arrays.asList(firstPostForUser, secondPostForUser);
 
         // Act
         List<Post> postsForUser =
-                this.postRepositoryImpl.getPostsFromUser(this.authorOfMultiplePosts);
+                this.postRepositoryImpl.getPostsFromUser(authorOfMultiplePosts);
 
         // Assert
         assertThat(postsForUser).containsOnlyElementsOf(expectedPosts);
@@ -149,12 +99,21 @@ public class PostRepositoryImplTests {
     @Test
     public void testIfAllPostsFromThreadCanBeLoadedFromDatabaseByThreadId() {
         // Arrange
+        Thread threadWithTwoPosts =
+                ThreadMapper.mapThreadDtoToThread(this.threadJpaRepository.findById(2L).get());
+
+        Post firstPostInThreadWithTwoPosts =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
+        Post secondPostInThreadWithTwoPosts =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
+
         List<Post> expectedPosts = Arrays.asList(
-                this.firstPostInThreadWithTwoPosts, this.secondPostInThreadWithTwoPosts);
+                firstPostInThreadWithTwoPosts, secondPostInThreadWithTwoPosts);
 
         // Act
         List<Post> loadedPosts =
-                this.postRepositoryImpl.getAllPostsByThreadId(this.threadWithTwoPosts.getId());
+                this.postRepositoryImpl.getAllPostsByThreadId(threadWithTwoPosts.getId());
 
         // Assert
         assertThat(loadedPosts).containsOnlyElementsOf(expectedPosts);
@@ -163,8 +122,11 @@ public class PostRepositoryImplTests {
     @Test
     public void testIfWholeForumCanBeSearchedForContent() {
         // Arrange
-        ForumId forumToSearchIn = this.visiblePost.getForumId();
-        String contentToSearchFor = this.visiblePost.getText();
+        Post visiblePost =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(3L).get());
+
+        ForumId forumToSearchIn = visiblePost.getForumId();
+        String contentToSearchFor = visiblePost.getText();
 
         // Act
         PostPage loadedPage = this.postRepositoryImpl.searchWholeForumForContent(
@@ -173,17 +135,21 @@ public class PostRepositoryImplTests {
         List<Post> foundPosts = loadedPage.getPosts();
 
         // Assert
-        assertThat(foundPosts).containsOnly(this.visiblePost);
+        assertThat(foundPosts).containsOnly(visiblePost);
     }
 
     @Test
     public void testIfPostCanBeSetToVisible() {
+        // Arrange
+        Post notVisiblePost =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
         // Act
-        this.postRepositoryImpl.setPostVisible(this.notVisiblePost.getId());
+        this.postRepositoryImpl.setPostVisible(notVisiblePost.getId());
 
         // load updated post
         Post updatedPost = PostMapper.mapPostDtoToPost(
-                this.postJpaRepository.findById(this.notVisiblePost.getId().getId()).get());
+                this.postJpaRepository.findById(notVisiblePost.getId().getId()).get());
 
         Boolean isVisible = updatedPost.getVisible();
 
@@ -193,12 +159,16 @@ public class PostRepositoryImplTests {
 
     @Test
     public void testIfPostCanBeDeletedFromDatabaseById() {
+        // Arrange
+        Post postInDatabase =
+                PostMapper.mapPostDtoToPost(this.postJpaRepository.findById(2L).get());
+
         // Act
-        this.postRepositoryImpl.deletePostById(this.firstPostInThreadWithTwoPosts.getId());
+        this.postRepositoryImpl.deletePostById(postInDatabase.getId());
 
         Boolean wasDeleted =
                 !this.postJpaRepository.existsById(
-                        this.firstPostInThreadWithTwoPosts.getId().getId());
+                        postInDatabase.getId().getId());
 
         // Assert
         assertThat(wasDeleted).isTrue();

@@ -9,7 +9,6 @@ import mops.foren.infrastructure.persistence.mapper.UserMapper;
 import mops.foren.infrastructure.persistence.repositories.ForumJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.TopicJpaRepository;
 import mops.foren.infrastructure.persistence.repositories.UserJpaRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -24,42 +23,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class ForumRepositoryImplTests {
 
-    /**
-     * Repository under test.
-     */
     private final IForumRepository forumRepositoryImpl;
-
-    /**
-     * Jpa user repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final UserJpaRepository userJpaRepository;
-
-    /**
-     * Jpa forum repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final ForumJpaRepository forumJpaRepository;
-
-    /**
-     * Jpa topic repository that can be assumed to work correctly. Used for database setup before
-     * the actual tests.
-     */
     private final TopicJpaRepository topicJpaRepository;
 
-    private User userWithTwoForums;
-    private Forum forumWithoutTopics;
-    private Forum firstForumForUser;
-    private Forum secondForumForUser;
-
-    /**
-     * Constructor for repo injection.
-     *
-     * @param userJpaRepository   injected userJpaRepository
-     * @param forumRepositoryImpl injected forumRepositoryImpl
-     * @param forumJpaRepository  injected forumJpaRepository
-     * @param topicJpaRepository  injected topicJpaRepository
-     */
     @Autowired
     public ForumRepositoryImplTests(UserJpaRepository userJpaRepository,
                                     IForumRepository forumRepositoryImpl,
@@ -71,63 +39,61 @@ public class ForumRepositoryImplTests {
         this.topicJpaRepository = topicJpaRepository;
     }
 
-    /**
-     * Set up method with injection. SetsUp the tests.
-     */
-    @BeforeEach
-    public void setUp() {
-        this.userWithTwoForums =
-                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user3").get());
-
-        this.firstForumForUser =
-                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
-
-        this.secondForumForUser =
-                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(3L).get());
-
-        this.forumWithoutTopics =
-                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
-    }
-
     @Test
     public void testIfForumsForUserCanBeLoadedFromDatabase() {
         // Arrange
+        User userWithTwoForums =
+                UserMapper.mapUserDtoToUser(this.userJpaRepository.findById("user3").get());
+
+        Forum firstForumForUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(2L).get());
+
+        Forum secondForumForUser =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(3L).get());
+
         List<Forum> expectedForum =
-                Arrays.asList(this.firstForumForUser, this.secondForumForUser);
+                Arrays.asList(firstForumForUser, secondForumForUser);
 
         // Act
         List<Forum> loadedForums =
-                this.forumRepositoryImpl.getForumsFromDB(this.userWithTwoForums);
+                this.forumRepositoryImpl.getForumsFromDB(userWithTwoForums);
 
-        //Assert
+        // Assert
         assertThat(loadedForums).containsOnlyElementsOf(expectedForum);
     }
 
     @Test
     public void testIfOneForumCanBeLoadedFromDatabase() {
+        // Arrange
+        Forum forumInDatabase =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
+
         // Act
         Forum loadedForum = this.forumRepositoryImpl.getOneForumFromDB(
-                this.forumWithoutTopics.getId());
+                forumInDatabase.getId());
 
         // Assert
-        assertThat(loadedForum).isEqualTo(this.forumWithoutTopics);
+        assertThat(loadedForum).isEqualTo(forumInDatabase);
     }
 
     @Test
     public void testIfTopicCanBeAddedToForum() {
         // Arrange
+        Forum forumWithoutTopics =
+                ForumMapper.mapForumDtoToForum(this.forumJpaRepository.findById(1L).get());
+
         Topic newTopic = Topic.builder()
                 .title("new topic title")
                 .description("new topic description")
-                .forumId(this.forumWithoutTopics.getId())
+                .forumId(forumWithoutTopics.getId())
                 .anonymous(false)
                 .moderated(false)
                 .build();
 
         // Act
-        this.forumRepositoryImpl.addTopicInForum(this.forumWithoutTopics.getId(), newTopic);
+        this.forumRepositoryImpl.addTopicInForum(forumWithoutTopics.getId(), newTopic);
         Boolean topicWasAdded =
-                this.topicJpaRepository.existsByForum_Id(this.forumWithoutTopics.getId().getId());
+                this.topicJpaRepository.existsByForum_Id(forumWithoutTopics.getId().getId());
 
         // Assert
         assertThat(topicWasAdded).isTrue();
