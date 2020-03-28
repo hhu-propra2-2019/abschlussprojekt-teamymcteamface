@@ -34,6 +34,16 @@
   <h1 th:if="${topic.moderated == false}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()}">
     Beiträge</h1>
   <p th:text="${topic.getDescription()}">Hier könnte Ihre Werbung stehen!</p>
+  <div th:if="${moderatePermission}">
+    <div th:if="${count==0}">
+      <h2> Alle Posts auf dieser Seite sind freigegben</h2>
+    </div>
+    <div th:unless="${count==0}">
+      <div class="alert alert-warning"
+           th:text="'Achtung auf dieser Seite müssen noch ' + ${count} +' Posts freigegeben werden'">
+      </div>
+    </div>
+  </div>
   <div th:if="${moderatePermission == true}">
     <div th:unless="${countInvisibleThreads==0}">
       <div th:if="${countInvisibleThreads==1}">
