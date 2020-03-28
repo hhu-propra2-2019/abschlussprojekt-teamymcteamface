@@ -17,11 +17,13 @@ import java.util.Set;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-public class DashboardControllerTest {
+public class LogoutControllerTest {
+
     @Autowired
     MockMvc mvcMock;
 
@@ -43,33 +45,14 @@ public class DashboardControllerTest {
     }
 
     @Test
-    void testDashboardUnauthenticated() throws Exception {
+    public void testLogoutRoute() throws Exception {
+        KeycloakTokenMock.setupTokenMock(Account.builder()
+                .name("studentin")
+                .roles(Set.of("studentin"))
+                .build());
 
-        this.mvcMock.perform(get("/foren"))
+        this.mvcMock.perform(get("/foren/logout"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/sso/login"));
-    }
-
-    @Test
-    void testDashboardAuthenticated() throws Exception {
-        KeycloakTokenMock.setupTokenMock(Account.builder()
-                .name("orga1")
-                .roles(Set.of("orga"))
-                .build());
-
-        this.mvcMock.perform(get("/foren"))
-                .andExpect(status().isOk())
-                .andExpect(view().name("index"));
-    }
-
-    @Test
-    void testDashboardWrongUser() throws Exception {
-        KeycloakTokenMock.setupTokenMock(Account.builder()
-                .name("orga1")
-                .roles(Set.of("wrong role"))
-                .build());
-
-        this.mvcMock.perform(get("/foren"))
-                .andExpect(status().isForbidden());
+                .andExpect(redirectedUrl("/foren"));
     }
 }

@@ -161,7 +161,7 @@ public class ThreadController {
 
         if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
             this.threadService.setThreadVisible(new ThreadId(threadIdLong));
-            return String.format("redirect:/foren/topic?topicId=%d&page=1", topicId.getId());
+            return String.format("redirect:/foren/thread?threadId=%d&page=1", threadIdLong);
         }
         return "error-no-permission";
     }

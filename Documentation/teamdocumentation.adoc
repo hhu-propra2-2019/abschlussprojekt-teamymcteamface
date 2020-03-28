@@ -74,10 +74,19 @@ Bei größeren PRs setzten sich meist eine "PR-fremde" und eine involvierte Pers
 === Datenbankdiskussion
 
 ====
-Bereits vor der ersten Implementierung entstanden viele Diskussionen wie die Daten zu persistieren sind und ob aktuelle Ansatz der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
+Bereits vor der ersten Implementierung entstanden viele Diskussionen wie die Daten zu persistieren sind und ob aktuelle Ansätze der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
 ====
 
 * Wir haben uns dazu entschieden, Datenbank- und Modellimplementierung konsequent differenziert zu behandeln und umzusetzten.
+
+=== MinIO
+
+====
+Wir hatten die Idee MinIO zu nutzen um Daten und Bilder zu speichern.
+Die Konfiguration von MinIO war sehr Zeit intensiv, lückenhaft dokumentiert und wir hatten keine Accounts, um das Ganze zu testen.
+====
+
+* Wir haben also die Integration von MinIO abgebrochen und uns auf andere Themen fokussiert.
 
 == Wochenziele
 
@@ -104,3 +113,46 @@ Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
 ==== Ziel
 
 * Integration der Anwendungslogik, sodass die ersten link:userStories.adoc[Userstories] durchgeführt werden können.
+
+* Am Ende der Woche war es möglich die komplette Struktur eines Forums, sprich über Topics, Threads und Posts, durch zu klicken.
+
+* Mit diesem Meilenstein waren wir zuversichtlich, jetzt deutlich schneller weitere Features zu entwickeln.
+
+=== Woche 4
+
+==== Ziel
+
+* Funktionsfähige Anwendung, weitestgehend ohne Bugs.
+
+* Suchfunktionalität
+
+* Moderationsmodus
+
+* Löschen von Beiträgen
+
+* Permissionsystem ausarbeiten und anwenden
+
+* Anonymer Modus
+
+* Letzte Änderungen je Thread und Forum anzeigen
+
+* Die Hoffnung am Ende der 3. Woche hat sich erfüllt !
+Feature konnten sehr schnell umgesetzt werden.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

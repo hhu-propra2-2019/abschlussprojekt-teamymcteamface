@@ -1,7 +1,9 @@
 package mops.foren.applicationservices;
 
+import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.*;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
 
@@ -35,19 +37,6 @@ public class ThreadService {
         this.threadRepository.addPostInThread(threadId, post);
     }
 
-
-    /**
-     * Method to add a thread.
-     *
-     * @param thread The thread to add
-     * @param user   The user that wants to create the thread
-     * @param id     The topicId the thread belongs to
-     */
-    public void addThread(Thread thread, User user, ForumId id) {
-        if (user.checkPermission(id, Permission.CREATE_THREAD)) {
-            // ADD
-        }
-    }
 
     public ThreadPage getThreadPageByVisibility(TopicId topicId, Integer page, Boolean visibility) {
         return this.threadRepository.getThreadPageFromDbByVisibility(topicId, page, visibility);

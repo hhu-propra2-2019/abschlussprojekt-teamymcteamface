@@ -11,9 +11,11 @@ import mops.foren.infrastructure.persistence.mapper.ThreadMapper;
 import mops.foren.infrastructure.persistence.mapper.ThreadPageMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Repository
@@ -60,7 +62,6 @@ public class ThreadRepositoryImpl implements IThreadRepository {
         post.setVisible(!threadDTO.getModerated());
         post.setForumId(new ForumId(threadDTO.getForum().getId()));
         PostDTO postDTO = PostMapper.mapPostToPostDto(post, threadDTO);
-        threadDTO.setLastChangedTime(LocalDateTime.now());
         threadDTO.getPosts().add(postDTO);
         this.threadRepository.save(threadDTO);
     }
@@ -71,7 +72,7 @@ public class ThreadRepositoryImpl implements IThreadRepository {
                                                       Boolean visibility) {
         Page<ThreadDTO> dtoPage = this.threadRepository
                 .findThreadPageByTopic_IdAndVisible(topicId.getId(),
-                        visibility, PageRequest.of(page, PAGE_SIZE));
+                        visibility, PageRequest.of(page, PAGE_SIZE, Sort.by("id").descending()));
 
         return ThreadPageMapper.toThreadPage(dtoPage, page);
     }
@@ -93,5 +94,14 @@ public class ThreadRepositoryImpl implements IThreadRepository {
     public void deleteThread(ThreadId threadId) {
         ThreadDTO threadDTO = this.threadRepository.findById(threadId.getId()).get();
         this.threadRepository.delete(threadDTO);
+    }
+
+    @Override
+    public List<Thread> getThreadByForumIdAndVisible(ForumId forumId, Boolean visible) {
+        List<ThreadDTO> threadDTOsByForumId =
+                this.threadRepository.findThreadDTOByForum_IdAndVisible(forumId.getId(), visible);
+        return threadDTOsByForumId.stream()
+                .map(ThreadMapper::mapThreadDtoToThread)
+                .collect(Collectors.toList());
     }
 }

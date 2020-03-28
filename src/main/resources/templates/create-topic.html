@@ -2,6 +2,7 @@
 <html lang="en"
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="utf-8">
   <title>Foren</title>
@@ -10,18 +11,16 @@
     <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
   </th:block>
 </head>
+
 <body>
 <header>
   <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
     <ul>
       <li class="active">
-        <a href="#welcome" th:href="@{/foren}">Dashboard</a>
+        <a th:href="@{/foren}">Meine Foren</a>
       </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/my-forums}">Meine Foren</a>
-      </li>
-      <li class="">
-        <a href="#welcome" th:href="@{/foren/profile}">Profil</a>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
       </li>
     </ul>
   </nav>
@@ -31,8 +30,7 @@
     error message goes here (or not)
   </div>
   <h1>Thema erstellen:</h1>
-  <form method="post" th:action="@{/foren/topic/add-topic(forumId=${forumId})}"
-        th:object="${form}">
+  <form method="post" th:action="@{/foren/topic/add-topic(forumId=${forumId})}" th:object="${form}">
     <div class="form-group">
       <label for="title">Titel:</label>
       <input aria-describedby="emailHelp" class="form-control" id="title" name="title"
@@ -43,17 +41,18 @@
     <div class="form-group">
       <label for="exampleFormControlTextarea1">Beschreibung:</label>
       <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"
-                th:attr="minlength=${minDescriptionLength}, maxlength=${maxDescriptionLength}"
-                th:value="*{description}" required></textarea>
+                th:attr="minlength=${minDescriptionLength}, maxlength=${maxDescriptionLength}" th:value="*{description}"
+                required></textarea>
     </div>
     <label>Moderationsmodus:</label>
     <input name="moderated" th:checked="*{moderated}" type="checkbox">
-    <label>Sollen Beiträge in diesem Thema annonym sein:</label>
+    <label class="anonym-checkbox">Sollen Beiträge in diesem Thema annonym sein:</label>
     <input name="anonymous" th:checked="*{anonymous}" type="checkbox">
     <div>
-      <button class="btn btn-primary" type="submit">erstellen</button>
+      <button class="btn btn-primary" type="submit">Erstellen</button>
     </div>
   </form>
 </main>
 </body>
+
 </html>

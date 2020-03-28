@@ -10,13 +10,11 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-
 == Foren
 
 ==== Problemstellung
-Der Austausch von Informationen sowie die Diskussion zwischen Studierenden, Dozenten und Mitarbeitern ist über
-vorhandene Wege, wie z.B. E-Mail, sehr mühselig und ineffizient.
 
+Der Austausch von Informationen sowie die Diskussion zwischen Studierenden, Dozenten und Mitarbeitern ist über vorhandene Wege, wie z.B. E-Mail, sehr mühselig und ineffizient.
 
 ==== Wesentliche Features
 
@@ -34,7 +32,6 @@ vorhandene Wege, wie z.B. E-Mail, sehr mühselig und ineffizient.
 
 * weist dem User automatisch die eigenen Foren zu (entsprechend der Gruppen aus dem Gruppenbildungsmodul)
 
-
 ==== Dokumentationen
 
 * Trello : Wir nutzen ein Trello Board um unsere Aufgaben zu koordinieren und einige generelle Infos zu sammeln.
@@ -49,3 +46,29 @@ image:Documentation/Organisation_Foren.png[]
 * link:Documentation/documentation.adoc[ARC42 Doc] : Struktur Doku anhand von ARC42
 
 * link:Documentation/teamdocumentation.adoc[Team Doc] : Dokumentation der Teamarbeit
+
+== Ausblick
+
+* Aktuell kommen Foren, User und Rollen der User aus dem Seed der Datenbank.
+Hier war die Idee eigentlich, diese Informationen von der Gruppenbildung zu bekommen.
+Deswegen gibts es in unserem System nicht die Möglichkeit ein Forum zu erstellen.
+Diese Anbindung sollte also umgesetzt werden.
+Dazu wollten wir eine asynchrone Abfrage an die Gruppenbildung stellen, sodass wir regelmäßig Updates zu neuen Gruppen erhalten zu denen wir dann direkt ein passendes Forum erstellen können und die User zuweisen.
+
+* Beim Löschen von Elementen könnte man ein Pop-Up einfügen, dass der User erst bestätigen muss.
+
+* Man könnte dem Moderator eine komplette Übersicht an noch freizugebenden Beiträgen auf der Startseite anzeigen.
+
+* Man könnte noch ein DashBoard umsetzen, auf dem aktuelle Beiträge und womöglich favorisierte Foren angezeigt werden.
+
+* Dazu bräuchte man noch ein User-Interface über das der User seine Lieblingsforen auswählen kann.
+Also eine Art Settings Seite.
+
+* Dazu würde auch die Notification-Geschichte gehören.
+Dass der User einstellen kann, zu welchen Beiträgen / Topics etc. er Benachrichtigungen per Mail erhalten will.
+Den MailService müsste man dann noch implementieren.
+
+* Kleine Änderung: Wenn der User einen Post / Beitrag erstellt, der erst freigegeben werden muss, sollte man eine kurze Info anzeigen, dass sein Post angekommen ist.
+Aktuell könnte das auch nach einem Fehler aussehen.
+
+
