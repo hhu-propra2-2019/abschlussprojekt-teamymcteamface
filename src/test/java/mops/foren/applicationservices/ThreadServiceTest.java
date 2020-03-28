@@ -110,4 +110,5 @@ public class ThreadServiceTest {
         verify(this.threadRepository).deleteThread(threadId);
     }
 
+
 }

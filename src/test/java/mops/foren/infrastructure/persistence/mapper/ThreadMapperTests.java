@@ -1,17 +1,17 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.TopicId;
 import mops.foren.domain.model.User;
-import mops.foren.infrastructure.persistence.dtos.ForumDTO;
-import mops.foren.infrastructure.persistence.dtos.ThreadDTO;
-import mops.foren.infrastructure.persistence.dtos.TopicDTO;
-import mops.foren.infrastructure.persistence.dtos.UserDTO;
+import mops.foren.infrastructure.persistence.dtos.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -145,4 +145,53 @@ public class ThreadMapperTests {
         // Assert
         assertThat(moderated).isFalse();
     }
+
+    @Test
+    public void testUnModeratedIsZeroIfThreadIsUnmoderated() {
+        // Arrange
+        this.threadDTO.setPosts(List.of(getPost(true)));
+        this.threadDTO.setModerated(false);
+        // Act
+        Thread thread = ThreadMapper.mapThreadDtoToThread(this.threadDTO);
+
+        // Assert
+        assertThat(thread.getUnModerated()).isEqualTo(0L);
+    }
+
+    @Test
+    public void testUnModeratedIsZeroIfAllPostsAreVisible() {
+        // Arrange
+        PostDTO post1 = getPost(true);
+        PostDTO post2 = getPost(true);
+        this.threadDTO.setPosts(List.of(post1, post2));
+        this.threadDTO.setModerated(true);
+        // Act
+        Thread thread = ThreadMapper.mapThreadDtoToThread(this.threadDTO);
+
+        // Assert
+        assertThat(thread.getUnModerated()).isEqualTo(0L);
+    }
+
+
+    @Test
+    public void testUnModeratedIsOneIfOnePostIsVisible() {
+        // Arrange
+        PostDTO post1 = getPost(true);
+        PostDTO post2 = getPost(false);
+        this.threadDTO.setPosts(List.of(post1, post2));
+        this.threadDTO.setModerated(true);
+        // Act
+        Thread thread = ThreadMapper.mapThreadDtoToThread(this.threadDTO);
+
+        // Assert
+        assertThat(thread.getUnModerated()).isEqualTo(1L);
+    }
+
+    private PostDTO getPost(Boolean visible) {
+        return PostDTO.builder()
+                .visible(visible)
+                .dateTime(LocalDateTime.now())
+                .build();
+    }
+
 }

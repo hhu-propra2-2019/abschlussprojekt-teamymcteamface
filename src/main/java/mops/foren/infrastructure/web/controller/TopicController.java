@@ -73,14 +73,16 @@ public class TopicController {
                               @RequestParam("page") Integer page,
                               Model model) {
         User user = this.userService.getUserFromDB(token);
-        ForumId forumId = this.topicService.getTopic(new TopicId(topicIdLong)).getForumId();
         TopicId topicId = new TopicId(topicIdLong);
+        ForumId forumId = this.topicService.getTopic(topicId).getForumId();
         ThreadPage visibleThreadPage =
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
+        Long count = visibleThreadPage.getCountUnmoderatedPosts();
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
         if (user.checkPermission(forumId, Permission.READ_TOPIC)) {
             model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
             model.addAttribute("topic", this.topicService.getTopic(topicId));
+            model.addAttribute("count", count);
             model.addAttribute("forumId", forumId.getId());
             model.addAttribute("topicId", topicId.getId());
             model.addAttribute("pagingObject", visibleThreadPage.getPaging());
