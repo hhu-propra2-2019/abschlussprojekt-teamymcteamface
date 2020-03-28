@@ -33,6 +33,15 @@ public class ThreadRepositoryImplTests {
     private final PostJpaRepository postJpaRepository;
     private final UserJpaRepository userJpaRepository;
 
+    /**
+     * Constructor for repo injection.
+     *
+     * @param threadJpaRepository  injected threadJpaRepository
+     * @param threadRepositoryImpl injected threadRepositoryImpl
+     * @param topicJpaRepository   injected topicJpaRepository
+     * @param postJpaRepository    injected postJpaRepository
+     * @param userJpaRepository    injected userJpaRepository
+     */
     @Autowired
     public ThreadRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
                                      IThreadRepository threadRepositoryImpl,

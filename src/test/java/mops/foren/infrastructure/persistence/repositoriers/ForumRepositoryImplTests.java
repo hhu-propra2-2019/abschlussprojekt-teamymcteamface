@@ -28,6 +28,14 @@ public class ForumRepositoryImplTests {
     private final ForumJpaRepository forumJpaRepository;
     private final TopicJpaRepository topicJpaRepository;
 
+    /**
+     * Constructor for repo injection.
+     *
+     * @param userJpaRepository   injected userJpaRepository
+     * @param forumRepositoryImpl injected forumRepositoryImpl
+     * @param forumJpaRepository  injected forumJpaRepository
+     * @param topicJpaRepository  injected topicJpaRepository
+     */
     @Autowired
     public ForumRepositoryImplTests(UserJpaRepository userJpaRepository,
                                     IForumRepository forumRepositoryImpl,

@@ -33,6 +33,13 @@ public class UserRepositoryImplTests {
     private final UserJpaRepository userJpaRepository;
     private final ForumJpaRepository forumJpaRepository;
 
+    /**
+     * Constructor for repo injection.
+     *
+     * @param userJpaRepository  injected userJpaRepository
+     * @param userRepositoryImpl injected userRepositoryImpl
+     * @param forumJpaRepository injected forumJpaRepository
+     */
     @Autowired
     public UserRepositoryImplTests(UserJpaRepository userJpaRepository,
                                    IUserRepository userRepositoryImpl,

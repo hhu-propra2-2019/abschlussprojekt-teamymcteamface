@@ -33,6 +33,15 @@ public class TopicRepositoryImplTests {
     private final TopicJpaRepository topicJpaRepository;
     private final UserJpaRepository userJpaRepository;
 
+    /**
+     * Constructor for repo injection.
+     *
+     * @param threadJpaRepository injected threadJpaRepository
+     * @param topicRepositoryImpl injected topicRepositoryImpl
+     * @param forumJpaRepository  injected forumJpaRepository
+     * @param topicJpaRepository  injected topicJpaRepository
+     * @param userJpaRepository   injected userJpaRepository
+     */
     @Autowired
     public TopicRepositoryImplTests(ThreadJpaRepository threadJpaRepository,
                                     ITopicRepository topicRepositoryImpl,
