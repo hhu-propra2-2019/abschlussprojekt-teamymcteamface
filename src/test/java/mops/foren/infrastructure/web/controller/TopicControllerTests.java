@@ -103,11 +103,13 @@ public class TopicControllerTests {
 
         Paging paging = new Paging(true, true, false, 0, 0L, 0);
         ThreadPage threadPage = new ThreadPage(paging, List.of());
-        Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("").lastChange(LocalDateTime.now()).build();
+        Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("")
+                .lastChange(LocalDateTime.now()).build();
 
         when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
         when(topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any())).thenReturn(threadPage);
+        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
         when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
         when(userMock.checkPermission(any(), any())).thenReturn(true);
         when((forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
