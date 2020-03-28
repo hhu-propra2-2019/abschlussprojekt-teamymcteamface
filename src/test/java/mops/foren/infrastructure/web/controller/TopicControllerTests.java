@@ -62,6 +62,10 @@ public class TopicControllerTests {
     @MockBean
     User userMock;
 
+    @MockBean
+    Forum forumMock;
+
+
     /**
      * Building up a security environment for the Test.
      */
@@ -93,6 +97,7 @@ public class TopicControllerTests {
                 .andExpect(view().name("error-no-permission"));
     }
 
+
     @Test
     void testEnterATopicWithPermission() throws Exception {
 
@@ -101,7 +106,7 @@ public class TopicControllerTests {
         Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("").lastChange(LocalDateTime.now()).build();
 
         when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when((topicServiceMock.getTopic(any())).getForumId()).thenReturn(fakeForum.getId());
+        when(topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
         when(threadServiceMock.getThreadPageByVisibility(any(), any(), any())).thenReturn(threadPage);
         when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
         when(userMock.checkPermission(any(), any())).thenReturn(true);
