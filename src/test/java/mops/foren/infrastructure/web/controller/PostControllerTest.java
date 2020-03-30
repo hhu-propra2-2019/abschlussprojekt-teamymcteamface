@@ -158,4 +158,16 @@ public class PostControllerTest {
 
         verify(postServiceMock).setPostVisible(any());
     }
+
+    @Test
+    void testDeletePostWithoutPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+
+        this.mvcMock.perform(post("/foren/post/delete-post?postId=1&page=0")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
+    }
 }
