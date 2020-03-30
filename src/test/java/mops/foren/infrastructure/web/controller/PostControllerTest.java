@@ -1,10 +1,15 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.User;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +20,12 @@ import org.springframework.web.context.WebApplicationContext;
 
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -32,6 +42,12 @@ public class PostControllerTest {
     @MockBean
     UserService userServiceMock;
 
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    ThreadService threadServiceMock;
+
+    @MockBean
+    User userMock;
+
     /**
      * Building up a security environment for the Test.
      */
@@ -47,4 +63,32 @@ public class PostControllerTest {
                 .roles(Set.of("studentin"))
                 .build());
     }
+
+    @Test
+    void testAddNewPostWithoutPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+
+        this.mvcMock.perform(post("/foren/post/new-post?threadId=1&page=0")
+                .param("postContent", "    ")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
+    }
+
+    @Test
+    void testAddNewPostWithPermissionVew() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((threadServiceMock.getThreadById(any()).getId())).thenReturn(new ThreadId(1L));
+
+        this.mvcMock.perform(post("/foren/post/new-post?threadId=1&page=0")
+                .param("postContent", "    ")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
+    }
+
 }
