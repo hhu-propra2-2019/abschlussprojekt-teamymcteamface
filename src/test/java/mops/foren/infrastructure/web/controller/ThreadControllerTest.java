@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -160,5 +161,20 @@ public class ThreadControllerTest {
                 .param("content", "    "))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/topic/?topicId=1&page=1"));
+    }
+
+    @Test
+    public void testAddAThreadWithPermissionInvokeAddThread() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+                .with(csrf())
+                .param("title", "    ")
+                .param("content", "    "));
+
+        verify(topicServiceMock).addThreadInTopic(any(), any());
     }
 }
