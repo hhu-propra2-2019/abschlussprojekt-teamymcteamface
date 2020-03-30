@@ -115,6 +115,17 @@ public class PostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"))
                 .andExpect(flash().attributeExists("error"));
+    }
 
+    @Test
+    void testApprovePostWithoutPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+
+        this.mvcMock.perform(post("/foren/post/approve-post?postId=1&page=0")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
     }
 }
