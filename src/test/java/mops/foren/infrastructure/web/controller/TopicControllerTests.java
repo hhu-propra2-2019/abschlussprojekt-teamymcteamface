@@ -171,4 +171,26 @@ public class TopicControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(view().name("list-threads-moderator"));
     }
+
+    @Test
+    void testEnterATopicAsModeratorWithPermissionModel() throws Exception {
+
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        ThreadPage threadPage = new ThreadPage(paging, List.of());
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when(forumServiceMock.getForum(any()).getTitle()).thenReturn("");
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
+
+        this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
+                .andExpect(model().attribute("forumId", 1L))
+                .andExpect(model().attribute("topicId", 1L))
+                .andExpect(model().attribute("forumTitle", ""))
+                .andExpect(model().attribute("pagingObject", paging))
+                .andExpect(model().attribute("threads", List.of()))
+                .andExpect(model().attribute("deletePermission", true));
+    }
 }
