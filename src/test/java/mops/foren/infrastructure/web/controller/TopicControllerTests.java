@@ -29,8 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -61,9 +60,6 @@ public class TopicControllerTests {
 
     @MockBean
     User userMock;
-
-    @MockBean
-    Forum forumMock;
 
 
     /**
@@ -117,5 +113,33 @@ public class TopicControllerTests {
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("list-threads"));
+    }
+
+    @Test
+    void testEnterATopicModel() throws Exception {
+
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        ThreadPage threadPage = new ThreadPage(paging, List.of());
+        Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("")
+                .lastChange(LocalDateTime.now()).build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
+        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
+        when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
+
+        this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
+                .andExpect(model().attributeExists("topic"))
+                .andExpect(model().attribute("forumTitle", ""))
+                .andExpect(model().attribute("forumId", 1L))
+                .andExpect(model().attribute("topicId", 1L))
+                .andExpect(model().attribute("pagingObject", paging))
+                .andExpect(model().attribute("threads", List.of()))
+                .andExpect(model().attribute("countInvisibleThreads", 0))
+                .andExpect(model().attribute("moderatePermission", true))
+                .andExpect(model().attribute("deletePermission", true));
     }
 }
