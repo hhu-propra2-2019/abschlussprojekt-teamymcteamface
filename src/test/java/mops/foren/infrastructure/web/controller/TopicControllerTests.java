@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -253,6 +253,32 @@ public class TopicControllerTests {
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/my-forums/enter?forumId=1"));
+    }
+
+    @Test
+    void testAddATopicWithPermissionInvocationOfAdd() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+
+        this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
+                .param("title", "       ")
+                .param("description", "       ")
+                .with(csrf()));
+
+        verify(forumServiceMock).addTopicInForum(any(), any());
+    }
+
+    @Test
+    void testDeleteATopicWithoutPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+
+        this.mvcMock.perform(post("/foren/topic/delete-topic?topicId=1")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
     }
 
 
