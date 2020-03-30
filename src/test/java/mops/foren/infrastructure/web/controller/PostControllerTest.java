@@ -1,5 +1,6 @@
 package mops.foren.infrastructure.web.controller;
 
+import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
 import mops.foren.domain.model.ThreadId;
@@ -45,6 +46,9 @@ public class PostControllerTest {
 
     @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
     ThreadService threadServiceMock;
+
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    PostService postServiceMock;
 
     @MockBean
     User userMock;
@@ -127,5 +131,31 @@ public class PostControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
+    }
+
+    @Test
+    void testApprovePostWithPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((postServiceMock.getPost(any()).getThreadId())).thenReturn(new ThreadId(1L));
+
+        this.mvcMock.perform(post("/foren/post/approve-post?postId=1&page=0")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
+    }
+
+    @Test
+    void testApprovePostWithPermissionInvokeApprovePost() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((postServiceMock.getPost(any()).getThreadId())).thenReturn(new ThreadId(1L));
+
+        this.mvcMock.perform(post("/foren/post/approve-post?postId=1&page=0")
+                .with(csrf()));
+
+        verify(postServiceMock).setPostVisible(any());
     }
 }
