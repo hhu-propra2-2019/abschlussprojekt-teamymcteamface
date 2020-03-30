@@ -142,4 +142,16 @@ public class TopicControllerTests {
                 .andExpect(model().attribute("moderatePermission", true))
                 .andExpect(model().attribute("deletePermission", true));
     }
+
+    @Test
+    void testEnterATopicAsModeratorWithoutPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
+    }
 }
