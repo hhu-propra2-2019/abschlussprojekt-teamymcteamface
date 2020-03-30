@@ -29,8 +29,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -88,5 +87,26 @@ public class ThreadControllerTest {
         mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("thread"));
+    }
+
+    @Test
+    public void testDisplayAThreadModel() throws Exception {
+
+        Paging paging = new Paging(false, false, false, 0, 0L, 0);
+        PostPage postPage = new PostPage(paging, List.of());
+        Thread fakeThread = Thread.builder().id(new ThreadId(1L)).build();
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(threadServiceMock.getThreadById(any()))
+                .thenReturn(fakeThread);
+
+        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+                .andExpect(model().attributeExists("error", "moderator",
+                        "minContentLength", "maxContentLength", "form"))
+                .andExpect(model().attribute("thread", fakeThread))
+                .andExpect(model().attribute("posts", List.of()))
+                .andExpect(model().attribute("pagingObject", paging))
+                .andExpect(model().attribute("user", userMock));
     }
 }
