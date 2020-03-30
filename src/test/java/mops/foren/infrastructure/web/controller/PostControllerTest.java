@@ -106,4 +106,14 @@ public class PostControllerTest {
         verify(threadServiceMock).addPostInThread(any(), any());
     }
 
+    @Test
+    void testAddNewPostBindingResultFails() throws Exception {
+
+        this.mvcMock.perform(post("/foren/post/new-post?threadId=1&page=0")
+                .param("postContent", "")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
+
+    }
 }
