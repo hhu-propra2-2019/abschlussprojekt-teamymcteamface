@@ -146,4 +146,19 @@ public class ThreadControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
     }
+
+    @Test
+    public void testAddAThreadWithPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+                .with(csrf())
+                .param("title", "    ")
+                .param("content", "    "))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/topic/?topicId=1&page=1"));
+    }
 }
