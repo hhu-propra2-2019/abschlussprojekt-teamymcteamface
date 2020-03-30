@@ -1,10 +1,8 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.*;
-import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.Thread;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.Paging;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
@@ -236,6 +234,22 @@ public class ThreadControllerTest {
                 .with(csrf()));
 
         verify(threadServiceMock).setThreadVisible(any());
+    }
+
+    @Test
+    public void testDeleteAThreadWithoutPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(false);
+        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+                .id(new ThreadId(1L))
+                .forumId(new ForumId(1L))
+                .topicId(new TopicId(1L)).build());
+
+        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
     }
 }
 
