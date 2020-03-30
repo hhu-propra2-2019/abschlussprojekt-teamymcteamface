@@ -251,5 +251,37 @@ public class ThreadControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
     }
+
+    @Test
+    public void testDeleteAThreadWithPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+                .id(new ThreadId(1L))
+                .forumId(new ForumId(1L))
+                .topicId(new TopicId(1L)).build());
+
+        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/topic?topicId=1&page=1"));
+    }
+
+    @Test
+    public void testDeleteAThreadWithPermissionInvokeDelete() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+                .id(new ThreadId(1L))
+                .forumId(new ForumId(1L))
+                .topicId(new TopicId(1L)).build());
+
+        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+                .with(csrf()));
+
+        verify(threadServiceMock).deleteThread(any());
+    }
 }
 
