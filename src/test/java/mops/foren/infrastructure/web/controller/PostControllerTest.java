@@ -113,7 +113,8 @@ public class PostControllerTest {
                 .param("postContent", "")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
+                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"))
+                .andExpect(flash().attributeExists("error"));
 
     }
 }
