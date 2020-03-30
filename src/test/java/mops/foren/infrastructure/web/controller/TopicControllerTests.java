@@ -232,5 +232,14 @@ public class TopicControllerTests {
                 .andExpect(view().name("error-no-permission"));
     }
 
+    @Test
+    void testAddATopicBindingResult() throws Exception {
+
+        this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/topic/create-topic?forumId=1"));
+    }
+
 
 }
