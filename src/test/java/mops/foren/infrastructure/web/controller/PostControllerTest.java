@@ -186,4 +186,21 @@ public class PostControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
     }
+
+    @Test
+    void testDeletePostWithPermissionInvokeDeletePost() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(postServiceMock.getPost(any())).thenReturn(Post.builder()
+                .id(new PostId(1L))
+                .threadId(new ThreadId(1L))
+                .forumId(new ForumId(1L))
+                .build());
+
+        this.mvcMock.perform(post("/foren/post/delete-post?postId=1&page=0")
+                .with(csrf()));
+
+        verify(postServiceMock).deletePost(any());
+    }
 }
