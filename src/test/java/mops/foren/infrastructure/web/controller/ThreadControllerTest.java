@@ -117,4 +117,14 @@ public class ThreadControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-thread"));
     }
+
+    @Test
+    public void testNewThreadModel() throws Exception {
+
+        mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
+                .andExpect(model().attributeExists("minTitleLength", "maxTitleLength",
+                        "minContentLength", "maxContentLength", "form"))
+                .andExpect(model().attribute("topicId", 1L))
+                .andExpect(model().attributeDoesNotExist("error"));
+    }
 }
