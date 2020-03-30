@@ -2,11 +2,18 @@ package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.ForumService;
 import mops.foren.applicationservices.PostService;
+import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
+import mops.foren.domain.model.paging.Paging;
+import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
+import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,9 +22,15 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.List;
 import java.util.Set;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,6 +55,9 @@ public class ThreadControllerTest {
     PostService postServiceMock;
 
     @MockBean
+    ThreadService threadServiceMock;
+
+    @MockBean
     User userMock;
 
     @BeforeEach
@@ -55,5 +71,22 @@ public class ThreadControllerTest {
                 .name("studentin")
                 .roles(Set.of("studentin"))
                 .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+    }
+
+    @Test
+    public void testDisplayAThreadView() throws Exception {
+
+        Paging paging = new Paging(false, false, false, 0, 0L, 0);
+        PostPage postPage = new PostPage(paging, List.of());
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(threadServiceMock.getThreadById(any()))
+                .thenReturn(Thread.builder().id(new ThreadId(1L)).build());
+
+        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("thread"));
     }
 }
