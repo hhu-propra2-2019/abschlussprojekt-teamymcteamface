@@ -34,7 +34,7 @@ public class ThreadController {
     private String threadErrorMessage;
 
     /**
-     * Constructor for ThreadController. The parameters are injected.
+     * Constructor for ThreadController. The parameters that are injected.
      *
      * @param threadService     - ThreadService (ApplicationService)
      * @param postService       - injected PostService (ApplicationService)
@@ -60,7 +60,7 @@ public class ThreadController {
      *
      * @param threadID the thread id
      * @param model    the model
-     * @return The template for the thread
+     * @return The template for the thread.
      */
     @GetMapping
     public String displayAThread(KeycloakAuthenticationToken token,
@@ -74,7 +74,6 @@ public class ThreadController {
         PostPage postPage = this.postService.getPosts(threadId, page - 1);
         Thread threadById = this.threadService.getThreadById(threadId);
         model.addAttribute("error", postErrorMessage);
-        model.addAttribute("thread", this.threadService.getThreadById(threadId));
         model.addAttribute("thread", threadById);
         model.addAttribute("posts", postPage.getPosts());
         model.addAttribute("pagingObject", postPage.getPaging());
@@ -144,7 +143,7 @@ public class ThreadController {
     }
 
     /**
-     * Approve a thread by moderator.
+     * Approve a thread by a moderator.
      *
      * @param threadIdLong the thread that should be approved
      * @param token        token from Keycloak
@@ -157,7 +156,6 @@ public class ThreadController {
         User user = this.userService.getUserFromDB(token);
         Thread thread = this.threadService.getThreadById(new ThreadId(threadIdLong));
         ForumId forumId = thread.getForumId();
-        TopicId topicId = thread.getTopicId();
 
         if (user.checkPermission(forumId, Permission.MODERATE_THREAD)) {
             this.threadService.setThreadVisible(new ThreadId(threadIdLong));
