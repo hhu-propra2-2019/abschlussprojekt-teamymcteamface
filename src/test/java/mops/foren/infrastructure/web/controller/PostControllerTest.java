@@ -3,8 +3,7 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
-import mops.foren.domain.model.ThreadId;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
@@ -169,5 +168,22 @@ public class PostControllerTest {
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
+    }
+
+    @Test
+    void testDeletePostWithPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(postServiceMock.getPost(any())).thenReturn(Post.builder()
+                .id(new PostId(1L))
+                .threadId(new ThreadId(1L))
+                .forumId(new ForumId(1L))
+                .build());
+
+        this.mvcMock.perform(post("/foren/post/delete-post?postId=1&page=0")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
     }
 }
