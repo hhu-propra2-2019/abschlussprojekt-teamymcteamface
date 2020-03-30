@@ -222,5 +222,20 @@ public class ThreadControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
     }
+
+    @Test
+    public void testApproveAThreadWithPermissionInvokeApprove() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+                .id(new ThreadId(1L))
+                .forumId(new ForumId(1L)).build());
+
+        mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
+                .with(csrf()));
+
+        verify(threadServiceMock).setThreadVisible(any());
+    }
 }
 
