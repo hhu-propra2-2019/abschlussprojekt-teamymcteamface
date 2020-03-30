@@ -10,6 +10,7 @@ import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
+import mops.foren.infrastructure.web.TopicForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -19,6 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
@@ -60,6 +62,9 @@ public class TopicControllerTests {
 
     @MockBean
     User userMock;
+
+    @MockBean
+    BindingResult bindingResultMock;
 
 
     /**
@@ -200,6 +205,19 @@ public class TopicControllerTests {
         this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-topic"));
+    }
+
+    @Test
+    void testCreateTopicModel() throws Exception {
+
+        this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
+                .andExpect(model().hasNoErrors())
+                .andExpect(model().attributeDoesNotExist("error"))
+                .andExpect(model().attributeExists("minTitleLength", "maxTitleLength"
+                        , "minDescriptionLength", "maxDescriptionLength"))
+                .andExpect(model().attribute("forumId", 1L))
+                .andExpect(model().attribute("form",
+                        new TopicForm("", "", false, false)));
     }
 
 }
