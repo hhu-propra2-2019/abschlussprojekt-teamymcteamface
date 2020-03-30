@@ -21,6 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -78,7 +79,7 @@ public class PostControllerTest {
     }
 
     @Test
-    void testAddNewPostWithPermissionVew() throws Exception {
+    void testAddNewPostWithPermissionView() throws Exception {
 
         when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
         when(userMock.checkPermission(any(), any())).thenReturn(true);
@@ -89,6 +90,20 @@ public class PostControllerTest {
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
+    }
+
+    @Test
+    void testAddNewPostWithPermissionInvokeAddPost() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((threadServiceMock.getThreadById(any()).getId())).thenReturn(new ThreadId(1L));
+
+        this.mvcMock.perform(post("/foren/post/new-post?threadId=1&page=0")
+                .param("postContent", "    ")
+                .with(csrf()));
+
+        verify(threadServiceMock).addPostInThread(any(), any());
     }
 
 }
