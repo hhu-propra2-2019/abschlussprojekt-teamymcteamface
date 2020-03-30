@@ -294,4 +294,17 @@ public class TopicControllerTests {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/my-forums/enter?forumId=1"));
     }
+
+    @Test
+    void testDeleteATopicWithPermissionInvokeDelete() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        this.mvcMock.perform(post("/foren/topic/delete-topic?topicId=1")
+                .with(csrf()));
+
+        verify(topicServiceMock).deleteTopic(any());
+    }
 }
