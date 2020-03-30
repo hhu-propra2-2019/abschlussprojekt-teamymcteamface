@@ -63,6 +63,9 @@ public class ThreadControllerTest {
     @MockBean
     User userMock;
 
+    /**
+     * Building up a security environment for the Test.
+     */
     @BeforeEach
     public void setup() {
         this.mvcMock = MockMvcBuilders
