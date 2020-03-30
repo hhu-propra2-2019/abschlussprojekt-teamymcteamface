@@ -177,4 +177,19 @@ public class ThreadControllerTest {
 
         verify(topicServiceMock).addThreadInTopic(any(), any());
     }
+
+    @Test
+    public void testAddAThreadWithPermissionBindingHasError() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+                .with(csrf())
+                .param("title", "")
+                .param("content", ""))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/thread/new-thread?topicId=1"));
+    }
 }
