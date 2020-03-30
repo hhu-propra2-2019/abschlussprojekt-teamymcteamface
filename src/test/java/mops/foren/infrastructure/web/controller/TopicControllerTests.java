@@ -154,4 +154,21 @@ public class TopicControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
     }
+
+    @Test
+    void testEnterATopicAsModeratorWithPermission() throws Exception {
+
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        ThreadPage threadPage = new ThreadPage(paging, List.of());
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
+
+        this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("list-threads-moderator"));
+    }
 }
