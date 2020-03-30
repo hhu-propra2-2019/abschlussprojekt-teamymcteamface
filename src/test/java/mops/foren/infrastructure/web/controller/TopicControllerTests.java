@@ -219,6 +219,15 @@ public class TopicControllerTests {
     }
 
     @Test
+    void testAddATopicBindingResult() throws Exception {
+
+        this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
+                .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/foren/topic/create-topic?forumId=1"));
+    }
+
+    @Test
     void testAddATopicWithoutPermission() throws Exception {
 
         when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
@@ -233,12 +242,17 @@ public class TopicControllerTests {
     }
 
     @Test
-    void testAddATopicBindingResult() throws Exception {
+    void testAddATopicWithPermission() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(true);
 
         this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
+                .param("title", "       ")
+                .param("description", "       ")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/foren/topic/create-topic?forumId=1"));
+                .andExpect(redirectedUrl("/foren/my-forums/enter?forumId=1"));
     }
 
 
