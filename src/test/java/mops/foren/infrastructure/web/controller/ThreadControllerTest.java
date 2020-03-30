@@ -1,9 +1,7 @@
 package mops.foren.infrastructure.web.controller;
 
-import mops.foren.applicationservices.ForumService;
-import mops.foren.applicationservices.PostService;
-import mops.foren.applicationservices.ThreadService;
-import mops.foren.applicationservices.UserService;
+import mops.foren.applicationservices.*;
+import mops.foren.domain.model.ForumId;
 import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.ThreadId;
 import mops.foren.domain.model.User;
@@ -14,6 +12,7 @@ import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,7 +26,9 @@ import java.util.Set;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -55,6 +56,9 @@ public class ThreadControllerTest {
 
     @MockBean
     ThreadService threadServiceMock;
+
+    @MockBean(answer = Answers.RETURNS_DEEP_STUBS)
+    TopicService topicServiceMock;
 
     @MockBean
     User userMock;
@@ -126,5 +130,20 @@ public class ThreadControllerTest {
                         "minContentLength", "maxContentLength", "form"))
                 .andExpect(model().attribute("topicId", 1L))
                 .andExpect(model().attributeDoesNotExist("error"));
+    }
+
+    @Test
+    public void testAddAThreadWithoutPermissionView() throws Exception {
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any())).thenReturn(false);
+        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+
+        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+                .with(csrf())
+                .param("title", "    ")
+                .param("content", "    "))
+                .andExpect(status().isOk())
+                .andExpect(view().name("error-no-permission"));
     }
 }
