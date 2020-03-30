@@ -109,4 +109,12 @@ public class ThreadControllerTest {
                 .andExpect(model().attribute("pagingObject", paging))
                 .andExpect(model().attribute("user", userMock));
     }
+
+    @Test
+    public void testNewThreadView() throws Exception {
+
+        mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("create-thread"));
+    }
 }
