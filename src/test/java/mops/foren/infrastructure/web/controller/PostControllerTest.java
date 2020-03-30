@@ -9,6 +9,7 @@ import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -203,4 +204,23 @@ public class PostControllerTest {
 
         verify(postServiceMock).deletePost(any());
     }
+
+    @Test
+    void testAccountIsInModel() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
+                .thenReturn(fakeAccount);
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(userMock.checkPermission(any(), any(), any())).thenReturn(false);
+
+        this.mvcMock.perform(post("/foren/post/delete-post?postId=1&page=0")
+                .with(csrf()))
+                .andExpect(model().attributeExists("account"));
+    }
+
 }
