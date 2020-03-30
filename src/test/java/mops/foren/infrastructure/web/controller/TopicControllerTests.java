@@ -10,6 +10,7 @@ import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.infrastructure.web.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -58,9 +59,6 @@ public class TopicControllerTests {
 
     @MockBean
     ThreadService threadServiceMock;
-
-    @MockBean
-    ValidationService validationServiceMock;
 
     @MockBean
     User userMock;
@@ -212,8 +210,8 @@ public class TopicControllerTests {
         this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
                 .andExpect(model().hasNoErrors())
                 .andExpect(model().attributeDoesNotExist("error"))
-                .andExpect(model().attributeExists("minTitleLength", "maxTitleLength"
-                        , "minDescriptionLength", "maxDescriptionLength"))
+                .andExpect(model().attributeExists("minTitleLength", "maxTitleLength",
+                        "minDescriptionLength", "maxDescriptionLength"))
                 .andExpect(model().attribute("forumId", 1L))
                 .andExpect(model().attribute("form",
                         new TopicForm("", "", false, false)));
@@ -306,5 +304,21 @@ public class TopicControllerTests {
                 .with(csrf()));
 
         verify(topicServiceMock).deleteTopic(any());
+    }
+
+    @Test
+    void testAccountIsInModel() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
+                .thenReturn(fakeAccount);
+
+        mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attribute("account", fakeAccount));
     }
 }
