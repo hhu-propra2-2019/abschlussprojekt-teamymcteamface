@@ -10,6 +10,7 @@ import mops.foren.infrastructure.web.KeycloakService;
 import mops.foren.infrastructure.web.KeycloakTokenMock;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
 import org.mockito.Answers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -282,6 +283,29 @@ public class ThreadControllerTest {
                 .with(csrf()));
 
         verify(threadServiceMock).deleteThread(any());
+    }
+
+    @Test
+    void testAccountIsInModel() throws Exception {
+        Account fakeAccount = Account.builder()
+                .name("orga")
+                .roles(Set.of("orga"))
+                .build();
+        KeycloakTokenMock.setupTokenMock(fakeAccount);
+
+        Paging paging = new Paging(false, false, false, 0, 0L, 0);
+        PostPage postPage = new PostPage(paging, List.of());
+
+        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
+        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(threadServiceMock.getThreadById(any()))
+                .thenReturn(Thread.builder().id(new ThreadId(1L)).build());
+        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
+                .thenReturn(fakeAccount);
+
+        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+                .andExpect(model().attributeExists("account"))
+                .andExpect(model().attribute("account", fakeAccount));
     }
 }
 
