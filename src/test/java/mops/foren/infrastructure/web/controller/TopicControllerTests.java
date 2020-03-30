@@ -193,4 +193,13 @@ public class TopicControllerTests {
                 .andExpect(model().attribute("threads", List.of()))
                 .andExpect(model().attribute("deletePermission", true));
     }
+
+    @Test
+    void testCreateTopicView() throws Exception {
+
+        this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("create-topic"));
+    }
+
 }
