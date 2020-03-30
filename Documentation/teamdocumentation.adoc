@@ -88,14 +88,6 @@ Die Konfiguration von MinIO war sehr Zeit intensiv, lückenhaft dokumentiert und
 
 * Wir haben also die Integration von MinIO abgebrochen und uns auf andere Themen fokussiert.
 
-=== ControllerTests
-
-====
-Leider war es aufgrund der zeitlichen Beschränkung und der Komplexität der Controller Methoden nicht mehr möglich, eine vollständige Testabdeckung der Controller zu erzielen.
-====
-
-* Dementsprechend sind nur bestimmte Controller getestet und die anderen leider gar nicht.
-
 == Wochenziele
 
 === Woche 1
