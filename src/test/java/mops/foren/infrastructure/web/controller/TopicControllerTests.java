@@ -7,7 +7,10 @@ import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.User;
 import mops.foren.domain.model.paging.Paging;
 import mops.foren.domain.model.paging.ThreadPage;
-import mops.foren.infrastructure.web.*;
+import mops.foren.infrastructure.web.Account;
+import mops.foren.infrastructure.web.KeycloakService;
+import mops.foren.infrastructure.web.KeycloakTokenMock;
+import mops.foren.infrastructure.web.TopicForm;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.keycloak.adapters.springsecurity.token.KeycloakAuthenticationToken;
@@ -83,12 +86,15 @@ public class TopicControllerTests {
 
     @Test
     void testEnterATopicWithoutPermission() throws Exception {
+        Paging paging = new Paging(true, true, false, 0, 0L, 0);
+        ThreadPage threadPage = new ThreadPage(paging, List.of());
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
-        when(topicServiceMock.getTopic(any())).thenReturn(Topic.builder().build());
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any())).thenReturn(null);
-        when(threadServiceMock.countInvisibleThreads(any())).thenReturn(1);
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
+        when(this.topicServiceMock.getTopic(any())).thenReturn(Topic.builder().build());
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
+        when(this.threadServiceMock.countInvisibleThreads(any())).thenReturn(1);
 
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
                 .andExpect(status().isOk())
@@ -104,13 +110,13 @@ public class TopicControllerTests {
         Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("")
                 .lastChange(LocalDateTime.now()).build();
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
                 .thenReturn(threadPage);
-        when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
+        when(this.threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
 
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
                 .andExpect(status().isOk())
@@ -125,13 +131,13 @@ public class TopicControllerTests {
         Forum fakeForum = Forum.builder().id(new ForumId(1L)).title("")
                 .lastChange(LocalDateTime.now()).build();
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.topicServiceMock.getTopic(any()).getForumId()).thenReturn(fakeForum.getId());
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
                 .thenReturn(threadPage);
-        when(threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
+        when(this.threadServiceMock.countInvisibleThreads(any())).thenReturn(0);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.forumServiceMock.getForum(any()).getTitle())).thenReturn(fakeForum.getTitle());
 
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
                 .andExpect(model().attributeExists("topic"))
@@ -148,9 +154,9 @@ public class TopicControllerTests {
     @Test
     void testEnterATopicAsModeratorWithoutPermission() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
         this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
                 .andExpect(status().isOk())
@@ -163,10 +169,10 @@ public class TopicControllerTests {
         Paging paging = new Paging(true, true, false, 0, 0L, 0);
         ThreadPage threadPage = new ThreadPage(paging, List.of());
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
                 .thenReturn(threadPage);
 
         this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
@@ -180,11 +186,11 @@ public class TopicControllerTests {
         Paging paging = new Paging(true, true, false, 0, 0L, 0);
         ThreadPage threadPage = new ThreadPage(paging, List.of());
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when(forumServiceMock.getForum(any()).getTitle()).thenReturn("");
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
-        when(threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when(this.forumServiceMock.getForum(any()).getTitle()).thenReturn("");
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
                 .thenReturn(threadPage);
 
         this.mvcMock.perform(get("/foren/topic/moderationview?topicId=1&page=0"))
@@ -229,8 +235,8 @@ public class TopicControllerTests {
     @Test
     void testAddATopicWithoutPermission() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
 
         this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
                 .param("title", "       ")
@@ -243,8 +249,8 @@ public class TopicControllerTests {
     @Test
     void testAddATopicWithPermission() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
 
         this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
                 .param("title", "       ")
@@ -257,22 +263,22 @@ public class TopicControllerTests {
     @Test
     void testAddATopicWithPermissionInvocationOfAdd() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
 
         this.mvcMock.perform(post("/foren/topic/add-topic?forumId=1")
                 .param("title", "       ")
                 .param("description", "       ")
                 .with(csrf()));
 
-        verify(forumServiceMock).addTopicInForum(any(), any());
+        verify(this.forumServiceMock).addTopicInForum(any(), any());
     }
 
     @Test
     void testDeleteATopicWithoutPermission() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
 
         this.mvcMock.perform(post("/foren/topic/delete-topic?topicId=1")
                 .with(csrf()))
@@ -283,9 +289,9 @@ public class TopicControllerTests {
     @Test
     void testDeleteATopicWithPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
         this.mvcMock.perform(post("/foren/topic/delete-topic?topicId=1")
                 .with(csrf()))
@@ -296,14 +302,14 @@ public class TopicControllerTests {
     @Test
     void testDeleteATopicWithPermissionInvokeDelete() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
         this.mvcMock.perform(post("/foren/topic/delete-topic?topicId=1")
                 .with(csrf()));
 
-        verify(topicServiceMock).deleteTopic(any());
+        verify(this.topicServiceMock).deleteTopic(any());
     }
 
     @Test
@@ -314,10 +320,10 @@ public class TopicControllerTests {
                 .build();
         KeycloakTokenMock.setupTokenMock(fakeAccount);
 
-        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
-                .thenReturn(fakeAccount);
+        when(this.keycloakServiceMock.createAccountFromPrincipal(
+                any(KeycloakAuthenticationToken.class))).thenReturn(fakeAccount);
 
-        mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
+        this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attribute("account", fakeAccount));
     }
