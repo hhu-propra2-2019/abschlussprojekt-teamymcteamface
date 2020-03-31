@@ -130,7 +130,8 @@ public class ThreadControllerTest {
 
         this.mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
                 .andExpect(model().attributeExists("minTitleLength", "maxTitleLength",
-                        "minContentLength", "maxContentLength", "form", "inModeratedTopic", "topicTitle"))
+                        "minContentLength", "maxContentLength", "form", "inModeratedTopic",
+                        "topicTitle"))
                 .andExpect(model().attribute("topicId", 1L))
                 .andExpect(model().attributeDoesNotExist("error"));
     }
@@ -303,8 +304,8 @@ public class ThreadControllerTest {
         when(this.postServiceMock.getPosts(any(), any())).thenReturn(postPage);
         when(this.threadServiceMock.getThreadById(any()))
                 .thenReturn(Thread.builder().id(new ThreadId(1L)).build());
-        when(this.keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
-                .thenReturn(fakeAccount);
+        when(this.keycloakServiceMock.createAccountFromPrincipal(
+                any(KeycloakAuthenticationToken.class))).thenReturn(fakeAccount);
 
         this.mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
                 .andExpect(model().attributeExists("account"))
