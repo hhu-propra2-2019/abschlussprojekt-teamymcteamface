@@ -97,7 +97,10 @@ public class ThreadController {
     @GetMapping("/new-thread")
     public String createNewThread(@RequestParam("topicId") Long topicIdLong,
                                   Model model) {
+        Topic topic = this.topicService.getTopic(new TopicId(topicIdLong));
 
+        model.addAttribute("inModeratedTopic", topic.getModerated());
+        model.addAttribute("topicTitle", topic.getTitle());
         model.addAttribute("error", this.threadErrorMessage);
         model.addAttribute("form", new ThreadForm("", ""));
         model.addAttribute("topicId", topicIdLong);

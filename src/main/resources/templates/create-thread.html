@@ -11,24 +11,24 @@
   </th:block>
 </head>
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
 <main th:fragment="bodycontent">
   <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
     error message goes here (or not)
   </div>
   <h1>Beitrag erstellen:</h1>
-  <form method="post" th:object="${form}"
+  <form id="thread-form" method="post" th:object="${form}"
         th:action="@{/foren/thread/add-thread(topicId=${topicId})}">
     <div class="form-group">
       <label for="title">Titel:</label>
@@ -45,6 +45,14 @@
     </div>
     <button class="btn btn-primary" type="submit">Erstellen</button>
   </form>
+  <script>
+      document.getElementById("thread-form").addEventListener("submit", event => {
+          if ([[${inModeratedTopic}]]) {
+              alert("Das Topic '[[${topicTitle}]]' befindet sich im Moderationsmodus.\n" +
+                  "Ihr Thread muss zunächst freigegeben werden.");
+          }
+      });
+  </script>
 </main>
 </body>
 </html>

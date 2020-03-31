@@ -23,18 +23,18 @@
   <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
 </th:block>
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
 <main th:fragment="bodycontent">
   <div class="container">
     <div class="content-thread">
@@ -126,7 +126,7 @@
               Antwort erstellen
             </div>
           </div>
-          <form method="post" th:object="${form}"
+          <form id="post-form" method="post" th:object="${form}"
                 th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
             <div class="card-body">
               <div class="form-group">
@@ -140,8 +140,18 @@
                           required></textarea>
               </div>
             </div>
-            <button class="btn btn-primary delete-button moderate-button" type="submit">Abschicken</button>
+            <button class="btn btn-primary delete-button moderate-button" type="submit">
+              Abschicken
+            </button>
           </form>
+          <script>
+              document.getElementById("post-form").addEventListener("submit", event => {
+                  if ([[${thread.getModerated()}]]) {
+                      alert("Der Thread '[[${thread.getTitle()}]]' befindet sich im Moderationsmodus.\n" +
+                          "Ihr Post muss zunächst freigegeben werden.");
+                  }
+              });
+          </script>
         </div>
       </div>
     </div>
