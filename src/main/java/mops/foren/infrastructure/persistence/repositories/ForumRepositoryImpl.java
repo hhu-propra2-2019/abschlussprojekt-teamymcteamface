@@ -11,6 +11,7 @@ import mops.foren.infrastructure.persistence.mapper.ForumMapper;
 import mops.foren.infrastructure.persistence.mapper.TopicMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +34,12 @@ public class ForumRepositoryImpl implements IForumRepository {
     public List<Forum> getForumsFromDB(User user) {
         List<ForumDTO> forumDtos = getForumDTOs(user);
         List<Forum> forumList = getAllForums(forumDtos);
+        forumList.sort(new Comparator<Forum>() {
+            @Override
+            public int compare(Forum forum, Forum forum2) {
+                return forum.getTitle().compareTo(forum2.getTitle());
+            }
+        });
         return forumList;
     }
 

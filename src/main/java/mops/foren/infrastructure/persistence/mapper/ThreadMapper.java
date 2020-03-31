@@ -11,7 +11,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+
+import static java.util.function.Predicate.not;
 
 @Service
 public abstract class ThreadMapper {
@@ -24,10 +27,12 @@ public abstract class ThreadMapper {
      */
     public static Thread mapThreadDtoToThread(ThreadDTO threadDTO) {
         LocalDateTime lastChange = getLastPostTime(threadDTO.getPosts());
+        Long count = getCountOfInvisiblePosts(threadDTO.getModerated(), threadDTO.getPosts());
         return Thread.builder()
                 .id(new ThreadId(threadDTO.getId()))
                 .anonymous(threadDTO.getAnonymous())
                 .moderated(threadDTO.getModerated())
+                .unModerated(count)
                 .visible(threadDTO.getVisible())
                 .topicId(new TopicId(threadDTO.getTopic().getId()))
                 .lastPostTime(lastChange)
@@ -38,10 +43,20 @@ public abstract class ThreadMapper {
                 .build();
     }
 
+    private static Long getCountOfInvisiblePosts(Boolean moderated, List<PostDTO> posts) {
+        if (!moderated) {
+            return 0L;
+        }
+        return posts.stream()
+                .filter(not(PostDTO::getVisible))
+                .count();
+    }
+
     private static LocalDateTime getLastPostTime(List<PostDTO> posts) {
         Optional<LocalDateTime> max = posts.stream()
                 .filter(PostDTO::getVisible)
                 .map(PostDTO::getDateTime)
+                .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo);
         return max.orElse(null);
     }

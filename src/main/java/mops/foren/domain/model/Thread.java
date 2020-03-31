@@ -25,6 +25,8 @@ public class Thread {
 
     private Boolean visible;
 
+    private Long unModerated;
+
     private Boolean moderated;
 
     private LocalDateTime lastPostTime;
