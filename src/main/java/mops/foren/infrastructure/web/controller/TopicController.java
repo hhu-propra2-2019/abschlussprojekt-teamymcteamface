@@ -72,6 +72,7 @@ public class TopicController {
                               @RequestParam("topicId") Long topicIdLong,
                               @RequestParam("page") Integer page,
                               Model model) {
+
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         ForumId forumId = this.topicService.getTopic(topicId).getForumId();
@@ -79,6 +80,7 @@ public class TopicController {
                 this.threadService.getThreadPageByVisibility(topicId, page - 1, true);
         Long count = visibleThreadPage.getCountUnmoderatedPosts();
         Integer countInvisibleThreads = this.threadService.countInvisibleThreads(topicId);
+
         if (user.checkPermission(forumId, Permission.READ_TOPIC)) {
             model.addAttribute("forumTitle", this.forumService.getForum(forumId).getTitle());
             model.addAttribute("topic", this.topicService.getTopic(topicId));
@@ -104,7 +106,7 @@ public class TopicController {
      * @param topicIdLong the topic id
      * @param page        The thread page
      * @param model       the model
-     * @return The template for the threads
+     * @return The template for the threads.
      */
     @GetMapping("/moderationview")
     public String enterATopicAsModerator(KeycloakAuthenticationToken token,
@@ -142,6 +144,7 @@ public class TopicController {
     @GetMapping("/create-topic")
     public String createNewTopic(@RequestParam("forumId") Long forumIdLong,
                                  Model model) {
+
         model.addAttribute("error", this.errorMessage);
         model.addAttribute("form", new TopicForm("", "", false, false));
         model.addAttribute("forumId", forumIdLong);
@@ -189,12 +192,13 @@ public class TopicController {
      * Delete a topic.
      *
      * @param token       The keycloak token
-     * @param topicIdLong The topic Id
-     * @return Redirect to forum mainpage or to error page
+     * @param topicIdLong The topic ID
+     * @return Redirect to forum-page or to error-page.
      */
     @PostMapping("/delete-topic")
     public String deleteTopic(KeycloakAuthenticationToken token,
                               @RequestParam("topicId") Long topicIdLong) {
+
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
         ForumId forumId = this.topicService.getTopic(topicId).getForumId();

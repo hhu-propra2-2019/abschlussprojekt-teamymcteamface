@@ -36,7 +36,7 @@ public class ForumController {
     private KeycloakService keycloakService;
 
     /**
-     * Constructor for ForenController. The parameters are injected.
+     * Constructor for ForenController. The parameters that are injected.
      *
      * @param userService     - injected UserService (ApplicationService)
      * @param forumService    - injected ForumService (ApplicationService)
@@ -64,10 +64,13 @@ public class ForumController {
     @GetMapping
     public String allForums(KeycloakAuthenticationToken token,
                             Model model) {
+
         User user = this.userService.getUserFromDB(token);
         List<Forum> forums = this.forumService.getForums(user);
         forums.forEach(forum -> this.forumService.updateLastTimeChanged(forum));
+
         model.addAttribute("forums", forums);
+
         return "my-forums";
     }
 
@@ -77,14 +80,16 @@ public class ForumController {
      * @param token       - the keycloak token
      * @param forumIdLong - id of the forum
      * @param model       - Model
-     * @return The template for the forum main page
+     * @return The template for the forum main page.
      */
     @GetMapping("/enter")
     public String enterAForum(KeycloakAuthenticationToken token,
                               @RequestParam("forumId") Long forumIdLong,
                               Model model) {
+
         User user = this.userService.getUserFromDB(token);
         ForumId forumId = new ForumId(forumIdLong);
+
         if (user.checkPermission(forumId, Permission.READ_FORUM)) {
             model.addAttribute("topics", this.topicService.getTopics(forumId));
             model.addAttribute("forum", this.forumService.getForum(forumId));
