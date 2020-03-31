@@ -92,7 +92,8 @@ public class TopicControllerTests {
         when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
         when(this.userMock.checkPermission(any(), any())).thenReturn(false);
         when(this.topicServiceMock.getTopic(any())).thenReturn(Topic.builder().build());
-        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any())).thenReturn(threadPage);
+        when(this.threadServiceMock.getThreadPageByVisibility(any(), any(), any()))
+                .thenReturn(threadPage);
         when(this.threadServiceMock.countInvisibleThreads(any())).thenReturn(1);
 
         this.mvcMock.perform(get("/foren/topic/?topicId=1&page=0"))
@@ -319,8 +320,8 @@ public class TopicControllerTests {
                 .build();
         KeycloakTokenMock.setupTokenMock(fakeAccount);
 
-        when(this.keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
-                .thenReturn(fakeAccount);
+        when(this.keycloakServiceMock.createAccountFromPrincipal(
+                any(KeycloakAuthenticationToken.class))).thenReturn(fakeAccount);
 
         this.mvcMock.perform(get("/foren/topic/create-topic?forumId=1"))
                 .andExpect(model().attributeExists("account"))
