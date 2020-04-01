@@ -147,8 +147,9 @@
           <script>
               document.getElementById("post-form").addEventListener("submit", event => {
                   if ([[${thread.getModerated()}]]) {
-                      alert("Der Thread '[[${thread.getTitle()}]]' befindet sich im Moderationsmodus.\n" +
-                          "Ihr Post muss zunächst freigegeben werden.");
+                      alert("Hey dein Post wurde erstellt.\n" +
+                          "Der Beitrag '[[${thread.getTitle()}]]' befindet sich allerdings im Moderationsmodus,\n" +
+                          "weswegen deine Antwort noch freigegeben werden muss.");
                   }
               });
           </script>
