@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Foren</title>
+  <th:block th:fragment="headcontent">
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
+  </th:block>
+</head>
+<body>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li>
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main th:fragment="bodycontent">
+  <h2>Hey dein Post wurde erstellt.
+    Das Forum befindet sich allerdings im Moderationsmodus, weswegen deine Antwort
+    noch freigegeben werden muss.
+    !</h2>
+  <button class="btn btn-primary" onclick="window.history.back()">zurück zu den bisherigen Antworten</button>
+</main>
+</body>
+</html>

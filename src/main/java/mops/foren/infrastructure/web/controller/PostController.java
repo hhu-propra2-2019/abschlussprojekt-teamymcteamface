@@ -3,6 +3,7 @@ package mops.foren.infrastructure.web.controller;
 import mops.foren.applicationservices.PostService;
 import mops.foren.applicationservices.ThreadService;
 import mops.foren.applicationservices.UserService;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.*;
 import mops.foren.infrastructure.web.Account;
 import mops.foren.infrastructure.web.KeycloakService;
@@ -84,10 +85,14 @@ public class PostController {
         User user = this.userService.getUserFromDB(token);
         ThreadId threadId = new ThreadId(threadIdLong);
         Post post = postForm.getPost(user, threadId);
-        ForumId forumId = this.threadService.getThreadById(threadId).getForumId();
+        Thread threadById = this.threadService.getThreadById(threadId);
+        ForumId forumId = threadById.getForumId();
 
         if (user.checkPermission(forumId, Permission.CREATE_POST)) {
             this.threadService.addPostInThread(threadId, post);
+            if (threadById.getModerated()) {
+                return "notification-addPost-moderation";
+            }
             return String.format("redirect:/foren/thread?threadId=%d&page=%d",
                     threadIdLong, page + 1);
         }

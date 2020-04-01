@@ -132,11 +132,15 @@ public class ThreadController {
 
         User user = this.userService.getUserFromDB(token);
         TopicId topicId = new TopicId(topicIdLong);
-        ForumId forumId = this.topicService.getTopic(topicId).getForumId();
+        Topic topic = this.topicService.getTopic(topicId);
+        ForumId forumId = topic.getForumId();
         Thread thread = threadForm.getThread(user, topicId);
 
         if (user.checkPermission(forumId, Permission.CREATE_THREAD)) {
             this.topicService.addThreadInTopic(topicId, thread);
+            if (topic.getModerated()) {
+                return "notification-addThread-moderation";
+            }
             return String.format("redirect:/foren/topic/?topicId=%d&page=1", topicIdLong);
         }
         return "error-no-permission";
