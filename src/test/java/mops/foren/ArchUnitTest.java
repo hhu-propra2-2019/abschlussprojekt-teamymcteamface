@@ -36,6 +36,8 @@ public class ArchUnitTest {
     static final ArchRule ALL_CONTROLLERS_LISTEN_TO_RIGHT_PATH = classes()
             .that()
             .areAnnotatedWith(Controller.class)
+            .and()
+            .doNotHaveSimpleName("LogoutController")
             .should()
             .beAnnotatedWith(RequestMapping.class)
             .andShould(new ArchCondition<>("have annotation value") {
