@@ -51,7 +51,7 @@ public class LogoutControllerTest {
                 .roles(Set.of("studentin"))
                 .build());
 
-        this.mvcMock.perform(get("/foren/logout"))
+        this.mvcMock.perform(get("/logout"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren"));
     }
