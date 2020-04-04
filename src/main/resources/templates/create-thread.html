@@ -48,9 +48,9 @@
   <script>
       document.getElementById("thread-form").addEventListener("submit", event => {
           if ([[${inModeratedTopic}]]) {
-              alert("Hey dein Beitrag wurde erstellt.\n" +
-                  "Das Thema '[[${topicTitle}]]' befindet sich allerdings im Moderationsmodus,\n" +
-                  "weswegen dein Beitragnoch freigegeben werden muss.");
+              alert("Dein Beitrag wurde erstellt.\n" +
+                  "Da '[[${topicTitle}]]' sich im Moderationsmodus befindet, \n" +
+                  "muss dein Beitrag von einem Moderator freigegeben werden.");
           }
       });
   </script>
