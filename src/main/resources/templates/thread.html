@@ -119,14 +119,16 @@
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer" th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages()}">
+      <div class="row write-answer"
+           th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages() || pagingObject.getTotalPages()==0} ">
         <div class="card">
           <div class="card-header">
             <div class="author">
               Antwort erstellen
             </div>
           </div>
-          <form method="post" th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+          <form method="post"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
                 th:object="${form}">
             <div class="card-body">
               <div class="form-group">
