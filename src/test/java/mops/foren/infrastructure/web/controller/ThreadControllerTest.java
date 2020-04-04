@@ -128,19 +128,14 @@ public class ThreadControllerTest {
     @Test
     public void testNewThreadModel() throws Exception {
 
-        TopicId topicId = new TopicId(1L);
-        String topicTitle = "topic title";
-        Boolean topicModeration = true;
-
-        Topic topicFake = Topic.builder().title(topicTitle).moderated(topicModeration).build();
-
-        when(this.topicServiceMock.getTopic(topicId)).thenReturn(topicFake);
+        when(this.topicServiceMock.getTopic(any())).thenReturn(Topic.builder()
+                .title("").id(new TopicId(1L)).moderated(true).build());
 
         this.mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
                 .andExpect(model().attributeExists("minTitleLength", "maxTitleLength",
                         "minContentLength", "maxContentLength", "form"))
-                .andExpect(model().attribute("inModeratedTopic", topicModeration))
-                .andExpect(model().attribute("topicTitle", topicTitle))
+                .andExpect(model().attribute("inModeratedTopic", true))
+                .andExpect(model().attribute("topicTitle", ""))
                 .andExpect(model().attribute("topicId", 1L))
                 .andExpect(model().attributeDoesNotExist("error"));
     }
