@@ -19,22 +19,22 @@
   <title>Foren - Posts</title>
 </head>
 <th:block th:fragment="headcontent">
-  <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+  <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+  <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
 </th:block>
 <body>
-  <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-      <ul>
-        <li class="active">
-          <a th:href="@{/foren}">Meine Foren</a>
-        </li>
-        <li>
-          <a th:href="@{/foren/profile}">Profil</a>
-        </li>
-      </ul>
-    </nav>
-  </header>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
 <main th:fragment="bodycontent">
   <div class="container">
     <div class="content-thread">
@@ -84,7 +84,7 @@
             <li class="moderate-button"
                 th:if="${user.checkPermission(post.getForumId().getId(), PermissionDelete, post.getAuthor())
                            && (post.getAuthor().getName() != 'Unbekannt')}">
-              <form method="post" class="delete-post-form"
+              <form class="delete-post-form" method="post"
                     th:action="@{/foren/post/delete-post(postId=${post.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
                 <button class="delete-button btn-danger" type="submit">
                   <i class="far fa-trash-alt"></i>
@@ -92,7 +92,7 @@
               </form>
             </li>
             <li class="moderate-button">
-              <form method="post" class="delete-post-form"
+              <form class="delete-post-form" method="post"
                     th:action="@{/foren/post/approve-post(postId=${post.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
                 <button class="delete-button btn-warning" type="submit">
                   Freigeben
@@ -104,7 +104,7 @@
       </div>
       <hr class="content-divider">
       <ul class="list-unstyled page-list">
-        <li th:if="${posts.size() > 0}" th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}">
+        <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}" th:if="${posts.size() > 0}">
           <button class="btn"
                   th:onclick="location.href = '?threadId=[[${thread.getId().getId()}]]&page=[[${i}]]'"
                   th:text="${i}"
@@ -119,15 +119,17 @@
         </li>
       </ul>
       <br><br>
-      <div class="row write-answer">
+      <div class="row write-answer"
+           th:if="${pagingObject.getCurrentPage() + 1 == pagingObject.getTotalPages() || pagingObject.getTotalPages()==0} ">
         <div class="card">
           <div class="card-header">
             <div class="author">
               Antwort erstellen
             </div>
           </div>
-          <form method="post" th:object="${form}"
-                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}">
+          <form method="post"
+                th:action="@{/foren/post/new-post(threadId=${thread.getId().getId()}, page=${pagingObject.getCurrentPage()})}"
+                th:object="${form}">
             <div class="card-body">
               <div class="form-group">
                 <div class="alert alert-warning" id="error-message" th:if="${!#strings.isEmpty(error)}"
@@ -135,9 +137,9 @@
                   error message goes here (or not)
                 </div>
                 <textarea class="form-control" id="my-textarea" name="postContent"
-                          rows="3" th:value="*{postContent}"
+                          required rows="3"
                           th:attr="minlength=${minContentLength}, maxlength=${maxContentLength}"
-                          required></textarea>
+                          th:value="*{postContent}"></textarea>
               </div>
             </div>
             <button class="btn btn-primary delete-button moderate-button" type="submit">Abschicken</button>
@@ -148,5 +150,4 @@
   </div>
 </main>
 </body>
-
 </html>
