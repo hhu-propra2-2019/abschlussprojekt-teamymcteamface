@@ -120,22 +120,22 @@ image::Laufzeit_Diagramm.png[]
 
 ==== Typischer Ablauf :
 
-Greift ein Nutzer auf das System Foren zu wird dieser zunächst an Keycloak weitergeleitet um sich dort zu authentifizieren.
+Greift ein Nutzer auf das System Foren zu, wird dieser zunächst an Keycloak weitergeleitet, um sich dort zu authentifizieren.
 
-Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Post schreiben) so wird diese Anfrage vom zuständigen Controller bearbeiter.
-Aus dem Keycloak Token wird der korrespondierende User aus der Datenbank geholt und über desen Permission Manager eine Rechteanfrage durchgeführt.
+Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Beitrag schreiben) so wird diese Anfrage vom zuständigen Controller bearbeiter.
+Aus dem Keycloak Token wird der korrespondierende User aus der Datenbank geholt und über diesen Permission Manager eine Rechteanfrage durchgeführt.
 
-Verläuft diese negativ, so gibt der Controller eine Seite zurück die dem Nutzer dies entsprechend mitteilt.
+Verläuft diese negativ, so gibt der Controller eine Seite zurück, die dem Nutzer dies entsprechend mitteilt.
 Hat der Nutzer die geforderten Rechte so stößt der Controller die geforderte Aktion an.
 
-In den meisten Fällen bedeutet dies, dass dem Nutzer eine Seite zurück gegeben wird, deren Inhalt(Topics, Threads etc.) über die Services aus der Datenbank gefüllt werden.
+In den meisten Fällen bedeutet dies, dass dem Nutzer eine Seite zurückgegeben wird, deren Inhalt(Topics, Threads etc.) über die Services aus der Datenbank gefüllt werden.
 
 Von dieser Seite aus kann der Nutzer eine neue Anfrage stellen.
 
 == Verteilungsschicht
 
 Das System wird als Docker-compose ausgeliefert.
-Es benötigt also lediglich eine Docker-compose fähige Umgebung um in Betrieb genommen zu werden.
+Es benötigt lediglich eine Docker-compose fähige Umgebung, um in Betrieb genommen zu werden.
 
 == Entwurfsentscheidungen
 
