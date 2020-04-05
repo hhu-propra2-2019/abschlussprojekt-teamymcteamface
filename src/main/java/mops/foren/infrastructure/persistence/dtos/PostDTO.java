@@ -30,4 +30,11 @@ public class PostDTO {
     private UserDTO author;
 
     private String text;
+
+    private Boolean anonymous;
+
+    private Boolean visible;
+
+    @ManyToOne
+    private ForumDTO forum;
 }

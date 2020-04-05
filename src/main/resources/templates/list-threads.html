@@ -3,92 +3,122 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+  <script crossorigin="anonymous"
+          integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+          th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"></script>
   <meta charset="utf-8">
-  <title th:text="${forumTitle} + ' - ' + ${topicTitle}"></title>
+  <title th:text="${forumTitle}"></title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-            main > div:first-child img {
-                border-radius: 1rem;
-                border: 1px solid black;
-            }
-
-            main > div:first-child > h2 {
-                position: absolute;
-                bottom: 0;
-                margin: 1rem;
-                color: white;
-                text-shadow: 0 0 3px black;
-            }
-
-      .mops-row {
-        transition-duration: 0.3s;
-      }
-
-      .mops-row>*:hover {
-        cursor: pointer;
-      }
-
-      .mops-row:hover {
-        background: #a9d0f5;
-        transition-duration: 0.3s;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-            @media (max-width: 576px) {
-                main > div:first-child > h2 {
-                    font-size: 1.0rem;
-                }
-            }
-        </style>
-    </th:block>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
+  </th:block>
 </head>
 <body>
 <header>
-    <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-        <ul>
-            <li class="">
-                <a href="#welcome" th:href="@{./}">Dashboard</a>
-            </li>
-            <li class="active">
-                <a href="#welcome" th:href="@{./my-forums}">Meine Foren</a>
-            </li>
-            <li class="">
-              <a href="#welcome" th:href="@{./profile}">Profil</a>
-            </li>
-        </ul>
-    </nav>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
 </header>
 <main th:fragment="bodycontent">
-  <h1 th:text="${forumTitle} + ' - Beiträge'">Threads</h1>
-  <button class="btn btn-primary" th:onclick="location.href = '/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/new-thread'">Thread erstellen</button>
+  <h1 th:if="${topic.getModerated()}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()} + '<Moderiert>'">
+    Beiträge</h1>
+  <h1 th:if="${topic.moderated == false}" th:text="${forumTitle} + ' - Beiträge in ' + ${topic.getTitle()}">
+    Beiträge</h1>
+  <p th:text="${topic.getDescription()}">Hier könnte Ihre Werbung stehen!</p>
+  <div th:if="${moderatePermission}">
+    <div th:if="${count==0}">
+      <h2> Alle Posts auf dieser Seite sind freigegben</h2>
+    </div>
+    <div th:unless="${count==0}">
+      <div class="alert alert-warning"
+           th:text="'Achtung auf dieser Seite müssen noch ' + ${count} +' Posts freigegeben werden'">
+      </div>
+    </div>
+  </div>
+  <div th:if="${moderatePermission == true}">
+    <div th:unless="${countInvisibleThreads==0}">
+      <div th:if="${countInvisibleThreads==1}">
+        <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
+          <button class="btn btn-warning btn-approve-threads"
+                  th:text="${countInvisibleThreads} + ' Beitrag muss noch freigegeben werden'"
+                  type="submit">
+          </button>
+        </a>
+      </div>
+      <div th:unless="${countInvisibleThreads==1}">
+        <a th:href="@{/foren/topic/moderationview(topicId=${topicId},page=1)}">
+          <button class="btn btn-warning btn-approve-threads"
+                  th:text="${countInvisibleThreads} + ' Beiträge müssen noch freigegeben werden'"
+                  type="submit">
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div>
+    <a th:href="@{/foren/thread/new-thread(topicId=${topicId})}">
+      <button class="btn btn-primary btn-create-thread" type="submit">Beitrag erstellen
+      </button>
+    </a>
+  </div>
   <table class="table table-light">
     <thead class="thead-light">
     <tr>
       <th>Beitrag</th>
       <th>Name</th>
       <th>Letzte Änderung</th>
+      <div th:if="${topic.getModerated() && moderatePermission}">
+        <th>Unmoderierte Posts:</th>
+      </div>
+      <th></th>
     </tr>
     </thead>
     <tbody>
     <div th:each="thread : ${threads}">
-      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forumId}]] + '/' + [[${topicId}]] + '/' + [[${thread.getId().getId().toString()}]]">
-          <td th:text="${thread.getTitle()}">lorem</td>
-          <td th:text="${author}"></td>
-          <td>14:37Uhr</td>
+      <tr class="mops-row"
+          th:onclick="location.href ='/foren/thread?threadId=[[${thread.getId().getId()}]]&page=1'">
+        <td th:text="${thread.getTitle()}">lorem</td>
+        <td th:text="${false == thread.getAnonymous()}?${thread.getAuthor().getName()}:'Anonym'"></td>
+        <td th:text="${thread.getFormattedDate()}">14:37Uhr</td>
+        <div th:if="${topic.getModerated() && moderatePermission}">
+          <td th:text="${thread.getUnModerated()}">
+          </td>
+        </div>
+        <td>
+          <form method="post" th:action="@{/foren/thread/delete-thread(threadId=${thread.getId().getId()})}"
+                th:if="${deletePermission}">
+            <button class="delete-button btn-danger" type="submit">
+              <i class="far fa-trash-alt"></i>
+            </button>
+          </form>
+        </td>
       </tr>
     </div>
     </tbody>
   </table>
+  <ul class="list-unstyled page-list list-threads">
+    <li th:each="i : ${#numbers.sequence(pagingObject.getTotalPages(), 1)}" th:if="${threads.size() > 0}">
+      <button class="btn" th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
+              th:text="${i}"
+              th:unless="${i == pagingObject.getCurrentPage()+1}"
+              type="button">page#
+      </button>
+      <button class="btn btn-primary" th:if="${i == pagingObject.getCurrentPage()+1}"
+              th:onclick="location.href = '?topicId=[[${topicId}]]&page=[[${i}]]'"
+              th:text="${i}"
+              type="button">page#
+      </button>
+    </li>
+  </ul>
 </main>
 </body>
 </html>

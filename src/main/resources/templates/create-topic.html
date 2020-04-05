@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en"
+      th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
+      xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <title>Foren</title>
+  <th:block th:fragment="headcontent">
+    <script src="https://kit.fontawesome.com/20ec73082f.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="../static/css/styles.css" th:href="@{/css/styles.css}">
+  </th:block>
+</head>
+
+<body>
+<header>
+  <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
+    <ul>
+      <li class="active">
+        <a th:href="@{/foren}">Meine Foren</a>
+      </li>
+      <li>
+        <a th:href="@{/foren/profile}">Profil</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+<main th:fragment="bodycontent">
+  <div class="alert alert-warning" id="error-message" th:if="${error} != null" th:text="${error}">
+    error message goes here (or not)
+  </div>
+  <h1>Thema erstellen:</h1>
+  <form method="post" th:action="@{/foren/topic/add-topic(forumId=${forumId})}" th:object="${form}">
+    <div class="form-group">
+      <label for="title">Titel:</label>
+      <input aria-describedby="emailHelp" class="form-control" id="title" name="title"
+             placeholder="Gebe einen Titel ein." th:attr="minlength=${minTitleLength}, maxlength=${maxTitleLength}"
+             th:value="*{title}" type="text" required>
+      <small class="form-text text-muted" id="emailHelp">Der Titel sollte möglichst präsize sein.</small>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">Beschreibung:</label>
+      <textarea class="form-control" id="exampleFormControlTextarea1" name="description" rows="3"
+                th:attr="minlength=${minDescriptionLength}, maxlength=${maxDescriptionLength}" th:value="*{description}"
+                required></textarea>
+    </div>
+    <label>Moderationsmodus:</label>
+    <input name="moderated" th:checked="*{moderated}" type="checkbox">
+    <label class="anonym-checkbox">Sollen Beiträge in diesem Thema annonym sein:</label>
+    <input name="anonymous" th:checked="*{anonymous}" type="checkbox">
+    <div>
+      <button class="btn btn-primary" type="submit">Erstellen</button>
+    </div>
+  </form>
+</main>
+</body>
+
+</html>

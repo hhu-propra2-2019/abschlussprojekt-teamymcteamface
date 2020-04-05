@@ -25,11 +25,12 @@ public class TopicDTO {
 
     private Boolean moderated;
 
+    private Boolean anonymous;
 
     @ManyToOne
     private ForumDTO forum;
 
-    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "topic", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ThreadDTO> threads;
 
 }

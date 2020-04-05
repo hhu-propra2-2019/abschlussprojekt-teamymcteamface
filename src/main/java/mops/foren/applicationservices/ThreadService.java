@@ -1,10 +1,11 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.*;
+import mops.foren.domain.model.Post;
 import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.TopicId;
+import mops.foren.domain.model.paging.ThreadPage;
 import mops.foren.domain.repositoryabstraction.IThreadRepository;
-
-import java.util.List;
 
 @ApplicationService
 public class ThreadService {
@@ -15,24 +16,41 @@ public class ThreadService {
         this.threadRepository = threadRepository;
     }
 
-    public List<Thread> getThreads(TopicId topicId) {
-        return this.threadRepository.getThreadsFromDB(topicId);
+
+    /**
+     * This method get all Threads according to a special topicId.
+     *
+     * @param topicId The topicId the threads should be in.
+     * @param page    The page we need.
+     * @return the wanted list of threads.
+     */
+    public ThreadPage getThreads(TopicId topicId, Integer page) {
+        return this.threadRepository.getThreadPageFromDB(topicId, page);
     }
 
-    public Thread getThread(ThreadId threadId) {
+    public Thread getThreadById(ThreadId threadId) {
         return this.threadRepository.getThreadById(threadId);
     }
 
-    /**
-     * Method to add a thread.
-     *
-     * @param thread The thread to add
-     * @param user   The user that wants to create the thread
-     * @param id     The topicId the thread belongs to
-     */
-    public void addThread(Thread thread, User user, ForumId id) {
-        if (user.checkPermission(id, Permission.CREATE_THREAD)) {
-            // ADD
-        }
+
+    public void addPostInThread(ThreadId threadId, Post post) {
+        this.threadRepository.addPostInThread(threadId, post);
+    }
+
+
+    public ThreadPage getThreadPageByVisibility(TopicId topicId, Integer page, Boolean visibility) {
+        return this.threadRepository.getThreadPageFromDbByVisibility(topicId, page, visibility);
+    }
+
+    public void setThreadVisible(ThreadId threadId) {
+        this.threadRepository.setThreadVisible(threadId);
+    }
+
+    public Integer countInvisibleThreads(TopicId topicId) {
+        return this.threadRepository.countInvisibleThreads(topicId);
+    }
+
+    public void deleteThread(ThreadId threadId) {
+        this.threadRepository.deleteThread(threadId);
     }
 }

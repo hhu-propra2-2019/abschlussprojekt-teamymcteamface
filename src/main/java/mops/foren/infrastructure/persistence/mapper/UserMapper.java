@@ -1,11 +1,15 @@
 package mops.foren.infrastructure.persistence.mapper;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.PermissionManager;
+import mops.foren.domain.model.Role;
 import mops.foren.domain.model.User;
 import mops.foren.infrastructure.persistence.dtos.UserDTO;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +25,27 @@ public class UserMapper {
         return UserDTO.builder()
                 .username(user.getName())
                 .email(user.getEmail())
+                .roles(getRolesMap(user.getPermissionManager()))
                 .build();
+    }
+
+    /**
+     * Extract the DTO-permission-map from the User-Object.
+     * This does not contain the student rights on purpose !!!!!!
+     *
+     * @param permissionManager The PermissionManager that contains
+     *                          the rights of the user-model-entity.
+     * @return The map as database-specific type.
+     */
+    private static Map<Long, Role> getRolesMap(PermissionManager permissionManager) {
+        Map<Long, Role> roles = new HashMap<>();
+        permissionManager.getAdmin()
+                .forEach(forumId -> roles.put(forumId.getId(), Role.ADMIN));
+
+        permissionManager.getModerator()
+                .forEach(forumId -> roles.put(forumId.getId(), Role.MODERATOR));
+
+        return roles;
     }
 
     /**
@@ -32,12 +56,25 @@ public class UserMapper {
      */
     public static User mapUserDtoToUser(UserDTO userDTO) {
         List<ForumId> forumIds = getForumIdFromUserDto(userDTO);
+
+        PermissionManager permissionManager = new PermissionManager();
+
+        userDTO.getRoles().forEach((forumId, role) -> {
+            permissionManager.addForumWithPermission(forumId, role);
+        });
+
+        for (ForumId forumId : forumIds) {
+            permissionManager.addForumWithPermission(forumId.getId(), Role.STUDENT);
+        }
+
         return User.builder()
                 .name(userDTO.getUsername())
                 .email(userDTO.getEmail())
+                .permissionManager(permissionManager)
                 .forums(forumIds)
                 .build();
     }
+
 
     private static List<ForumId> getForumIdFromUserDto(UserDTO userDTO) {
         return userDTO.getForums().stream()

@@ -1,6 +1,7 @@
 package mops.foren.domain.repositoryabstraction;
 
 import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
 import mops.foren.domain.model.TopicId;
 
@@ -11,4 +12,8 @@ public interface ITopicRepository {
     List<Topic> getTopicsFromDB(ForumId forumId);
 
     Topic getOneTopicFromDB(TopicId topicId);
+
+    void addThreadInTopic(TopicId topicId, Thread thread);
+
+    void deleteTopic(TopicId topicId);
 }

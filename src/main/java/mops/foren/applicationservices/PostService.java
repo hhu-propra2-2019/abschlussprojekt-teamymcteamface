@@ -1,9 +1,11 @@
 package mops.foren.applicationservices;
 
-import mops.foren.domain.model.*;
+import mops.foren.domain.model.ForumId;
+import mops.foren.domain.model.Post;
+import mops.foren.domain.model.PostId;
+import mops.foren.domain.model.ThreadId;
+import mops.foren.domain.model.paging.PostPage;
 import mops.foren.domain.repositoryabstraction.IPostRepository;
-
-import java.util.List;
 
 @ApplicationService
 public class PostService {
@@ -14,22 +16,23 @@ public class PostService {
         this.postRepository = postRepository;
     }
 
-    public List<Post> getPosts(ThreadId threadId) {
-        return this.postRepository.getPostsFromDB(threadId);
+    public PostPage getPosts(ThreadId threadId, Integer page) {
+        return this.postRepository.getPostPageFromDB(threadId, page);
     }
 
-    /**
-     * Method to add a post.
-     *
-     * @param post    The post to add
-     * @param user    The user that wants to create the post
-     * @param forumId The threadId the post belongs to
-     */
-    public void addPost(Post post, User user, ForumId forumId) {
-        if (user.checkPermission(forumId, Permission.CREATE_POST)) {
-            // ADD
-        }
-
+    public Post getPost(PostId postId) {
+        return this.postRepository.getPostById(postId);
     }
 
+    public void deletePost(PostId postId) {
+        this.postRepository.deletePostById(postId);
+    }
+
+    public PostPage searchWholeForum(ForumId forumId, String content, Integer page) {
+        return this.postRepository.searchWholeForumForContent(forumId, content, page);
+    }
+
+    public void setPostVisible(PostId postId) {
+        this.postRepository.setPostVisible(postId);
+    }
 }

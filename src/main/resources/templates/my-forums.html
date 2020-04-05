@@ -3,71 +3,31 @@
       th:replace="~{mopslayout :: html(name='Foren', headcontent=~{:: headcontent}, navigation=~{:: navigation}, bodycontent=~{:: bodycontent})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" rel="stylesheet">
+  <script crossorigin="anonymous"
+          integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+          th:src="@{'https://code.jquery.com/jquery-3.4.1.slim.min.js'}"></script>
   <meta charset="utf-8">
   <title>Foren</title>
   <th:block th:fragment="headcontent">
-    <style>
-      main > div:first-child {
-        position: relative;
-        margin-bottom: 1rem;
-      }
-            main > div:first-child img {
-                border-radius: 1rem;
-                border: 1px solid black;
-            }
-
-            main > div:first-child > h2 {
-                position: absolute;
-                bottom: 0;
-                margin: 1rem;
-                color: white;
-                text-shadow: 0 0 3px black;
-            }
-
-      .mops-row {
-        transition-duration: 0.3s;
-      }
-
-      .mops-row>*:hover {
-        cursor: pointer;
-      }
-
-      .mops-row:hover {
-        background: #a9d0f5;
-        transition-duration: 0.3s;
-      }
-
-      @media (min-width: 992px) {
-        main > div:first-child > h2 {
-          font-size: 2.4rem;
-        }
-      }
-            @media (max-width: 576px) {
-                main > div:first-child > h2 {
-                    font-size: 1.0rem;
-                }
-            }
-        </style>
-    </th:block>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/20ec73082f.js"></script>
+    <link href="../static/css/styles.css" rel="stylesheet" th:href="@{/css/styles.css}">
+  </th:block>
 </head>
 <body>
-<header>
+  <header>
     <nav class="navigation navigation-secondary" is="mops-navigation" th:fragment="navigation">
-        <ul>
-          <li class="">
-            <a href="" th:href="@{./}">Dashboard</a>
-          </li>
-          <li class="active">
-            <a href="" th:href="@{./my-forums}">Meine Foren</a>
-          </li>
-          <li class="">
-            <a href="" th:href="@{./profile}">Profil</a>
-          </li>
-        </ul>
+      <ul>
+        <li class="active">
+          <a th:href="@{/foren}">Meine Foren</a>
+        </li>
+        <li>
+          <a th:href="@{/foren/profile}">Profil</a>
+        </li>
+      </ul>
     </nav>
-</header>
+  </header>
 <main th:fragment="bodycontent">
   <h1>Meine Foren:</h1>
   <table class="table table-light">
@@ -79,9 +39,9 @@
     </thead>
     <tbody>
     <div th:each="forum : ${forums}">
-      <tr class="mops-row" th:onclick="location.href = '/my-forums/' + [[${forum.getId().getId().toString()}]]">
-          <td th:text="${forum.getTitle()}">AlDat</td>
-          <td th:text="${forum.getTitle()}">14:37Uhr</td>
+      <tr class="mops-row" th:onclick="location.href ='/foren/my-forums/enter?forumId=[[${forum.getId().getId()}]]'">
+        <td th:text="${forum.getTitle()}">AlDat</td>
+        <td th:text="${forum.getFormattedDate()}">14:37Uhr</td>
       </tr>
     </div>
     </tbody>

@@ -24,10 +24,5 @@ public class User {
     public Boolean checkPermission(ForumId id, Permission permission, User author) {
         return this.permissionManager.checkPermission(id, permission, author, this);
     }
-
-    public List<ForumId> getUserForums() {
-        return this.permissionManager.getAllForums();
-    }
-
 }
 

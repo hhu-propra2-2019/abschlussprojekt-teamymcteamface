@@ -1,9 +1,9 @@
 package mops.foren.applicationservices;
 
 import mops.foren.domain.model.ForumId;
-import mops.foren.domain.model.Permission;
+import mops.foren.domain.model.Thread;
 import mops.foren.domain.model.Topic;
-import mops.foren.domain.model.User;
+import mops.foren.domain.model.TopicId;
 import mops.foren.domain.repositoryabstraction.ITopicRepository;
 
 import java.util.List;
@@ -21,16 +21,15 @@ public class TopicService {
         return this.topicRepository.getTopicsFromDB(forumId);
     }
 
-    /**
-     * Method to add a topic.
-     *
-     * @param topic   The thread to add
-     * @param user    The user that wants to create the topic
-     * @param forumId The forumId the topic belongs to
-     */
-    public void addTopic(Topic topic, User user, ForumId forumId) {
-        if (user.checkPermission(forumId, Permission.CREATE_TOPIC)) {
-            // ADD
-        }
+    public Topic getTopic(TopicId topicId) {
+        return this.topicRepository.getOneTopicFromDB(topicId);
+    }
+
+    public void addThreadInTopic(TopicId topicId, Thread thread) {
+        this.topicRepository.addThreadInTopic(topicId, thread);
+    }
+
+    public void deleteTopic(TopicId topicId) {
+        this.topicRepository.deleteTopic(topicId);
     }
 }

@@ -7,10 +7,11 @@ public class Moderator {
             Permission.EDIT_POST,
             Permission.DELETE_THREAD,
             Permission.EDIT_TOPIC,
-            Permission.DELETE_POST
+            Permission.DELETE_POST,
+            Permission.MODERATE_THREAD
     );
 
     public static boolean hasPermission(Permission permission) {
-        return PERMISSIONS.contains(permission);
+        return PERMISSIONS.contains(permission) || Student.hasPermission(permission);
     }
 }
