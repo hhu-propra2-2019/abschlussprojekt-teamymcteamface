@@ -28,7 +28,8 @@ Das Team implementiert ein Self-Contained-System "Foren", welches die Kommunikat
 - der Zeitraum der Entwicklung beträgt min.
 80 Stunden
 - das Team operiert nach eigenen Regeln mit festgelegten Workflows
-- Style der Website, sowie Login/Logout sind vorgegeben
+- Style der Website ist vorgegeben
+- Keycloak zur Authentifizierung muss eingebunden werden
 
 == Kontextabgrenzung
 
@@ -43,17 +44,17 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 === Technnologieentscheidungen
 
-* Trello (Workflow und Regeln)
 * Checkstyle und Spotbugs Plugin
 * Spring Data JPA
 * Hibernate
 * MySQL
 * Lombok
+* Thymeleaf
 
 === organisatorische Entscheidungen
 
 * XP (ohne TDD)
-* Anleihen aus Kanban
+* Anleihen aus Kanban (mithilfe von Trello)
 * Retrospektiven
 * Reglement für Codestil, Formatierungen und Entscheidungsfindung
 
@@ -63,7 +64,61 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 == Bausteinsicht
 
+====
+Wir brechen das System in der Bausteinsicht nicht bis aus Klassenebene herunter, für die Funktionalität der einzelnen Funktionen gibt es die Javadocs
+====
+
+=== Ebene 1
+
+====
+Keycloak ist ein externes System, der Nutzer wird auch als solches angesehen
+====
+
+image::Bausteinsicht_Ebene1.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|Domain| Enthällt die Inhaltliche Logik
+|Infrastruktur| Abhänig von Domain: Enthällt alle Funktionen zur technischen Umsetzung
+|ApplicationServices| Abhänig von Domain: Enthält die der Anwendung zut Verfügung stehenden Services
+|===
+
+=== Ebene 2
+
+==== Infrastructure Paket
+
+image::Baustein_infrastructure.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|Persistence| Enthällt die Kommunikaton zur Datenbank
+|Security| Enthält Spring Security und die Kommunikation zu Keycloak
+|Web| Enthält die Kontroller und weitere benötigte Webklassen
+|===
+
+==== domain Paket
+
+image::Bausteinsicht_Domain.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|model| Enthällt die inhaltliche Logik
+|repositoryabstration| Enthält Interfaces der Repositories, welche in der Infrastruktur implementiert werden
+|services| Enthält für die Logik relevante Services
+|===
+
 == Laufzeitsicht
+
+image::Laufzeit_Diagramm.png[]
+
+==== Typischer Ablauf :
+
+Greift ein Nutzer auf das System Foren zu wird dieser zunächst an Keycloak weitergeleitet um sich dort zu authentifizieren.
+
+Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Post schreiben) so wird diese Anfrage
 
 == Verteilungsschicht
 
@@ -73,10 +128,13 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 [cols="1,2" options="header"]
 |===
-|Name |Beschreibung
-| _Konfiguration und Verwaltung des Projekts_ | _das Team besitzt keine fundierte Erfahrung im Konfigurieren und Entwickeln einer Webanwendung dieser Größe. Des Weiteren ist mit einem hohen Koordinationsaufwand zu rechnen, der zu unerwarteten Problemen führen kann. Das Team versucht dem mit festgelegten Workflows entgegenzuwirken._
-| _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche auch multiple User korrekt behandeln kann. Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_
-| _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen. Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
+
+|Name |Beschreibung | _Konfiguration und Verwaltung des Projekts_ | _das Team besitzt keine fundierte Erfahrung im Konfigurieren und Entwickeln einer Webanwendung dieser Größe.
+Des Weiteren ist mit einem hohen Koordinationsaufwand zu rechnen, der zu unerwarteten Problemen führen kann.
+Das Team versucht dem mit festgelegten Workflows entgegenzuwirken._ | _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche auch multiple User korrekt behandeln kann.
+Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_ | _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen.
+Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
+
 |===
 
 == Glossar
