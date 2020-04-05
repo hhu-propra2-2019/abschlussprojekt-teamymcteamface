@@ -74,7 +74,7 @@ Wir brechen das System in der Bausteinsicht nicht bis aus Klassenebene herunter,
 Keycloak ist ein externes System, der Nutzer wird auch als solches angesehen
 ====
 
-image::Bausteinsicht_Ebene1.png[]
+image::Bausteinsicht_foren.png[]
 
 [cols = "1,1" options="header"]
 |===
@@ -86,7 +86,7 @@ image::Bausteinsicht_Ebene1.png[]
 
 === Ebene 2
 
-==== Infrastructure Paket
+==== infrastructure Paket
 
 image::Baustein_infrastructure.png[]
 
@@ -110,6 +110,10 @@ image::Bausteinsicht_Domain.png[]
 |services| Enthält für die Logik relevante Services
 |===
 
+==== applicationServices Paket
+
+Dieses Paket enthält keine untergeordneten Paket, sondern nur einzelne Klassen.
+
 == Laufzeitsicht
 
 image::Laufzeit_Diagramm.png[]
@@ -118,7 +122,15 @@ image::Laufzeit_Diagramm.png[]
 
 Greift ein Nutzer auf das System Foren zu wird dieser zunächst an Keycloak weitergeleitet um sich dort zu authentifizieren.
 
-Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Post schreiben) so wird diese Anfrage
+Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Post schreiben) so wird diese Anfrage vom zuständigen Controller bearbeiter.
+Aus dem Keycloak Token wird der korrespondierende User aus der Datenbank geholt und über desen Permission Manager eine Rechteanfrage durchgeführt.
+
+Verläuft diese negativ, so gibt der Controller eine Seite zurück die dem Nutzer dies entsprechend mitteilt.
+Hat der Nutzer die geforderten Rechte so stößt der Controller die geforderte Aktion an.
+
+In den meisten Fällen bedeutet dies, dass dem Nutzer eine Seite zurück gegeben wird, deren Inhalt(Topics, Threads etc.) über die Services aus der Datenbank gefüllt werden.
+
+Von dieser Seite aus kann der Nutzer eine neue Anfrage stellen.
 
 == Verteilungsschicht
 
