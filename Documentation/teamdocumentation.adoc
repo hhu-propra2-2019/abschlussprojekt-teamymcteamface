@@ -1,4 +1,4 @@
-= Teamdocumentation
+= Teamdokumentation
 
 Diese Dokumentation fixiert die während des Entwicklungsprozesses aufgetretenen Probleme und Lösungen, sowie die Entscheidungen die das Team in der Entwicklung getroffen hat.
 
@@ -32,6 +32,7 @@ Die Verlegung des Praktikums ins `Home Office` führt zu Problemen in der Kommun
 
 * Mithilfe von Hangouts konnten wir einen neuen Workflow in unsere Arbeit integrieren und des Weiteren an getroffenen Reglements festhalten.
 Es hat allerdings Zeit gekostet, bis sich die Teammitglieder auf die neue Arbeitsweise eingestellt haben.
+Dadurch konnten einige geplante Features nicht fertiggestellt werden.
 
 === Permission System
 
@@ -41,31 +42,31 @@ Deshalb wurde die Software häufig diskutiert und geändert, ohne konkreten Mehr
 ====
 
 * Wir haben uns entschieden das Permission System so spät wie möglich zu implementieren und dann an die Gegebenheiten des Domainmodel anzupassen.
-Bis zur grundlegenden Implementierung des Domainmodels, gibt es bei uns nur den User `Studentin`.
+Bis zur grundlegenden Implementierung des Domainmodels, gab es bei uns nur den User `Studentin`.Erst in der letzten Woche konnten wir eine klare Differenzierung der Rollen erarbeiten und diese implementieren.
 
 === Security/Keycloak
 
 ====
 Die Implementierung/Nutzung der Security Frameworks gestaltete sich, vor allem aufgrund der mangelnden Erfahrung diesbezüglich im Team, als Herausforderung.
-Insbesondere die Implementierung von Keycloak in unsere Infrastruktur und Tests war ein größeres Hinderniss.
+Insbesondere die Implementierung von `Keycloak` in unsere Infrastruktur und Tests war ein größeres Hindernis, als wir ursprünglich angenommen haben.
 ====
 
-* Die meisten Fragen konnte durch ausprobieren oder in Zusammenarbeit mit den Bereuern gelöst werden.
-Für das Testen haben wir eine Mock Konfiguration gefunden welche den Tests Zugriff auf die nötigen Routen ermöglicht.
+* Die meisten Fragen konnte durch Ausprobieren oder in Zusammenarbeit mit den Betreuern gelöst werden.
+Für das Testen haben wir eine Mock-Konfiguration gefunden welche den Tests Zugriff auf die nötigen Routen ermöglicht.
 Da auch die Keycloak Demo erweitert wird bleibt dies aber ein fortlaufender Prozess.
 
-=== Wiederkehrende Diskussion über die Architektur
+=== wiederkehrende Diskussion über die Architektur
 
 ====
-Obwohl wir uns zu Beginn für eine Onion Architektur entschieden haben, traten während der konkreten Umsetzung dieser Architektur und der Datenbankanbindung immer wieder Diskussionen auf, ob eine Schicht Architektur nicht sinnvoller ist.
+Obwohl wir uns zu Beginn für eine `Onion Architektur` entschieden haben, traten während der konkreten Umsetzung dieser Architektur und der Datenbankanbindung immer wieder Diskussionen auf, ob eine `Schicht Architektur` nicht sinnvoller ist.
 ====
 
-* Um eine Analyse Paralyse zu vermeiden haben wir uns nach einer erneuten Abstimmung entgültig dazu entschieden, die Onion Architektur durchzuführen.
+* Um eine Analyse Paralyse zu vermeiden haben wir uns nach einer erneuten Abstimmung endgültig dazu entschieden, die `Onion Architektur` durchzuführen.
 
 === Pull Request Review
 
 ====
-Aufgrund unterschiedlicher Standarts bzgl. der Code Review zu Beginn des Projektes kam es häufiger zu Merges in den Dev Branch, welche nicht den gemeinsam vereinbarten Standards entsprachen.
+Aufgrund unterschiedlicher Standards bezüglich der Code Review zu Beginn des Projektes kam es häufiger zu Merges in den Dev Branch, welche nicht den gemeinsam vereinbarten Standards entsprachen.
 ====
 
 * Es hat sich etabliert, dass Die Review von Personen/Teams durchgeführt wird, welche nicht direkt an der Erstellung des PRs beteiligt waren.
@@ -74,19 +75,19 @@ Bei größeren PRs setzten sich meist eine "PR-fremde" und eine involvierte Pers
 === Datenbankdiskussion
 
 ====
-Bereits vor der ersten Implementierung entstanden viele Diskussionen wie die Daten zu persistieren sind und ob aktuelle Ansätze der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
+Bereits vor der ersten Implementierung entstanden viele Diskussionen, wie die Daten zu persistieren sind und ob aktuelle Ansätze der Implementierung performante Datenbankzugriffe für Anwendung und Tests ermöglicht.
 ====
 
-* Wir haben uns dazu entschieden, Datenbank- und Modellimplementierung konsequent differenziert zu behandeln und umzusetzten.
+* Wir haben uns dazu entschieden, Datenbank- und Modellimplementierung konsequent differenziert zu behandeln und umzusetzen.
 
 === MinIO
 
 ====
-Wir hatten die Idee MinIO zu nutzen um Daten und Bilder zu speichern.
-Die Konfiguration von MinIO war sehr Zeit intensiv, lückenhaft dokumentiert und wir hatten keine Accounts, um das Ganze zu testen.
+Wir hatten die Idee `MinIO` zu nutzen um Daten und Bilder zu speichern.
+Die Konfiguration von `MinIO` war sehr Zeit intensiv, lückenhaft dokumentiert und wir hatten keine Accounts, um das Ganze zu testen.
 ====
 
-* Wir haben also die Integration von MinIO abgebrochen und uns auf andere Themen fokussiert.
+* Wir haben also die Integration von `MinIO` abgebrochen und uns auf andere Themen fokussiert.
 
 == Wochenziele
 
@@ -103,18 +104,19 @@ Die Konfiguration von MinIO war sehr Zeit intensiv, lückenhaft dokumentiert und
 
 ==== Ziel
 
-* Integration eines ersten Spikes in das Projekt.
-* Ein erster kleiner Workflow im Gesamtsystem sollte möglich sein.
-* Das Ziel konnte nicht termingerecht erreicht werden.
+* Integration eines `ersten Spikes` in das Projekt.
+* Ein `erster kleiner Workflow im Gesamtsystem` sollte möglich sein.
+* Das Ziel konnte `nicht termingerecht` erreicht werden.
 Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
+* Letztendlich wurde das Ziel dennoch erreicht.
 
 === Woche 3
 
 ==== Ziel
 
-* Integration der Anwendungslogik, sodass die ersten link:userStories.adoc[Userstories] durchgeführt werden können.
+* `Integration der Anwendungslogik`, sodass die ersten link:userStories.adoc[Userstories] durchgeführt werden können.
 
-* Am Ende der Woche war es möglich die komplette Struktur eines Forums, sprich über Topics, Threads und Posts, durch zu klicken.
+* Am Ende der Woche war es möglich die `komplette Struktur` eines Forums, sprich über Topics, Threads und Posts, durch zu klicken.
 
 * Mit diesem Meilenstein waren wir zuversichtlich, jetzt deutlich schneller weitere Features zu entwickeln.
 
@@ -122,22 +124,25 @@ Gründe dafür sind aus dem Kapitel `Probleme und Lösungen` zu entnehmen.
 
 ==== Ziel
 
-* Funktionsfähige Anwendung, weitestgehend ohne Bugs.
+* `Funktionsfähige Anwendung`, weitestgehend `ohne Bugs` und den gängigen `Qualitätszielen` guter Software `entsprechend`.
 
-* Suchfunktionalität
+* `Suchfunktionalität` integrieren.
 
-* Moderationsmodus
+* einen `Moderationsmodus` integrieren.
 
-* Löschen von Beiträgen
+* `Löschen` von Beiträgen, Themen und Antworten muss möglich sein.
 
-* Permissionsystem ausarbeiten und anwenden
+* `Permissionsystem` muss weitestgehend integriert sein.
 
-* Anonymer Modus
+* `Anonymer Modus` integrieren.
 
-* Letzte Änderungen je Thread und Forum anzeigen
+* `Letzte Änderungen` je Thread und Forum anzeigen.
 
 * Die Hoffnung am Ende der 3. Woche hat sich erfüllt !
 Feature konnten sehr schnell umgesetzt werden.
+
+* Zur `Verbesserung der Softwarequalität` und der `UX` haben einige Teammitglieder auch Zeit nach dem Ende des Praktikums (freiwillig) in Anspruch genommen.
+Ohne diese Arbeit wären gewisse Qualitätsziele `nur ungenügend eingehalten` worden.
 
 
 
