@@ -139,6 +139,32 @@ Es benötigt also lediglich eine Docker-compose fähige Umgebung um in Betrieb g
 
 == Entwurfsentscheidungen
 
+=== Design der Website und Security
+
+* Wir haben diesbezüglich keinen eigenen Entscheidungen getroffen, da dieser Aspekte bereits vorgegeben waren.
+
+=== Architektur
+
+* Wir haben uns zu Beginn des Praktikums für die Onion Architektur entschieden.
+Diese ließ zwar höheren Implementierungsaufwand erwarten, jedoch sollte das Resultat besser wartbar und erweiterbar sein.
+Ein weiterer Grund bestand darin, die für alle Teammitglieder unbekannte Architektur anzuwenden, um daraus einen Lerneffekt zu erzielen.
+
+=== relationale Datenbank
+
+* Relationale Datenbanken sind weit verbreitet und Spring bietet eine umfangreiche Unterstützung an.
+Die schwächere Performance ist bei unserer Anwendungsgröße unerheblich.
+
+=== ID-basierte Persistenz
+
+* Um Aggregate wie im Domain-Driven-Design bauen zu können, mussten wir uns dazu entscheiden, dass jedes Objekt, welches in die Datenbank gelangt eine systemübergreifend eindeutige ID besitzt.
+Id verwandter Objekte wurden dann an Stelle der Referenzen in den Objekten gespeichert.
+Nebenbei verringerte sich dadurch die Komplexität des Datenbankmodels.
+
+=== Permission Manager
+
+* Es scheint eine gute Idee, dass jeder User seinen eigenen Permissionmanager besitzt.
+In Kombination mit der ID-basierten Persistenz der Daten fördert dieser die klare Differenzierung der Verantwortlichkeiten und folgt dem `Tell don't ask` Prinzip.
+
 == Risikobewertung
 
 [cols="1,2" options="header"]
