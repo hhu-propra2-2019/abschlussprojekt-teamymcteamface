@@ -142,8 +142,19 @@
                           th:value="*{postContent}"></textarea>
               </div>
             </div>
-            <button class="btn btn-primary delete-button moderate-button" type="submit">Abschicken</button>
+            <button class="btn btn-primary delete-button moderate-button" type="submit">
+              Abschicken
+            </button>
           </form>
+          <script>
+              document.getElementById("post-form").addEventListener("submit", event => {
+                  if ([[${thread.getModerated()}]]) {
+                      alert("Hey dein Post wurde erstellt.\n" +
+                          "Der Beitrag '[[${thread.getTitle()}]]' befindet sich allerdings im Moderationsmodus,\n" +
+                          "weswegen deine Antwort noch freigegeben werden muss.");
+                  }
+              });
+          </script>
         </div>
       </div>
     </div>

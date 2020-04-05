@@ -1,8 +1,8 @@
 package mops.foren.infrastructure.web.controller;
 
 import mops.foren.applicationservices.*;
-import mops.foren.domain.model.*;
 import mops.foren.domain.model.Thread;
+import mops.foren.domain.model.*;
 import mops.foren.domain.model.paging.Paging;
 import mops.foren.domain.model.paging.PostPage;
 import mops.foren.infrastructure.web.Account;
@@ -27,9 +27,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -86,12 +86,12 @@ public class ThreadControllerTest {
         Paging paging = new Paging(false, false, false, 0, 0L, 0);
         PostPage postPage = new PostPage(paging, List.of());
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
-        when(threadServiceMock.getThreadById(any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(this.threadServiceMock.getThreadById(any()))
                 .thenReturn(Thread.builder().id(new ThreadId(1L)).build());
 
-        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+        this.mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("thread"));
     }
@@ -103,24 +103,24 @@ public class ThreadControllerTest {
         PostPage postPage = new PostPage(paging, List.of());
         Thread fakeThread = Thread.builder().id(new ThreadId(1L)).build();
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
-        when(threadServiceMock.getThreadById(any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(this.threadServiceMock.getThreadById(any()))
                 .thenReturn(fakeThread);
 
-        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+        this.mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
                 .andExpect(model().attributeExists("error", "moderator",
                         "minContentLength", "maxContentLength", "form"))
                 .andExpect(model().attribute("thread", fakeThread))
                 .andExpect(model().attribute("posts", List.of()))
                 .andExpect(model().attribute("pagingObject", paging))
-                .andExpect(model().attribute("user", userMock));
+                .andExpect(model().attribute("user", this.userMock));
     }
 
     @Test
     public void testNewThreadView() throws Exception {
 
-        mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
+        this.mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("create-thread"));
     }
@@ -128,9 +128,14 @@ public class ThreadControllerTest {
     @Test
     public void testNewThreadModel() throws Exception {
 
-        mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
+        when(this.topicServiceMock.getTopic(any())).thenReturn(Topic.builder()
+                .title("").id(new TopicId(1L)).moderated(true).build());
+
+        this.mvcMock.perform(get("/foren/thread/new-thread?topicId=1"))
                 .andExpect(model().attributeExists("minTitleLength", "maxTitleLength",
                         "minContentLength", "maxContentLength", "form"))
+                .andExpect(model().attribute("inModeratedTopic", true))
+                .andExpect(model().attribute("topicTitle", ""))
                 .andExpect(model().attribute("topicId", 1L))
                 .andExpect(model().attributeDoesNotExist("error"));
     }
@@ -138,11 +143,11 @@ public class ThreadControllerTest {
     @Test
     public void testAddAThreadWithoutPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
-        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+        this.mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
                 .with(csrf())
                 .param("title", "    ")
                 .param("content", "    "))
@@ -153,11 +158,11 @@ public class ThreadControllerTest {
     @Test
     public void testAddAThreadWithPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
-        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+        this.mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
                 .with(csrf())
                 .param("title", "    ")
                 .param("content", "    "))
@@ -168,26 +173,26 @@ public class ThreadControllerTest {
     @Test
     public void testAddAThreadWithPermissionInvokeAddThread() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
-        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+        this.mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
                 .with(csrf())
                 .param("title", "    ")
                 .param("content", "    "));
 
-        verify(topicServiceMock).addThreadInTopic(any(), any());
+        verify(this.topicServiceMock).addThreadInTopic(any(), any());
     }
 
     @Test
     public void testAddAThreadWithPermissionBindingHasError() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when((topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when((this.topicServiceMock.getTopic(any()).getForumId())).thenReturn(new ForumId(1L));
 
-        mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
+        this.mvcMock.perform(post("/foren/thread/add-thread?topicId=1")
                 .with(csrf())
                 .param("title", "")
                 .param("content", ""))
@@ -198,13 +203,13 @@ public class ThreadControllerTest {
     @Test
     public void testApproveAThreadWithoutPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(false);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(false);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
@@ -213,13 +218,13 @@ public class ThreadControllerTest {
     @Test
     public void testApproveAThreadWithPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/thread?threadId=1&page=1"));
@@ -228,29 +233,29 @@ public class ThreadControllerTest {
     @Test
     public void testApproveAThreadWithPermissionInvokeApprove() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any())).thenReturn(true);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any())).thenReturn(true);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/approve-thread?threadId=1")
                 .with(csrf()));
 
-        verify(threadServiceMock).setThreadVisible(any());
+        verify(this.threadServiceMock).setThreadVisible(any());
     }
 
     @Test
     public void testDeleteAThreadWithoutPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any(), any())).thenReturn(false);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any(), any())).thenReturn(false);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L))
                 .topicId(new TopicId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
                 .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(view().name("error-no-permission"));
@@ -259,14 +264,14 @@ public class ThreadControllerTest {
     @Test
     public void testDeleteAThreadWithPermissionView() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L))
                 .topicId(new TopicId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
                 .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/foren/topic?topicId=1&page=1"));
@@ -275,17 +280,17 @@ public class ThreadControllerTest {
     @Test
     public void testDeleteAThreadWithPermissionInvokeDelete() throws Exception {
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(userMock.checkPermission(any(), any(), any())).thenReturn(true);
-        when(threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.userMock.checkPermission(any(), any(), any())).thenReturn(true);
+        when(this.threadServiceMock.getThreadById(any())).thenReturn(Thread.builder()
                 .id(new ThreadId(1L))
                 .forumId(new ForumId(1L))
                 .topicId(new TopicId(1L)).build());
 
-        mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
+        this.mvcMock.perform(post("/foren/thread/delete-thread?threadId=1")
                 .with(csrf()));
 
-        verify(threadServiceMock).deleteThread(any());
+        verify(this.threadServiceMock).deleteThread(any());
     }
 
     @Test
@@ -299,14 +304,14 @@ public class ThreadControllerTest {
         Paging paging = new Paging(false, false, false, 0, 0L, 0);
         PostPage postPage = new PostPage(paging, List.of());
 
-        when(userServiceMock.getUserFromDB(any())).thenReturn(userMock);
-        when(postServiceMock.getPosts(any(), any())).thenReturn(postPage);
-        when(threadServiceMock.getThreadById(any()))
+        when(this.userServiceMock.getUserFromDB(any())).thenReturn(this.userMock);
+        when(this.postServiceMock.getPosts(any(), any())).thenReturn(postPage);
+        when(this.threadServiceMock.getThreadById(any()))
                 .thenReturn(Thread.builder().id(new ThreadId(1L)).build());
-        when(keycloakServiceMock.createAccountFromPrincipal(any(KeycloakAuthenticationToken.class)))
-                .thenReturn(fakeAccount);
+        when(this.keycloakServiceMock.createAccountFromPrincipal(
+                any(KeycloakAuthenticationToken.class))).thenReturn(fakeAccount);
 
-        mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
+        this.mvcMock.perform(get("/foren/thread?threadId=1&page=0&error=error"))
                 .andExpect(model().attributeExists("account"))
                 .andExpect(model().attribute("account", fakeAccount));
     }
