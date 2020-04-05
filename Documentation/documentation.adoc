@@ -134,6 +134,9 @@ Von dieser Seite aus kann der Nutzer eine neue Anfrage stellen.
 
 == Verteilungsschicht
 
+Das System wird als Docker-compose ausgeliefert.
+Es benötigt also lediglich eine Docker-compose fähige Umgebung um in Betrieb genommen zu werden.
+
 == Entwurfsentscheidungen
 
 == Risikobewertung
