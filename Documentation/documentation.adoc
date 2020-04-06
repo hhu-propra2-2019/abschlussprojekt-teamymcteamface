@@ -28,7 +28,8 @@ Das Team implementiert ein Self-Contained-System "Foren", welches die Kommunikat
 - der Zeitraum der Entwicklung beträgt min.
 80 Stunden
 - das Team operiert nach eigenen Regeln mit festgelegten Workflows
-- Style der Website, sowie Login/Logout sind vorgegeben
+- Style der Website ist vorgegeben
+- Keycloak zur Authentifizierung muss eingebunden werden
 
 == Kontextabgrenzung
 
@@ -43,17 +44,17 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 === Technnologieentscheidungen
 
-* Trello (Workflow und Regeln)
 * Checkstyle und Spotbugs Plugin
 * Spring Data JPA
 * Hibernate
 * MySQL
 * Lombok
+* Thymeleaf
 
 === organisatorische Entscheidungen
 
 * XP (ohne TDD)
-* Anleihen aus Kanban
+* Anleihen aus Kanban (mithilfe von Trello)
 * Retrospektiven
 * Reglement für Codestil, Formatierungen und Entscheidungsfindung
 
@@ -63,20 +64,118 @@ Folgende Entscheidungen wurden getroffen, um die geforderten Qualitätsziele zu 
 
 == Bausteinsicht
 
+====
+Wir brechen das System in der Bausteinsicht nicht bis aus Klassenebene herunter, für die Funktionalität der einzelnen Funktionen gibt es die Javadocs
+====
+
+=== Ebene 1
+
+====
+Keycloak ist ein externes System, der Nutzer wird auch als solches angesehen
+====
+
+image::Bausteinsicht_foren.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|Domain| Enthällt die Inhaltliche Logik
+|Infrastruktur| Abhänig von Domain: Enthällt alle Funktionen zur technischen Umsetzung
+|ApplicationServices| Abhänig von Domain: Enthält die der Anwendung zut Verfügung stehenden Services
+|===
+
+=== Ebene 2
+
+==== infrastructure Paket
+
+image::Baustein_infrastructure.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|Persistence| Enthällt die Kommunikaton zur Datenbank
+|Security| Enthält Spring Security und die Kommunikation zu Keycloak
+|Web| Enthält die Kontroller und weitere benötigte Webklassen
+|===
+
+==== domain Paket
+
+image::Bausteinsicht_Domain.png[]
+
+[cols = "1,1" options="header"]
+|===
+|Paket| Beschreibung
+|model| Enthällt die inhaltliche Logik
+|repositoryabstration| Enthält Interfaces der Repositories, welche in der Infrastruktur implementiert werden
+|services| Enthält für die Logik relevante Services
+|===
+
+==== applicationServices Paket
+
+Dieses Paket enthält keine untergeordneten Paket, sondern nur einzelne Klassen.
+
 == Laufzeitsicht
+
+image::Laufzeit_Diagramm.png[]
+
+==== Typischer Ablauf :
+
+Greift ein Nutzer auf das System Foren zu, wird dieser zunächst an Keycloak weitergeleitet, um sich dort zu authentifizieren.
+
+Möchte der Nutzer nun eine Aktion durchführen(z.B ein Forum einsehen oder einen neuen Beitrag schreiben) so wird diese Anfrage vom zuständigen Controller bearbeiter.
+Aus dem Keycloak Token wird der korrespondierende User aus der Datenbank geholt und über diesen Permission Manager eine Rechteanfrage durchgeführt.
+
+Verläuft diese negativ, so gibt der Controller eine Seite zurück, die dem Nutzer dies entsprechend mitteilt.
+Hat der Nutzer die geforderten Rechte so stößt der Controller die geforderte Aktion an.
+
+In den meisten Fällen bedeutet dies, dass dem Nutzer eine Seite zurückgegeben wird, deren Inhalt(Topics, Threads etc.) über die Services aus der Datenbank gefüllt werden.
+
+Von dieser Seite aus kann der Nutzer eine neue Anfrage stellen.
 
 == Verteilungsschicht
 
+Das System wird als Docker-compose ausgeliefert.
+Es benötigt lediglich eine Docker-compose fähige Umgebung, um in Betrieb genommen zu werden.
+
 == Entwurfsentscheidungen
+
+=== Design der Website und Security
+
+* Wir haben diesbezüglich keinen eigenen Entscheidungen getroffen, da dieser Aspekte bereits vorgegeben waren.
+
+=== Architektur
+
+* Wir haben uns zu Beginn des Praktikums für die Onion Architektur entschieden.
+Diese ließ zwar höheren Implementierungsaufwand erwarten, jedoch sollte das Resultat besser wartbar und erweiterbar sein.
+Ein weiterer Grund bestand darin, die für alle Teammitglieder unbekannte Architektur anzuwenden, um daraus einen Lerneffekt zu erzielen.
+
+=== relationale Datenbank
+
+* Relationale Datenbanken sind weit verbreitet und Spring bietet eine umfangreiche Unterstützung an.
+Die schwächere Performance ist bei unserer Anwendungsgröße unerheblich.
+
+=== ID-basierte Persistenz
+
+* Um Aggregate wie im Domain-Driven-Design bauen zu können, mussten wir uns dazu entscheiden, dass jedes Objekt, welches in die Datenbank gelangt eine systemübergreifend eindeutige ID besitzt.
+Id verwandter Objekte wurden dann an Stelle der Referenzen in den Objekten gespeichert.
+Nebenbei verringerte sich dadurch die Komplexität des Datenbankmodels.
+
+=== Permission Manager
+
+* Es scheint eine gute Idee, dass jeder User seinen eigenen Permissionmanager besitzt.
+In Kombination mit der ID-basierten Persistenz der Daten fördert dieser die klare Differenzierung der Verantwortlichkeiten und folgt dem `Tell don't ask` Prinzip.
 
 == Risikobewertung
 
 [cols="1,2" options="header"]
 |===
-|Name |Beschreibung
-| _Konfiguration und Verwaltung des Projekts_ | _das Team besitzt keine fundierte Erfahrung im Konfigurieren und Entwickeln einer Webanwendung dieser Größe. Des Weiteren ist mit einem hohen Koordinationsaufwand zu rechnen, der zu unerwarteten Problemen führen kann. Das Team versucht dem mit festgelegten Workflows entgegenzuwirken._
-| _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche auch multiple User korrekt behandeln kann. Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_
-| _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen. Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
+
+|Name |Beschreibung | _Konfiguration und Verwaltung des Projekts_ | _das Team besitzt keine fundierte Erfahrung im Konfigurieren und Entwickeln einer Webanwendung dieser Größe.
+Des Weiteren ist mit einem hohen Koordinationsaufwand zu rechnen, der zu unerwarteten Problemen führen kann.
+Das Team versucht dem mit festgelegten Workflows entgegenzuwirken._ | _Keine Multiuser möglich_ | _das Team versucht eine Webanwendung zu entwickeln, welche auch multiple User korrekt behandeln kann.
+Da Erfahrungen im Team in diesem Bereich fehlen, kann das zu unerwarteten Problemen führen_ | _Datenlecks der Rechte_ | _eine Kompromittierung von sicherheitsrelevanten Daten, könnte auch in externen Systemen Probleme auslösen.
+Mit besonderer Aufmerksamkeit im Bereich Security versucht das Team dies zu verhindern._
+
 |===
 
 == Glossar
